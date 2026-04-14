@@ -1,0 +1,887 @@
+// -- Dices.scss
+
+// If DicePicker add a pointer
+.dice-picker {
+    cursor: url("../assets/cursors/pointer.webp"), pointer;
+}
+
+// define a mixin
+@mixin roll-effects-base {
+    clear: both;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 4px;
+
+    .effect-container {
+        border: 1px solid #8899aa;
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 3px;
+        display: flex;
+    }
+
+    .effect-delete {
+        width: 16px;
+        height: 16px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        text-align: end;
+        cursor: url("../assets/cursors/pointer.webp"), pointer;
+    }
+
+    .effect-icon {
+        width: 16px;
+        height: 16px;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .effect-name {
+        vertical-align: top;
+        white-space: nowrap;
+        color: $white;
+        margin-left: 4px;
+        font-size: 14px;
+        line-height: 16px;
+    }
+}
+
+// =============================================================================
+// Dice Picker Dialog (same-element: .gfl5r.dice-picker-dialog)
+// Design: mirrors RnK dialog — corner bracket accents, $bg-panel-alt header
+// bars, uniform $border-color, $yellow labels in Rajdhani uppercase.
+// =============================================================================
+&.dice-picker-dialog {
+    min-width: 520px;
+    max-width: 620px;
+
+    * { transition: none; }
+    img { border: 0; }
+
+    .pointer-choice {
+        cursor: url("../assets/cursors/pointer.webp"), pointer;
+    }
+
+    // Reuse RnK corner brackets
+    .rnk-corner {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-color: $yellow-dim;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .rnk-corner--tl { top: 0; left: 0; border-top: 2px solid; border-left: 2px solid; }
+    .rnk-corner--tr { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; }
+    .rnk-corner--bl { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; }
+    .rnk-corner--br { bottom: 0; right: 0; border-bottom: 2px solid; border-right: 2px solid; }
+
+    // -------------------------------------------------------------------------
+    // Profile header
+    // -------------------------------------------------------------------------
+    .dp-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 10px 20px;
+        background: $bg-panel-alt;
+        border: 1px solid $border-color;
+        position: relative;
+        overflow: hidden;
+
+        .effects {
+            @include roll-effects-base();
+            flex: 0 0 100%;
+            padding: 4px 0 0;
+
+            &:empty { display: none; }
+        }
+    }
+
+    .dp-profile-img {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        object-fit: cover;
+    }
+
+    .dp-header-title {
+        flex: 1;
+        min-width: 0;
+        font-family: $font-heading;
+        font-weight: 700;
+        font-size: 1rem;
+        color: $yellow;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    // -------------------------------------------------------------------------
+    // Body
+    // -------------------------------------------------------------------------
+    .dp-body {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 12px;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-top: none;
+    }
+
+    // -------------------------------------------------------------------------
+    // Zone panels (gfl-panel pattern)
+    // -------------------------------------------------------------------------
+    .dp-zone {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid $border-color;
+        background: $bg-panel;
+    }
+
+    .dp-zone__header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 6px 12px;
+        background: $bg-panel-alt;
+        border-bottom: 1px solid $border-color;
+    }
+
+    .dp-zone__label {
+        font-family: $font-heading;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $yellow;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .dp-zone__body {
+        padding: 8px;
+    }
+
+    // -------------------------------------------------------------------------
+    // Approach selection (left zone)
+    // -------------------------------------------------------------------------
+    .dp-zone--approaches {
+        flex: 0 0 170px;
+    }
+
+    .dp-approaches {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .dp-approach-row {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.5rem;
+        border-bottom: 1px solid $border-color;
+        cursor: url("../assets/cursors/pointer.webp"), pointer;
+
+        &:last-child { border-bottom: none; }
+        &:nth-child(odd) { background: $gfl5r-odd; }
+        &:nth-child(even) { background: $gfl5r-even; }
+
+        .dp-approach-input {
+            width: 1.6rem;
+            height: 1.6rem;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: $font-mono;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid $border-color;
+            border-radius: 2px;
+            color: $white;
+            cursor: inherit;
+            padding: 0;
+        }
+
+        i {
+            flex: 0 0 1.2rem;
+            font-size: 1.2rem;
+            line-height: 1.2rem;
+        }
+
+        strong {
+            flex: 1;
+            font-family: $font-heading;
+            text-transform: uppercase;
+            letter-spacing: 0.04rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $white-dim;
+        }
+
+        &.approach-selected {
+            background: rgba($yellow, 0.08);
+            .dp-approach-input {
+                border-color: $yellow;
+                color: $yellow;
+            }
+            strong { color: $yellow; }
+        }
+
+        // Per-approach accent colors
+        &.power i { color: $gfl5r-power; }
+        &.precision i { color: $gfl5r-precision; }
+        &.swiftness i { color: $gfl5r-swiftness; }
+        &.resilience i { color: $gfl5r-resilience; }
+        &.fortune i { color: $gfl5r-fortune; }
+    }
+
+    // -------------------------------------------------------------------------
+    // Skill zone (right of approaches)
+    // -------------------------------------------------------------------------
+    .dp-zone--skill {
+        flex: 1 1 0;
+        min-width: 180px;
+    }
+
+    .dp-skill-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        text-align: center;
+    }
+
+    .dp-skill-cat {
+        font-family: $font-heading;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $white-dim;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .dp-skill-name {
+        font-family: $font-heading;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $white;
+    }
+
+    .dp-skill-stance {
+        font-size: 0.7rem;
+        color: $white-dimmer;
+        font-style: italic;
+    }
+
+    .dp-skill-select {
+        text-align: center;
+        width: 160px;
+        appearance: none;
+        font-size: 0.8rem;
+        background: $bg-panel-alt;
+        border: 1px solid $border-color;
+        color: $white;
+        padding: 0.2rem 0.4rem;
+        border-radius: 2px;
+
+        option {
+            background: $bg-panel-alt;
+            color: $white;
+        }
+    }
+
+    .dp-skill-dice {
+        cursor: url("../assets/cursors/pointer.webp"), pointer;
+    }
+
+    .dp-no-skill img {
+        width: 64px;
+        height: 64px;
+        opacity: 0.3;
+    }
+
+    // -------------------------------------------------------------------------
+    // Dice block (image + overlaid value)
+    // -------------------------------------------------------------------------
+    .dp-dice-block {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+
+        img {
+            height: 48px;
+            width: 48px;
+        }
+
+        &--sm img {
+            height: 36px;
+            width: 36px;
+        }
+    }
+
+    .dp-dice-val {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $black;
+        font-family: $font-mono;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .dp-dice-input {
+        width: 1.5rem;
+        color: $white;
+        background: none;
+        border: none;
+        font-family: $font-mono;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 0;
+        text-align: center;
+
+        &:focus, &:hover {
+            box-shadow: none !important;
+            border: none !important;
+            text-shadow: none !important;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Dice pool row (Difficulty / Approach / Skill counters)
+    // -------------------------------------------------------------------------
+    .dp-pool-row {
+        display: flex;
+        gap: 0.5rem;
+        flex: 0 0 100%;
+    }
+
+    .dp-zone--pool {
+        flex: 1 1 0;
+    }
+
+    .dp-counter-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 8px 4px;
+    }
+
+    .dp-counter {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+
+        .quantity {
+            font-size: 1.4rem;
+            color: $white-dim;
+            &:hover { color: $yellow; }
+        }
+    }
+
+    .dp-counter--sm {
+        .quantity { font-size: 1rem; }
+    }
+
+    // -------------------------------------------------------------------------
+    // Checkboxes
+    // -------------------------------------------------------------------------
+    .dp-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.75rem;
+        color: $white-dim;
+        cursor: url("../assets/cursors/pointer.webp"), pointer;
+
+        input[type="checkbox"] {
+            margin: 0;
+        }
+    }
+
+    .dp-hide-tn {
+        margin-top: 0.25rem;
+    }
+
+    // -------------------------------------------------------------------------
+    // Assistance
+    // -------------------------------------------------------------------------
+    .dp-assistance {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        margin-top: 0.25rem;
+        padding-top: 0.35rem;
+        border-top: 1px solid $border-color;
+    }
+
+    .dp-assist-label {
+        font-size: 0.7rem;
+        color: $white-dimmer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    // -------------------------------------------------------------------------
+    // Roll button (matches RnK finalize button)
+    // -------------------------------------------------------------------------
+    .dp-roll-bt {
+        flex: 0 0 100%;
+        cursor: default;
+        color: $white;
+        font-family: $font-heading;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: 0.8rem;
+        line-height: 1.4rem;
+        background: linear-gradient(180deg, $bg-hover 0%, $bg-panel-alt 100%);
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        margin: 0;
+        padding: 0.4rem 1rem;
+        height: auto;
+        transition: all 0.15s ease;
+
+        &:hover {
+            color: $yellow;
+            border-color: $yellow-dim;
+            background: linear-gradient(180deg, rgba($yellow, 0.12) 0%, $bg-hover 100%);
+            box-shadow: 0 0 8px rgba($yellow, 0.15);
+            text-shadow: 0 0 8px rgba($yellow, 0.4);
+        }
+        &:active {
+            transform: translateY(1px);
+            background: $bg-panel-alt;
+        }
+        &[disabled] {
+            opacity: 0.25;
+            &:hover {
+                box-shadow: none;
+                text-shadow: none;
+                color: $white;
+                border-color: $border-color;
+                background: linear-gradient(180deg, $bg-hover 0%, $bg-panel-alt 100%);
+            }
+        }
+    }
+
+    #context-menu {
+        max-width: none;
+    }
+}
+
+// =============================================================================
+// Roll & Keep Dialog
+// NOTE: Both .gfl5r and .roll-n-keep-dialog are on the SAME element,
+// so we must use &.roll-n-keep-dialog to compile as .gfl5r.roll-n-keep-dialog.
+//
+// Design: mirrors discipline-row / gfl-panel pattern from character sheet —
+// corner bracket accents, $bg-panel-alt header bars, uniform $border-color,
+// $yellow labels in Rajdhani uppercase.
+// =============================================================================
+&.roll-n-keep-dialog {
+    min-width: 700px;
+    max-width: 900px;
+    &.finalized {
+        width: auto;
+        min-width: 400px;
+    }
+    img {
+        border: 0;
+    }
+
+    // -------------------------------------------------------------------------
+    // Corner bracket accents (same as discipline cards)
+    // -------------------------------------------------------------------------
+    .rnk-corner {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-color: $yellow-dim;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .rnk-corner--tl { top: 0; left: 0; border-top: 2px solid; border-left: 2px solid; }
+    .rnk-corner--tr { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; }
+    .rnk-corner--bl { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; }
+    .rnk-corner--br { bottom: 0; right: 0; border-bottom: 2px solid; border-right: 2px solid; }
+
+    // -------------------------------------------------------------------------
+    // Profile header (mirrors discipline-row__header)
+    // -------------------------------------------------------------------------
+    .rnk-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 10px 20px;
+        background: $bg-panel-alt;
+        border: 1px solid $border-color;
+        border-bottom: 1px solid $border-color;
+        position: relative;
+        overflow: hidden;
+
+        .effects {
+            @include roll-effects-base();
+            flex: 0 0 100%;
+            padding: 4px 0 0;
+
+            &:empty { display: none; }
+        }
+    }
+
+    .rnk-profile-img {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        object-fit: cover;
+    }
+
+    .rnk-stance {
+        font-size: 2.5rem;
+        line-height: 2.5rem;
+        flex: 0 0 auto;
+    }
+
+    .rnk-header-title {
+        flex: 1;
+        min-width: 0;
+        font-family: $font-heading;
+        font-weight: 700;
+        font-size: 1rem;
+        color: $yellow;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .rnk-header-meta {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .rnk-tn-label {
+        font-family: $font-heading;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: $white-dim;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .rnk-tn-value {
+        font-family: $font-mono;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $white;
+        letter-spacing: 1px;
+    }
+
+    // -------------------------------------------------------------------------
+    // Main body container
+    // -------------------------------------------------------------------------
+    .rnk-ct {
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-top: none;
+        position: relative;
+        overflow: hidden;
+        gap: 0.5rem;
+        padding: 12px;
+
+        .form-group {
+            width: 100%;
+            .form-fields {
+                flex: 1;
+                &:nth-child(2) {
+                    flex: 3;
+                    input { flex: 3; }
+                    i { flex: unset; }
+                }
+            }
+            .range-value {
+                width: 2rem;
+                font-family: $font-mono;
+            }
+        }
+    }
+
+    .rnk-center {
+        flex: 1 1 350px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    // -------------------------------------------------------------------------
+    // Zone panels (gfl-panel pattern: border, header bar, body)
+    // -------------------------------------------------------------------------
+    .rnk-zone {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid $border-color;
+        background: $bg-panel;
+    }
+
+    .rnk-zone__header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 6px 12px;
+        background: $bg-panel-alt;
+        border-bottom: 1px solid $border-color;
+
+        i {
+            font-size: 0.7rem;
+            color: $white-dimmer;
+        }
+    }
+
+    .rnk-zone__label {
+        font-family: $font-heading;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $yellow;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .rnk-zone__meta {
+        font-family: $font-mono;
+        font-size: 0.7rem;
+        color: $white-dim;
+        letter-spacing: 1px;
+    }
+
+    .rnk-zone__body {
+        padding: 8px;
+        min-height: 3rem;
+    }
+
+    // Zone layout variants
+    .rnk-zone--swap {
+        flex: 0 0 120px;
+        .rnk-zone__body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+    }
+
+    .rnk-zone--half {
+        flex: 0 0 calc(50% - 0.25rem);
+    }
+
+    .rnk-zone--keep {
+        flex: 0 0 100%;
+    }
+
+    // -------------------------------------------------------------------------
+    // Dice tray (history table between discard/reroll and keep)
+    // -------------------------------------------------------------------------
+    .rnk-tray {
+        flex: 0 0 100%;
+    }
+
+    table {
+        display: table;
+        width: 100%;
+        border: 0 none;
+        background: transparent;
+        margin: 0;
+        padding: 0;
+        tbody tr {
+            background: transparent;
+            td {
+                margin: 0;
+                padding: 0.35rem;
+                text-align: center;
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Dice choice marker badges
+    // IMPORTANT: The template wraps dice in <span class="fas dice-ct">.
+    // FA's .fas collapses the span to icon size. Override everything.
+    // -------------------------------------------------------------------------
+    .dice-ct {
+        display: inline-block !important;
+        width: auto !important;
+        height: auto !important;
+        font-size: inherit !important;
+        line-height: normal !important;
+        position: relative;
+        padding: 0.35rem;
+        vertical-align: top;
+
+        &:before {
+            content: "";
+            position: absolute;
+            height: 0.5rem;
+            width: 2px;
+            top: -0.3rem;
+            right: calc(50% - 1px);
+            background: rgba($white-dimmer, 0.2);
+        }
+        &:after {
+            font-family: "Font Awesome 5 Free", "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 0.6rem;
+            line-height: 1rem;
+            content: "\f128";
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            border-radius: 2px;
+            padding: 0 0.15rem;
+            width: 1rem;
+            text-align: center;
+            color: $bg-primary;
+            background: $white-dimmer;
+            z-index: 1;
+        }
+        &.discard {
+            opacity: 0.3;
+            &:after { content: "\f00d"; background: $white-dim; }
+        }
+        &.reroll {
+            opacity: 0.3;
+            &:after { content: "\f2f9"; background: $amber; }
+        }
+        &.keep {
+            &:after { content: "\f00c"; background: $green; }
+        }
+        &.swap {
+            &:after { content: "\f337"; background: $cyan; }
+        }
+    }
+
+    tr:first-child .dice-ct {
+        &:before { display: none; }
+    }
+
+    // -------------------------------------------------------------------------
+    // Dice images — tray (72px) and swap sidebar (56px)
+    // -------------------------------------------------------------------------
+    .dice {
+        display: block;
+        height: 72px !important;
+        width: 72px !important;
+        min-height: 72px;
+        min-width: 72px;
+        border: 0 none;
+        &.draggable {
+            cursor: grab;
+            transition: filter 0.1s ease;
+            &:hover {
+                filter: drop-shadow(0 0 8px rgba($yellow, 0.6));
+            }
+        }
+        &.discard,
+        &.reroll {
+            opacity: 0.3;
+        }
+    }
+
+    .rnk-zone--swap .dice,
+    .rnk-zone--swap img {
+        height: 56px !important;
+        width: 56px !important;
+        min-height: 56px;
+        min-width: 56px;
+    }
+
+    // Drop target styling (the inner .dropbox divs used by drag-drop)
+    .dropbox.faces-change {
+        min-height: auto;
+        background: transparent;
+        border: none;
+    }
+
+    // -------------------------------------------------------------------------
+    // Symbols legend
+    // -------------------------------------------------------------------------
+    .symbols-help {
+        font-style: italic;
+        color: $white-dimmer;
+        font-size: 0.8rem;
+        line-height: 1rem;
+        margin: 0.5rem auto 0;
+        text-align: center;
+        flex: 0 0 100%;
+        i {
+            font-size: 1rem;
+            line-height: 1rem;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Button (matches sheet initiative buttons)
+    // -------------------------------------------------------------------------
+    button {
+        cursor: default;
+        color: $white;
+        font-family: $font-heading;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: 0.8rem;
+        line-height: 1.4rem;
+        background: linear-gradient(180deg, $bg-hover 0%, $bg-panel-alt 100%);
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        margin: 0.5rem 0 0;
+        padding: 0.4rem 1rem;
+        height: auto;
+        transition: all 0.15s ease;
+        &:hover {
+            color: $yellow;
+            border-color: $yellow-dim;
+            background: linear-gradient(180deg, rgba($yellow, 0.12) 0%, $bg-hover 100%);
+            box-shadow: 0 0 8px rgba($yellow, 0.15);
+            text-shadow: 0 0 8px rgba($yellow, 0.4);
+        }
+        &:active {
+            transform: translateY(1px);
+            background: $bg-panel-alt;
+        }
+        &[disabled] {
+            opacity: 0.25;
+            &:hover {
+                box-shadow: none;
+                text-shadow: none;
+                color: $white;
+                border-color: $border-color;
+                background: linear-gradient(180deg, $bg-hover 0%, $bg-panel-alt 100%);
+            }
+        }
+    }
+
+    #finalize {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    #context-menu {
+        max-width: none;
+    }
+}
+

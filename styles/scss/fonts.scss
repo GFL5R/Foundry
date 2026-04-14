@@ -1,0 +1,114 @@
+/** GFL5R Fonts **/
+
+// Google Fonts (loaded via @import for dev; production can inline)
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap');
+
+// Local fonts (handwritten/accent styles)
+@font-face {
+    font-family: "PatrickHand";
+    src: url("../fonts/PatrickHand.ttf") format("truetype");
+}
+@font-face {
+    font-family: "ArchitectsDaughter";
+    src: url("../fonts/ArchitectsDaughter.ttf") format("truetype");
+}
+
+// Font stack
+$font-heading: "Rajdhani", "Segoe UI", sans-serif;
+$font-mono: "Share Tech Mono", "Consolas", monospace;
+$font-body: "Inter", "Segoe UI", sans-serif;
+$font-handwritten: "PatrickHand", sans-serif;
+$font-accent: "ArchitectsDaughter", sans-serif;
+
+// Compatibility aliases for existing SCSS
+$font-primary: $font-body;
+$font-secondary: $font-heading;
+$font-tertiary: $font-heading;  // was Caballar (calligraphy) — replaced with heading font
+$font-quaternary: $font-accent;
+
+body {
+    font: 15px $font-body;
+    letter-spacing: 0.02rem;
+}
+
+h1, h2, h3, h4 {
+    font-family: $font-heading;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+h1 {
+    font-size: 2rem;
+    color: $yellow;
+    text-transform: uppercase;
+}
+h2 {
+    font-size: 1.5rem;
+}
+h3 {
+    font-size: 1.25rem;
+}
+h4 {
+    font-size: 1.1rem;
+}
+
+// -- Symbol icons (SVG-based)
+i.i_strife,
+i.i_success,
+i.i_explosive,
+i.i_opportunity,
+i.i_approach,
+i.i_skill,
+i.i_power,
+i.i_precision,
+i.i_swiftness,
+i.i_resilience,
+i.i_fortune,
+i.i_combat,
+i.i_command,
+i.i_conditioning,
+i.i_electronic_warfare,
+i.i_remolding,
+i.i_science,
+i.i_social,
+i.i_street,
+i.i_vehicle {
+    display: inline-block;
+    height: 1.25rem;
+    width: 1.25rem;
+    line-height: 1rem;
+    font-style: normal;
+    font-weight: normal;
+    vertical-align: middle;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+// Dice symbols
+i.i_strife { background-image: url("../assets/icons/symbols/Strife.svg"); }
+i.i_success { background-image: url("../assets/icons/symbols/Success.svg"); }
+i.i_explosive { background-image: url("../assets/icons/symbols/Explosion.svg"); }
+i.i_opportunity { background-image: url("../assets/icons/symbols/Opportunity.svg"); }
+
+// Approach die / Skill die icons
+i.i_approach {
+    background: transparent url("../assets/dices/default/ring_blank.svg") no-repeat center;
+    background-size: 1rem;
+    height: 1rem;
+    width: 1rem;
+}
+i.i_skill {
+    background: transparent url("../assets/dices/default/skill_blank.svg") no-repeat center;
+    background-size: 1rem;
+    height: 1rem;
+    width: 1rem;
+}
+
+// Compendium font override
+.compendium {
+    .item {
+        i {
+            font-family: $font-body;
+        }
+    }
+}

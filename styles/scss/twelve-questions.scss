@@ -1,0 +1,311 @@
+&.twelve-questions-dialog {
+    .sheet-tabs {
+        position: fixed;
+        flex-direction: column;
+        background: $bg-panel-alt;
+        border-right: 1px solid $border-color;
+        width: 4rem;
+        height: 41.58rem;
+        margin: 1%;
+        line-height: 3rem;
+        padding: 0.25rem;
+        border-bottom: 0 none;
+    }
+
+    nav {
+        .item {
+            color: $white-dim;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: $bg-panel;
+            text-align: center;
+            &.active {
+                color: $yellow;
+                background-color: rgba(255, 225, 53, 0.2);
+                --notchSize: 0.5rem;
+                clip-path: polygon(
+                    0% var(--notchSize),
+                    var(--notchSize) 0%,
+                    calc(100% - var(--notchSize)) 0%,
+                    100% var(--notchSize),
+                    100% calc(100% - var(--notchSize)),
+                    calc(100% - var(--notchSize)) 100%,
+                    var(--notchSize) 100%,
+                    0% calc(100% - var(--notchSize))
+                );
+            }
+            &:hover {
+                color: $white;
+                background-color: $bg-hover;
+            }
+        }
+    }
+
+    .tq-part {
+        padding: 1rem 2rem 2rem 18%;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        color: $yellow;
+        margin-bottom: 0.5rem;
+    }
+
+    h2 {
+        font-size: 1.15rem;
+        color: $yellow;
+        margin: 1.5rem 0 0.25rem;
+        border-bottom: 1px solid $border-color;
+        padding-bottom: 0.25rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+        color: $gfl5r-label;
+        margin: 1rem 0 0.5rem;
+    }
+
+    .tq-intro {
+        color: $white-dim;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .tq-flavor {
+        color: $white-dim;
+        font-size: 0.85rem;
+        font-style: italic;
+        margin-bottom: 0.75rem;
+    }
+
+    .tq-type-description {
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0.75rem 1rem;
+        margin: 0.75rem 0;
+        p {
+            color: $white-dim;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+    }
+
+    .tq-errors {
+        background-color: rgba($red, 0.15);
+        border: 1px solid $red;
+        color: $red;
+        border-radius: 0.25rem;
+        text-align: center;
+        padding: 0.35rem 0.75rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.85rem;
+        i { margin-right: 0.35rem; }
+    }
+
+    .tq-valid {
+        color: $green;
+        font-size: 0.9rem;
+        i { margin-right: 0.35rem; }
+    }
+
+    // -- Form elements --
+
+    .form-group {
+        margin: 0.5rem 0;
+        label {
+            color: $gfl5r-label;
+            font-size: 0.9rem;
+        }
+    }
+
+    select {
+        height: 2rem;
+        color: $white;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0 0.25rem;
+        width: 100%;
+    }
+
+    input[type="text"] {
+        color: $white;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        width: 100%;
+        height: 2rem;
+    }
+
+    textarea {
+        color: $white;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0.35rem 0.5rem;
+        width: 100%;
+        resize: vertical;
+    }
+
+    // -- Drag-and-drop zones --
+
+    .tq-drop-zone {
+        border: 1px dashed $border-color;
+        border-radius: 0.25rem;
+        padding: 0.25rem;
+        margin: 0.5rem 0;
+        min-height: 2.5rem;
+        transition: border-color 0.2s, background-color 0.2s;
+        &:hover {
+            border-color: $border-glow;
+        }
+    }
+
+    .tq-item-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .tq-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+        cursor: grab;
+
+        img {
+            border: none;
+            border-radius: 0.15rem;
+            flex-shrink: 0;
+        }
+
+        .tq-item-name {
+            flex: 1;
+            color: $white;
+            font-size: 0.85rem;
+        }
+
+        .tq-item-detail {
+            color: $white-dim;
+            font-size: 0.75rem;
+        }
+
+        .tq-item-delete {
+            color: $white-dim;
+            cursor: pointer;
+            &:hover {
+                color: $red;
+            }
+        }
+    }
+
+    .tq-dropbox {
+        text-align: center;
+        color: $white-dim;
+        font-size: 0.8rem;
+        padding: 1rem;
+        i {
+            margin-right: 0.25rem;
+            color: $yellow-dim;
+        }
+    }
+
+    // -- Frame details --
+
+    .tq-frame-details {
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+    }
+
+    .tq-frame-desc {
+        color: $white-dim;
+        font-size: 0.85rem;
+        font-style: italic;
+        margin-bottom: 0.5rem;
+    }
+
+    .tq-frame-skills {
+        font-size: 0.85rem;
+        color: $white;
+        strong { color: $gfl5r-label; }
+    }
+
+    .tq-stats-table {
+        width: 100%;
+        text-align: center;
+        margin: 0.25rem 0;
+        border-collapse: collapse;
+        th {
+            color: $gfl5r-label;
+            font-weight: normal;
+            font-size: 0.75rem;
+            padding: 0.15rem;
+        }
+        td {
+            color: $yellow;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 1px solid $border-color;
+            padding: 0.25rem;
+        }
+    }
+
+    // -- Navigation buttons --
+
+    .tq-nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid $border-color;
+    }
+
+    .tq-next, .tq-prev, .tq-generate {
+        background: $bg-panel;
+        color: $white;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0.5rem 1.25rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        &:hover {
+            background: $bg-hover;
+            border-color: $border-glow;
+            color: $yellow;
+        }
+    }
+
+    .tq-generate {
+        background: rgba($green, 0.15);
+        border-color: $green;
+        color: $green;
+        font-weight: bold;
+        &:hover {
+            background: rgba($green, 0.3);
+        }
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    // -- Summary --
+
+    .tq-summary {
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        padding: 0.75rem 1rem;
+        margin: 1rem 0;
+    }
+}

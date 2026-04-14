@@ -1,0 +1,49 @@
+<div class="dice-tooltip">
+    {{#each chatData.parts}}
+    {{#if this.display}}
+    <section class="tooltip-part">
+        <div class="dice">
+            <header class="part-header flexrow">
+                <span class="part-formula">{{this.formula}}</span>
+                {{#if this.flavor}}<span class="part-flavor">{{this.flavor}}</span>{{/if}}
+                {{#if this.isDieStd}}<span class="part-total">{{this.total}}</span>{{/if}}
+            </header>
+            <ol class="dice-rolls">
+                {{#each this.rolls}}
+                <li class="roll {{this.classes}}">{{{this.result}}}</li>
+                {{/each}}
+            </ol>
+            <ol class="dice-rolls">
+                <li class="roll">{{{addedResults.success}}}</li>
+            </ol>
+        </div>
+    </section>
+    {{/if}}
+    {{/each}}
+
+    {{#if chatData.gfl5r.dicesTypes.gfl5r}}
+    {{#if chatData.displaySummary}}
+    {{#chatData.gfl5r.summary}}
+    <ul>
+        <li>{{localize "gfl5r.dice.chat.successes"}}: {{this.success}}</li>
+
+        {{#if explosive}}
+        <li>{{localize "gfl5r.dice.chat.explosives"}}: {{this.explosive}}</li>
+        {{/if}}
+
+        {{#if opportunity}}
+        <li>{{localize "gfl5r.dice.chat.opportunities"}}: {{this.opportunity}}</li>
+        {{/if}}
+
+        {{#if strife}}
+        <li>{{localize "gfl5r.dice.chat.strife"}}: {{this.strife}}</li>
+        {{/if}}
+
+        {{#if difficulty}}
+        <li>{{localize "gfl5r.dice.chat.difficulty"}}: {{this.difficulty}}</li>
+        {{/if}}
+    </ul>
+    {{/chatData.gfl5r.summary}}
+    {{/if}}
+    {{/if}}
+</div>

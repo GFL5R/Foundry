@@ -1,0 +1,44 @@
+// -- Nav
+nav {
+    &.sheet-tabs {
+        height: 3rem;
+        line-height: 2rem;
+        font-family: $font-heading;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        border: 0 none;
+        border-bottom: 1px solid $border-color;
+        margin-bottom: 0;
+        background: $bg-panel-alt;
+        color: $white;
+        display: flex;
+        flex-direction: row;
+        clip-path: none;
+    }
+    .item,
+    [data-tab] {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+        border-bottom: 2px solid transparent;
+        transition: color 0.15s ease, border-color 0.15s ease;
+        color: $white;
+        &:hover {
+            background-color: $bg-hover;
+            color: $yellow;
+            text-shadow: none;
+        }
+    }
+    .item.active,
+    [data-tab].active {
+        background-color: rgba(255, 225, 53, 0.1);
+        color: $yellow;
+        border-bottom: 2px solid $yellow;
+
+        &:hover {
+            background-color: rgba(255, 225, 53, 0.1);
+            cursor: default;
+        }
+    }
+}

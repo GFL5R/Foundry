@@ -1,0 +1,87 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <div class="discipline-sheet-card">
+        <div class="discipline-card__corner discipline-card__corner--tl"></div>
+        <div class="discipline-card__corner discipline-card__corner--tr"></div>
+        <div class="discipline-card__corner discipline-card__corner--bl"></div>
+        <div class="discipline-card__corner discipline-card__corner--br"></div>
+
+        {{!-- Header --}}
+        <div class="discipline-card__header">
+            <img class="discipline-sheet-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+            <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="{{localize 'gfl5r.global.name'}}" /></h1>
+        </div>
+
+        {{!-- Two-column content --}}
+        <div class="discipline-card__content">
+            {{!-- Left column: flavor, skills, perk --}}
+            <div class="discipline-card__left">
+                {{#if data.enrichedHtml.flavor}}
+                <div class="discipline-card__flavor">
+                    {{{data.enrichedHtml.flavor}}}
+                </div>
+                {{/if}}
+
+                {{#if data.system.associated_skills.length}}
+                <div class="discipline-card__skills">
+                    <h3>{{localize 'gfl5r.disciplines.associated_skills'}}</h3>
+                    <div class="discipline-skills-list">
+                        {{#each data.system.associated_skills}}
+                        <span class="discipline-skill-tag">{{this}}</span>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+
+                {{#if data.system.perk.name}}
+                <div class="discipline-card__perk">
+                    <h3>{{localize 'gfl5r.disciplines.perk'}}: {{data.system.perk.name}}</h3>
+                    {{#if data.enrichedHtml.perkFlavor}}
+                    <p class="discipline-perk-flavor">{{{data.enrichedHtml.perkFlavor}}}</p>
+                    {{/if}}
+                    {{#if data.enrichedHtml.perkDescription}}
+                    {{{data.enrichedHtml.perkDescription}}}
+                    {{/if}}
+                </div>
+                {{/if}}
+            </div>
+
+            {{!-- Right column: techniques table --}}
+            <div class="discipline-card__right">
+                <h3>{{localize 'gfl5r.disciplines.techniques'}}</h3>
+                {{#if data.techniquesByRank.length}}
+                <table class="discipline-table">
+                    <thead>
+                        <tr><th>{{localize 'gfl5r.global.name'}}</th><th>{{localize 'gfl5r.global.type'}}</th></tr>
+                    </thead>
+                    <tbody>
+                        {{#each data.techniquesByRank}}
+                        <tr class="discipline-table__rank-header">
+                            <th colspan="2">{{localize 'gfl5r.disciplines.rank'}} {{this.rank}}</th>
+                        </tr>
+                        {{#each this.techniques}}
+                        <tr>
+                            <td class="discipline-table__name">{{this.name}}</td>
+                            <td class="discipline-table__type">{{this.type}}</td>
+                        </tr>
+                        {{/each}}
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{/if}}
+            </div>
+        </div>
+
+        {{!-- Capstone footer --}}
+        {{#if data.system.capstone.name}}
+        <div class="discipline-card__capstone">
+            <h3>{{localize 'gfl5r.disciplines.capstone'}}: {{data.system.capstone.name}}</h3>
+            {{#if data.enrichedHtml.capstoneFlavor}}
+            <p class="discipline-capstone-flavor">{{{data.enrichedHtml.capstoneFlavor}}}</p>
+            {{/if}}
+            {{#if data.enrichedHtml.capstoneDescription}}
+            {{{data.enrichedHtml.capstoneDescription}}}
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+</form>

@@ -1,0 +1,32 @@
+<ul class="social-content">
+    <li class="social-row">
+        <span class="social-row__label">{{localize 'gfl5r.social.humanity'}}</span>
+        <input class="centered-input select-on-focus" type="number" name="system.social.humanity" value="{{data.system.social.humanity}}" data-dtype="Number" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        {{#if data.editable}}
+        <span class="increment-control humanity">
+            <i class="addsub-control pointer-choice fa fa-plus-square" data-type="humanity" data-value="1"></i>
+            <i class="addsub-control pointer-choice fa fa-minus-square" data-type="humanity" data-value="-1"></i>
+        </span>
+        {{/if}}
+    </li>
+    <li class="social-row">
+        <span class="social-row__label">{{localize 'gfl5r.social.fame'}}</span>
+        <input class="centered-input select-on-focus" type="number" name="system.social.fame" value="{{data.system.social.fame}}" data-dtype="Number" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        {{#if data.editable}}
+        <span class="increment-control fame">
+            <i class="addsub-control pointer-choice fa fa-plus-square" data-type="fame" data-value="1"></i>
+            <i class="addsub-control pointer-choice fa fa-minus-square" data-type="fame" data-value="-1"></i>
+        </span>
+        {{/if}}
+    </li>
+    <li class="social-row">
+        <span class="social-row__label">{{localize 'gfl5r.social.status'}}</span>
+        <input class="centered-input select-on-focus" type="number" name="system.social.status" value="{{data.system.social.status}}" data-dtype="Number" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        {{#if data.editable}}
+        <span class="increment-control status">
+            <i class="addsub-control pointer-choice fa fa-plus-square" data-type="status" data-value="1"></i>
+            <i class="addsub-control pointer-choice fa fa-minus-square" data-type="status" data-value="-1"></i>
+        </span>
+        {{/if}}
+    </li>
+</ul>

@@ -1,0 +1,3 @@
+/**
+ * @typedef {"afflicted" | "bleeding" | "burning" | "centered" | "compromised" | "dazed" | "disoriented" | "dying" | "emboldened" | "enraged" | "exhausted" | "illness_coughing_illness" | "illness_fire_rash" | "illness_gut_sickness" | "illness_oozing_sore_disease" | "illness_unsteady_illness" | "immobilized" | "incapacitated" | "intoxicated" | "possessed" | "prone" | "silenced" | "unconscious" | "lightly_wounded_fire" | "lightly_wounded_water" | "lightly_wounded_air" | "lightly_wounded_earth" | "lightly_wounded_void" | "severely_wounded_fire" | "severely_wounded_water" | "severely_wounded_air" | "severely_wounded_earth" | "severely_wounded_void"} Condition
+ */

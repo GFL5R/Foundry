@@ -1,0 +1,16 @@
+<nav class="encounters flexrow gfl5r" id="gfl5r_gm_combat_tracker_bar">
+    <ul class="encounter">
+        {{#each encounterTypeList}}
+            <li class="encounter encounter-control" data-id="{{this}}">
+                <i class="fa fas encounter-icon-{{this}}{{#ifCond this '==' ../encounterType}} active{{/ifCond}}" title="{{localize (localize 'gfl5r.conflict.initiative.{id}' id=this)}}"></i>
+            </li>
+        {{/each}}
+    </ul>
+    <ul class="prepared">
+        {{#each prepared as |prepared charType|}}
+            <li class="encounter prepared-control" data-id="{{charType}}">
+                <i class="fa fas prepared-icon-{{prepared}} prepared-{{charType}}" title="{{localize (localize 'gfl5r.conflict.initiative.prepared_{value}' value=prepared)}} ({{localize (localize 'gfl5r.character_types.{type}' type=charType)}})"></i>
+            </li>
+        {{/each}}
+    </ul>
+</nav>

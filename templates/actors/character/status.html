@@ -1,0 +1,150 @@
+{{!-- Endurance / Fatigue --}}
+<div class="gfl-panel status-block">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.attributes.endurance'}}</span>
+    </div>
+    <div class="gfl-panel__body">
+        <div class="status-bar endurance-bar" data-current="{{data.system.fatigue.value}}" data-max="{{data.system.endurance}}">
+            <div class="status-bar-fill"></div>
+            <span class="status-bar-label">
+                {{localize 'gfl5r.conflict.fatigue'}}:
+                <strong>{{data.system.fatigue.value}}</strong> / {{data.system.endurance}}
+            </span>
+        </div>
+        <div class="status-controls">
+            <input class="centered-input select-on-focus" type="number" name="system.fatigue.value" value="{{data.system.fatigue.value}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+            <span class="increment-control fatigue">
+                <i class="addsub-control pointer-choice fa fa-plus-square" data-type="fatigue" data-value="1"></i>
+                <i class="addsub-control pointer-choice fa fa-minus-square" data-type="fatigue" data-value="-1"></i>
+            </span>
+        </div>
+    </div>
+</div>
+
+{{!-- Composure / Strife --}}
+<div class="gfl-panel status-block">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.attributes.composure'}}</span>
+    </div>
+    <div class="gfl-panel__body">
+        <div class="status-bar composure-bar" data-current="{{data.system.strife.value}}" data-max="{{data.system.composure}}">
+            <div class="status-bar-fill"></div>
+            <span class="status-bar-label">
+                {{localize 'gfl5r.conflict.strife'}}:
+                <strong>{{data.system.strife.value}}</strong> / {{data.system.composure}}
+            </span>
+        </div>
+        <div class="status-controls">
+            <input class="centered-input select-on-focus" type="number" name="system.strife.value" value="{{data.system.strife.value}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+            <span class="increment-control strife">
+                <i class="addsub-control pointer-choice fa fa-plus-square" data-type="strife" data-value="1"></i>
+                <i class="addsub-control pointer-choice fa fa-minus-square" data-type="strife" data-value="-1"></i>
+            </span>
+        </div>
+    </div>
+</div>
+
+{{!-- Fortune Points --}}
+<div class="gfl-panel status-block">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.conflict.fortune_points'}}</span>
+    </div>
+    <div class="gfl-panel__body">
+        <div class="status-bar fortune-bar" data-current="{{data.system.fortune_points.value}}" data-max="{{data.system.fortune_points.max}}">
+            <div class="status-bar-fill"></div>
+            <span class="status-bar-label">
+                <strong>{{data.system.fortune_points.value}}</strong> / {{data.system.fortune_points.max}}
+            </span>
+        </div>
+        <div class="status-controls">
+            <input class="centered-input select-on-focus" type="number" name="system.fortune_points.value" value="{{data.system.fortune_points.value}}" data-dtype="Number" placeholder="0" min="0" max="{{data.system.fortune_points.max}}" {{^if data.editable}}disabled{{/if}}/>
+        </div>
+    </div>
+</div>
+
+{{!-- Heat --}}
+<div class="gfl-panel status-block">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.conflict.heat'}}</span>
+    </div>
+    <div class="gfl-panel__body">
+        <div class="status-bar heat-bar" data-current="{{data.system.heat}}" data-max="10">
+            <div class="status-bar-fill"></div>
+            <span class="status-bar-label">
+                <strong>{{data.system.heat}}</strong> / 10
+            </span>
+        </div>
+        <div class="status-controls">
+            <span class="increment-control heat">
+                <i class="heat-control pointer-choice fa fa-plus-square" data-value="1"></i>
+                <i class="heat-control pointer-choice fa fa-minus-square" data-value="-1"></i>
+            </span>
+        </div>
+    </div>
+</div>
+
+{{!-- Collapse --}}
+<div class="gfl-panel status-block">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.harm.collapse'}}</span>
+    </div>
+    <div class="gfl-panel__body">
+        <div class="status-bar collapse-bar" data-current="{{data.system.collapse.value}}" data-max="{{data.system.collapse.max}}">
+            <div class="status-bar-fill"></div>
+            <span class="status-bar-label">
+                <strong>{{data.system.collapse.value}}</strong> / {{data.system.collapse.max}}
+            </span>
+        </div>
+        <div class="status-controls">
+            <input class="centered-input select-on-focus" type="number" name="system.collapse.value" value="{{data.system.collapse.value}}" data-dtype="Number" min="0" max="{{data.system.collapse.max}}" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </div>
+    </div>
+</div>
+
+{{!-- Active Conditions --}}
+<div class="gfl-panel conditions-block">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.conditions.title'}}</span>
+    </div>
+    <div class="gfl-panel__body">
+        {{#if actor.effects.length}}
+        <ul class="conditions-list">
+            {{#each actor.effects as |effect|}}
+            <li class="condition-card">
+                <div class="condition-icon" style="background-image: url({{effect.img}})"></div>
+                <span class="condition-name" data-effect-id="{{effect.id}}">{{effect.name}}</span>
+                {{#if ../data.editable}}
+                <i class="condition-remove effect-delete fas fa-times" data-effect-id="{{effect.id}}" title="{{localize 'Delete'}}"></i>
+                {{/if}}
+            </li>
+            {{/each}}
+        </ul>
+        {{else}}
+        <p class="conditions-empty">{{localize 'gfl5r.conditions.no_active_conditions'}}</p>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="{{cssClass}}" data-actor-id="{{actor._id}}" data-item-id="{{data._id}}">
+    <header class="card-header">
+        <h2 class="item-name"><img src="{{data.img}}" title="{{data.name}}" /> {{data.name}}</h2>
+    </header>
+    <section class="sheet-body">
+        <ul>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.equipped'}}</strong> : {{localizeYesNo data.system.equipped}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.readied'}}</strong> : {{localizeYesNo data.system.readied}}
+            </li>
+            {{!--item-value--}}
+            <li>
+                <strong>{{localize 'gfl5r.sheets.quantity'}} </strong> : {{data.system.quantity}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.rarity'}}</strong> : {{data.system.rarity}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.price'}}</strong> : {{data.system.price}}
+            </li>
+
+            <li>
+                <strong>{{localize 'gfl5r.weapons.category'}}</strong> : {{data.system.category}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.skills.label'}}</strong> : {{localizeSkillId data.system.skill}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.ideal_range'}}</strong> : {{data.system.ideal_range}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.damage'}}</strong> : {{data.system.damage}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.deadliness'}}</strong> : {{data.system.deadliness}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.grip'}}</strong> : {{data.system.grip}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.threat'}}</strong> : {{data.system.threat}}
+            </li>
+        </ul>
+        {{!--properties--}}
+        <p>
+            <strong>{{localize 'gfl5r.sheets.properties'}}</strong> :
+            {{#each data.system.qualities as |quality idx|}}{{#ifCond idx '>' 0}}, {{/ifCond}}{{#if quality.name}}{{quality.name}}{{else}}{{quality}}{{/if}}{{/each}}
+        </p>
+        
+        {{> 'systems/gfl5r/templates/items/item/item-text-partial-reference.html'}}
+    </section>
+</div>

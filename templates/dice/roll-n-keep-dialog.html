@@ -1,0 +1,201 @@
+<form class="{{cssClass}}" autocomplete="off">
+    {{!-- Profile header (mirrors discipline-row__header) --}}
+    <header class="gfl5r profil rnk-header">
+        <div class="rnk-corner rnk-corner--tl"></div>
+        <div class="rnk-corner rnk-corner--tr"></div>
+        <div class="rnk-corner rnk-corner--bl"></div>
+        <div class="rnk-corner rnk-corner--br"></div>
+
+        <img class="rnk-profile-img" src="{{#if gfl5r.actor.img}}{{gfl5r.actor.img}}{{else}}icons/svg/mystery-man.svg{{/if}}" alt="{{#if gfl5r.actor.name}}{{gfl5r.actor.name}}{{else}}mystery-man{{/if}}" />
+        <i class="rnk-stance {{gfl5r.stance}} i_{{gfl5r.stance}}" title="{{localizeApproach gfl5r.stance}}"></i>
+        <div class="rnk-header-title">
+            {{#if gfl5r.skillId}}
+                {{localizeSkillId gfl5r.skillId}}
+            {{else}}
+                {{#if gfl5r.skillCatId}}{{localizeSkill gfl5r.skillCatId 'title'}}{{/if}}
+            {{/if}}
+        </div>
+        <div class="rnk-header-meta">
+            <span class="rnk-tn-label">{{localize 'gfl5r.dice.chat.difficulty'}}</span>
+            {{#if gfl5r.difficultyHidden}}
+                {{#if isGM}}
+                    <span class="rnk-tn-value">{{gfl5r.difficulty}}</span> <i class="fas fa-eye-slash" title="{{localize 'gfl5r.dice.dicepicker.difficulty_hidden_label'}}"></i>
+                {{else}}
+                    <span class="rnk-tn-value" title="{{localize 'gfl5r.dice.dicepicker.difficulty_hidden_label'}}">{{localize 'gfl5r.dice.chat.difficulty_hidden'}}</span>
+                {{/if}}
+            {{else}}
+                <span class="rnk-tn-value">{{gfl5r.difficulty}}</span>
+            {{/if}}
+            {{#if gfl5r.fortunePointUsed}}
+                <i class="i_void" title="{{localize 'gfl5r.dice.chat.fortune_point_used'}}"></i>
+            {{/if}}
+            {{#if gfl5r.skillAssistance}}
+                <i class="i_skill" title="{{gfl5r.skillAssistance}}x {{localize 'gfl5r.dice.chat.assistance_used'}}"></i>
+            {{/if}}
+        </div>
+        {{> 'systems/gfl5r/templates/actors/character/effects.html' actor=gfl5r.actor}}
+    </header>
+
+    {{!-- Body --}}
+    <section class="rnk-ct">
+        {{#if showChoices}}
+            {{!-- Swap: Approach dice (left sidebar) --}}
+            <div class="rnk-zone rnk-zone--swap">
+                <div class="rnk-corner rnk-corner--tl"></div>
+                <div class="rnk-corner rnk-corner--tr"></div>
+                <div class="rnk-corner rnk-corner--bl"></div>
+                <div class="rnk-corner rnk-corner--br"></div>
+                <div class="rnk-zone__header">
+                    <span class="rnk-zone__label">{{localize 'gfl5r.dice.roll_n_keep.swap_drop_here'}}</span>
+                    <i class="fa fa-arrows-alt-h"></i>
+                </div>
+                <div class="rnk-zone__body dropbox swap">
+                    {{#each data.swapDiceFaces.rings}}
+                        <div class="dice dropbox faces-change" data-type="swap" data-face="{{this}}" data-die="ApproachDie">
+                            <img src="{{getDiceFaceUrl 'ApproachDie' this}}" alt="{{this}}" />
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            {{!-- Center column --}}
+            <div class="rnk-center">
+                {{!-- Discard --}}
+                <div class="rnk-zone rnk-zone--discard rnk-zone--half">
+                    <div class="rnk-corner rnk-corner--tl"></div>
+                    <div class="rnk-corner rnk-corner--tr"></div>
+                    <div class="rnk-corner rnk-corner--bl"></div>
+                    <div class="rnk-corner rnk-corner--br"></div>
+                    <div class="rnk-zone__header">
+                        <span class="rnk-zone__label">{{localize 'gfl5r.dice.roll_n_keep.discard_drop_here'}}</span>
+                        <i class="fa fa-times"></i>
+                    </div>
+                    <div class="rnk-zone__body dropbox discards" data-type="discard"></div>
+                </div>
+
+                {{!-- Re-roll --}}
+                <div class="rnk-zone rnk-zone--reroll rnk-zone--half">
+                    <div class="rnk-corner rnk-corner--tl"></div>
+                    <div class="rnk-corner rnk-corner--tr"></div>
+                    <div class="rnk-corner rnk-corner--bl"></div>
+                    <div class="rnk-corner rnk-corner--br"></div>
+                    <div class="rnk-zone__header">
+                        <span class="rnk-zone__label">{{localize 'gfl5r.dice.roll_n_keep.reroll_drop_here'}}</span>
+                        <i class="fa fa-redo-alt"></i>
+                    </div>
+                    <div class="rnk-zone__body dropbox rerolls" data-type="reroll"></div>
+                </div>
+
+                {{!-- Dice tray (history table) --}}
+                <div class="rnk-tray">
+                    <table>
+                        {{#each data.dicesList as |item idxStep|}}
+                        <tr>
+                            {{#each item as |dice idxDie|}}
+                                <td>
+                                    {{#if dice.face}}
+                                        {{#if dice.newFace}}
+                                            <span class="fas dice-ct {{dice.choice}}">
+                                                <img class="dice {{dice.choice}}{{#ifCond ../../data.currentStep '==' idxStep}} draggable{{/ifCond}}" data-step="{{idxStep}}" data-die="{{idxDie}}" src="{{getDiceFaceUrl dice.type dice.newFace}}" alt="{{idxStep}}_{{idxDie}}" />
+                                            </span>
+                                        {{else}}
+                                            <span class="fas dice-ct {{dice.choice}}">
+                                                <img class="dice {{dice.choice}}{{#ifCond ../../data.currentStep '==' idxStep}} draggable{{/ifCond}}" data-step="{{idxStep}}" data-die="{{idxDie}}" src="{{getDiceFaceUrl dice.type dice.face}}" alt="{{idxStep}}_{{idxDie}}" />
+                                            </span>
+                                        {{/if}}
+                                    {{/if}}
+                                </td>
+                            {{/each}}
+                        </tr>
+                        {{/each}}
+                    </table>
+                </div>
+
+                {{!-- Keep --}}
+                <div class="rnk-zone rnk-zone--keep">
+                    <div class="rnk-corner rnk-corner--tl"></div>
+                    <div class="rnk-corner rnk-corner--tr"></div>
+                    <div class="rnk-corner rnk-corner--bl"></div>
+                    <div class="rnk-corner rnk-corner--br"></div>
+                    <div class="rnk-zone__header">
+                        <span class="rnk-zone__label">{{localize 'gfl5r.dice.roll_n_keep.keep_drop_here'}}</span>
+                        <span class="rnk-zone__meta">({{gfl5r.keepLimit}} {{localize 'gfl5r.dice.roll_n_keep.max'}})</span>
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <div class="rnk-zone__body dropbox keeps" data-type="keep"></div>
+                </div>
+            </div>
+
+            {{!-- Swap: Skill dice (right sidebar) --}}
+            <div class="rnk-zone rnk-zone--swap">
+                <div class="rnk-corner rnk-corner--tl"></div>
+                <div class="rnk-corner rnk-corner--tr"></div>
+                <div class="rnk-corner rnk-corner--bl"></div>
+                <div class="rnk-corner rnk-corner--br"></div>
+                <div class="rnk-zone__header">
+                    <span class="rnk-zone__label">{{localize 'gfl5r.dice.roll_n_keep.swap_drop_here'}}</span>
+                    <i class="fa fa-arrows-alt-h"></i>
+                </div>
+                <div class="rnk-zone__body dropbox swap">
+                    {{#each data.swapDiceFaces.skills}}
+                        <div class="dice dropbox faces-change" data-type="swap" data-face="{{this}}" data-die="SkillDie">
+                            <img src="{{getDiceFaceUrl 'SkillDie' this}}" alt="{{this}}" />
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            {{!-- Symbols legend --}}
+            <p class="symbols-help">
+                <i class="i_success"></i> {{localize 'gfl5r.dice.chat.successes'}}
+                | <i class="i_explosive"></i> {{localize 'gfl5r.dice.chat.explosives'}}
+                | <i class="i_opportunity"></i> {{localize 'gfl5r.dice.chat.opportunities'}}
+                | <i class="i_strife"></i> {{localize 'gfl5r.dice.chat.strife'}}
+            </p>
+
+            <button id="finalize" name="finalize" type="button" {{#if data.submitDisabled}}disabled{{/if}}>
+                {{ localize 'gfl5r.dice.roll_n_keep.bt_validate' }} <i class="fas fa-arrow-circle-right"></i>
+            </button>
+        {{else}}
+            {{!-- Non-editable dice history --}}
+            <div class="rnk-tray">
+                <table>
+                    {{#each data.dicesList as |item idxStep|}}
+                        <tr>
+                            {{#each item as |dice idxDie|}}
+                                <td>
+                                    {{#if dice.face}}
+                                        {{#if dice.newFace}}
+                                            <span class="fas dice-ct {{dice.choice}}">
+                                                <img class="dice {{dice.choice}}" src="{{getDiceFaceUrl dice.type dice.newFace}}" alt="{{idxStep}}_{{idxDie}}" />
+                                            </span>
+                                        {{else}}
+                                            <span class="fas dice-ct {{dice.choice}}">
+                                                <img class="dice {{dice.choice}}" src="{{getDiceFaceUrl dice.type dice.face}}" alt="{{idxStep}}_{{idxDie}}" />
+                                            </span>
+                                        {{/if}}
+                                    {{/if}}
+                                </td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                </table>
+            </div>
+
+            {{!-- Strife selection --}}
+            {{#if showStrifeBt}}
+            <div class="form-group" style="width: 100%;">
+                <div class="form-fields"></div>
+                <div class="form-fields">
+                    <input type="range" name="strifeApplied" data-dtype="Number" value="{{gfl5r.strifeApplied}}" min="0" max="{{gfl5r.summary.strife}}" step="1">
+                    <span class="range-value">{{gfl5r.strifeApplied}}</span> <i class="i_strife"></i>
+                </div>
+                <div class="form-fields"></div>
+            </div>
+            <button id="finalize" name="finalize" type="button" {{#if data.submitDisabled}}disabled{{/if}}>
+                {{ localize 'gfl5r.dice.roll_n_keep.bt_strife' }} <i class="fas fa-arrow-circle-right"></i>
+            </button>
+            {{/if}}
+        {{/if}}
+    </section>
+</form>

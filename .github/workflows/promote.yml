@@ -1,0 +1,40 @@
+name: Promote pre-release to release
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Find latest pre-release and promote it
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # Find the most recent pre-release
+          RELEASE_JSON=$(gh api "repos/$GITHUB_REPOSITORY/releases" \
+            --jq '[.[] | select(.prerelease == true)] | sort_by(.created_at) | last')
+
+          if [ -z "$RELEASE_JSON" ] || [ "$RELEASE_JSON" = "null" ]; then
+            echo "No pre-release found to promote."
+            exit 1
+          fi
+
+          RELEASE_ID=$(echo "$RELEASE_JSON" | jq -r '.id')
+          TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+          NAME=$(echo "$RELEASE_JSON" | jq -r '.name')
+
+          echo "Promoting release: $TAG (id=$RELEASE_ID)"
+
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
+            -f prerelease=false \
+            -f make_latest=true
+
+          echo "Successfully promoted $TAG to full release."

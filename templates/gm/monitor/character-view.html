@@ -1,0 +1,85 @@
+<section class="tab standard-form scrollable {{tabs.character.cssClass}}"
+         data-tab="character" data-group="{{tabs.character.group}}">
+         <table>
+         <thead>
+             <th class="img"></th>
+             <th class="name">{{localize 'gfl5r.sheets.name'}}</th>
+             <th class="stance"><i class="i_earth"></i></th>
+             <th class="prepared"><i class="fas prepared-icon-true"></i></th>
+             <th class="weapon"><i class="fas fa-fan"></i></th>
+             <th class="armor"><i class="fas fa-user-shield"></i></th>
+             <th class="rank">{{localize 'gfl5r.sheets.rank'}}</th>
+             <th class="fatigue">{{localize 'gfl5r.attributes.fatigue'}}</th>
+             <th class="strife">{{localize 'gfl5r.attributes.strife'}}</th>
+             <th class="vigilance">{{localize 'gfl5r.gm.monitor.focus_vigilance'}}</th>
+             <th class="void"><i class="i_void"></i></th>
+             <th class=""></th>
+             <th class=""></th>
+         </thead>
+         <tbody>
+         {{#each characters as |actor|}}
+         <tr>
+             <td><img data-actor-uuid="{{actor.uuid}}" draggable="true" class="profile actor-profile dragndrop-actor-uuid pointer" title="{{actor.name}}" src="{{actor.img}}"></td>
+             <td>
+                 <a data-uuid="{{actor.uuid}}" class="open-sheet-from-uuid">{{actor.name}}</a>
+                 {{#if actor.system.attitude}}<p>({{actor.system.attitude}})</p>{{/if}}
+             </td>
+             <td>
+                 <a data-actor-uuid="{{actor.uuid}}" class="actor-modify-control" data-action="change_stance">
+                     <i data-type="text" data-text="<h2>{{localize 'gfl5r.conflict.stance'}} ({{localizeApproach actor.system.stance}} - {{lookup actor.system.rings actor.system.stance}})</h2>{{localizeStanceTip actor.system.stance}}" class="i_{{actor.system.stance}} actor-infos-control"></i>
+                 </a>
+             </td>
+             <td>
+                 <a data-actor-uuid="{{actor.uuid}}" class="actor-modify-control" data-action="toggle_prepared">
+                     <i data-type="text" data-text="<h2>{{localize 'gfl5r.conflict.initiative.title'}} : {{localize (localize 'gfl5r.conflict.initiative.prepared_{value}' value=actor.isPrepared)}}</h2>" class="fa fas prepared-icon-{{actor.isPrepared}} {{#ifCond actor.isPrepared '==' 'false'}}badvalue{{/ifCond}} actor-infos-control"></i>
+                 </a>
+             </td>
+             <td>{{#if actor.haveWeaponEquipped}}<i data-type="weapons" data-actor-uuid="{{actor.uuid}}" class="fas fa-fan actor-infos-control {{#if actor.haveWeaponReadied}}badvalue{{/if}}"></i>{{/if}}</td>
+             <td>{{#if actor.haveArmorEquipped}}<i data-type="armors" data-actor-uuid="{{actor.uuid}}" class="fas fa-user-shield actor-infos-control"></i>{{/if}}</td>
+             <td>
+                 <p>
+                     {{#if actor.system.identity.fortification}}
+                         {{actor.system.identity.fortification}}
+                     {{else}}
+                         <i class="i_bushi" title="{{localize 'gfl5r.social.npc.combat'}}"></i> {{actor.system.threat_level}} <i class="i_courtier" title="{{localize 'gfl5r.social.npc.intrigue'}}"></i> {{actor.system.threat_level}}
+                     {{/if}}
+                 </p>
+                 <p>
+                     {{#if actor.system.rings_affinities}}
+                     {{#each actor.system.rings_affinities as |ringValue ringId|}}
+                         {{#if ringValue}}
+                             <i class="i_{{ringId}}" title="{{localizeApproach ringId}}"></i> {{ringValue}}
+                         {{/if}}
+                     {{/each}}
+                     {{/if}}
+                 </p>
+             </td>
+             <td>
+                 <a title="{{localize 'gfl5r.gm.monitor.mouse_control'}}" data-actor-uuid="{{actor.uuid}}" data-action="modify_fatigue" class="actor-modify-control">
+                     <span class="{{#ifCond actor.system.fatigue.value '>' actor.system.fatigue.max}}badvalue{{/ifCond}}">{{actor.system.fatigue.value}}</span>
+                     / {{actor.system.fatigue.max}}
+                 </a>
+             </td>
+             <td>
+                 <a title="{{localize 'gfl5r.gm.monitor.mouse_control'}}" data-actor-uuid="{{actor.uuid}}" data-action="modify_strife" class="actor-modify-control">
+                     <span class="{{#ifCond actor.system.strife.value '>' actor.system.strife.max}}badvalue{{/ifCond}}">{{actor.system.strife.value}}</span>
+                     / {{actor.system.strife.max}}
+                 </a>
+             </td>
+             <td>
+                 {{actor.system.focus}}
+                 / {{#if actor.system.is_afflicted_or_compromised}}<span class="badvalue">1</span>{{else}}{{actor.system.vigilance}}{{/if}}
+             </td>
+             <td>
+                 <a title="{{localize 'gfl5r.gm.monitor.mouse_control'}}" data-actor-uuid="{{actor.uuid}}" data-action="modify_voidPoint" class="actor-modify-control">
+                     {{actor.system.fortune_points.value}}
+                     / {{actor.system.fortune_points.max}}
+                 </a>
+             </td>
+             <td><i data-actor-uuid="{{actor.uuid}}" data-type="global" class="fas fa-question-circle actor-infos-control"></i></td>
+             <td><span data-actor-uuid="{{actor.uuid}}" class="actor-remove-control pointer" data-action="remove_actor" title="{{localize 'Delete'}}"><i class="fas fa-trash"></i></span></td>
+         </tr>
+         {{/each}}
+         </tbody>
+     </table>
+</section>

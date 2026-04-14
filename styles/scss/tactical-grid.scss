@@ -1,0 +1,32 @@
+
+// Set the label for in-world measurement to be the same as normal waypoint-label
+@at-root #measurement .waypoint-label-additional {
+    color: var(--color-text-emphatic);
+    font-size: var(--font-size-24);
+}
+
+@at-root #tactical-grid-settings {
+    input[type="number"]:invalid {
+        background-color: red;
+    }
+    
+    input[type="number"]:read-only {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        background: transparent;
+        cursor: default;
+        pointer-events: none;       /* not clickable or focusable */
+        user-select: none;          /* text cannot be selected */
+        -webkit-user-select: none;  /* Safari/Chrome */
+        -moz-user-select: none;     /* Firefox */
+    }
+
+    .range_band {
+        display: flex;
+        flex-flow: wrap;
+        fieldset {
+            flex: 25%;
+        }
+    }
+}

@@ -1,0 +1,82 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}"/>
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name"/></h1>
+    </header>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- attributes--}}
+        <article class="attributes" data-group="primary" data-tab="description">
+            <label class="attribute-value checkbox">
+                <input type="checkbox" name="system.equipped" {{checked data.system.equipped}} />
+                {{localize 'gfl5r.weapons.equipped'}}
+            </label>
+            <label class="attribute-value checkbox">
+                <input type="checkbox" name="system.readied" {{checked data.system.readied}} />
+                {{localize 'gfl5r.weapons.readied'}}
+            </label>
+            {{> 'systems/gfl5r/templates/items/item/item-value.html' hideWeight=true}}
+            <label class="category">
+                {{localize 'gfl5r.weapons.category'}}
+                <input type="text" name="system.category" value="{{data.system.category}}" />
+            </label>
+            <label class="skillType">
+                {{localize 'gfl5r.skills.label'}}
+                <select class="attribute-dtype" name="system.skill">
+                    {{selectOptions data.skills selected=data.system.skill valueAttr='id' labelAttr='label' localize=true}}
+                </select>
+            </label>
+            <fieldset class="stats">
+                <legend class="text-block-header">{{localize  'gfl5r.weapons.stats'}}</legend>
+                <label>
+                    {{localize 'gfl5r.weapons.ideal_range'}}
+                    <input class="select-on-focus" type="text" name="system.ideal_range" value="{{data.system.ideal_range}}" data-dtype="String" placeholder="0"/>
+                </label>
+                <label>
+                    {{localize 'gfl5r.weapons.damage'}}
+                    <input class="select-on-focus" type="number" name="system.damage" value="{{data.system.damage}}" data-dtype="Number" min="0" placeholder="0"/>
+                </label>
+                <label>
+                    {{localize 'gfl5r.weapons.deadliness'}}
+                    <input class="select-on-focus" type="number" name="system.deadliness" value="{{data.system.deadliness}}" data-dtype="Number" min="0" placeholder="0"/>
+                </label>
+                <label>
+                    {{localize 'gfl5r.weapons.threat'}}
+                    <input class="select-on-focus" type="number" name="system.threat" value="{{data.system.threat}}" data-dtype="Number" min="0" placeholder="0"/>
+                </label>
+                <label>
+                    {{localize 'gfl5r.weapons.signature'}}
+                    <input class="select-on-focus" type="number" name="system.signature" value="{{data.system.signature}}" data-dtype="Number" min="0" placeholder="0"/>
+                </label>
+            </fieldset>
+            <fieldset class="stats">
+                <legend class="text-block-header">{{localize 'gfl5r.weapons.grip'}}</legend>
+                <label>
+                    {{localize 'gfl5r.weapons.grip'}}
+                    <input class="grip" type="text" name="system.grip" value="{{data.system.grip}}" />
+                </label>
+            </fieldset>
+        </article>
+        <article class="properties" data-group="primary" data-tab="properties">
+            {{#if data.propertiesList}}
+                {{> 'systems/gfl5r/templates/items/property/properties.html' properties=data.propertiesList}}
+            {{/if}}
+            {{#if data.system.qualities}}
+                <fieldset class="properties">
+                    <legend class="section-header">{{localize 'gfl5r.weapons.qualities'}}</legend>
+                    <ul class="item-list">
+                        {{#each data.system.qualities as |quality idx|}}
+                            <li class="item property flexcol" data-quality-id="{{idx}}">
+                                <ul class="item-header property-control">
+                                    <li class="item-img"><img src="systems/gfl5r/assets/icons/items/property.svg" title="{{#if quality.name}}{{quality.name}}{{else}}{{quality}}{{/if}}" width="32px" height="32px"/></li>
+                                    <li class="item-name">{{#if quality.name}}{{quality.name}}{{else}}{{quality}}{{/if}}</li>
+                                </ul>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </fieldset>
+            {{/if}}
+        </article>
+        {{> 'systems/gfl5r/templates/items/item/item-infos.html'}}
+    </section>
+</form>

@@ -1,0 +1,21 @@
+<div class="gfl-panel armors-content">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.armors.title'}}</span>
+        {{#if data.editable}}
+        <a data-item-type="armor" data-item-equipped="true" class="armor-control item-add gfl-panel__add" title="{{localize 'gfl5r.global.add'}}"><i class="fas fa-plus"></i></a>
+        {{/if}}
+    </div>
+    <div class="gfl-panel__body">
+        <ul class="item-list">
+            {{#each actor.items as |item id|}}
+                {{#ifCond (ifCond item.type '==' 'armor') '&&' (ifCond item.system.equipped '==' true)}}
+                    {{> 'systems/gfl5r/templates/items/armor/armor-entry.html' armor=item id=id editable=../data.editable }}
+                {{/ifCond}}
+            {{/each}}
+        </ul>
+    </div>
+</div>

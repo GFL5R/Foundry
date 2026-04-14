@@ -1,0 +1,495 @@
+// Item List
+.item-list {
+    flex: 100%;
+    .tab[data-tab] {
+        display: none;
+    }
+    .item {
+        .item-header {
+            display: flex;
+            .item-img {
+                flex: 0 0 32px;
+                padding-right: 0.25rem;
+                img {
+                    border: none;
+                }
+            }
+            .item-name {
+                flex: 1 1 auto;
+                font-size: 1rem;
+                line-height: 1rem;
+                color: $gfl5r-bold;
+                align-content: center;
+            }
+            .removed {
+                text-decoration-line: line-through;
+            }
+            .item-edit,
+            .item-delete,
+            .item-equip,
+            .technique-edit,
+            .technique-delete,
+            .peculiarity-edit,
+            .peculiarity-delete,
+            .property-edit,
+            .property-delete {
+                line-height: 1rem;
+                font-size: 0.75rem;
+                flex: 0 0 1rem;
+                padding: 0 0.1rem;
+                color: $white-dim;
+            }
+            .icon-stat-container {
+                line-height: 1rem;
+                font-size: 0.75rem;
+                padding: 0 0.25rem;
+                color: $white-dim;
+            }
+            .item-edit,
+            .item-delete,
+            .item-equip,
+            .technique-edit,
+            .technique-delete,
+            .peculiarity-edit,
+            .peculiarity-delete,
+            .property-edit,
+            .property-delete {
+                &:hover {
+                    text-shadow: 0 0 3px $yellow-glow-strong;
+                    color: $yellow;
+                }
+            }
+        }
+        .item-properties {
+            display: flex;
+            flex-direction: row;
+            > li {
+                margin: 0.25rem 0.1rem;
+                padding: 0.1rem 0.5rem;
+                background-color: $bg-panel-alt;
+                border: 1px solid $border-color;
+                border-radius: 1rem;
+                width: auto;
+                font-size: 0.75rem;
+                color: $white-dim;
+                &:first-child {
+                    margin-left: 0;
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            .equip-readied-control {
+                &:hover {
+                    color: $gfl5r-red;
+                    background: $white;
+                }
+            }
+        }
+        p {
+            font-size: 0.85rem;
+            margin: 0;
+            padding: 0 0.5rem;
+            max-width: 100%;
+            &:first-child {
+                padding-top: 0.5rem;
+            }
+            &:last-child {
+                padding-bottom: 0.5rem;
+            }
+        }
+    }
+}
+// Armor Sheet, Item Sheet, Peculiarity Sheet, Property Sheet, Technique Sheet, Weapon Sheet
+&.army-cohort,
+&.army-fortification,
+&.armor,
+&.bond,
+&.item,
+&.item-pattern,
+&.peculiarity,
+&.property,
+&.signature-scroll,
+&.technique,
+&.title,
+&.weapon {
+    .sheet-header {
+        margin-bottom: 0.5rem;
+        img {
+            flex: 0 0 90px;
+            height: 90px;
+            width: 90px;
+            background: $bg-panel-alt;
+            border: 1px solid $border-color;
+        }
+        h1 {
+            input {
+                height: 5.5rem;
+            }
+        }
+    }
+    fieldset {
+        input[name="system.effects"] {
+            text-align: left;
+        }
+    }
+    .sheet-body {
+        flex: 100%;
+        height: calc(100% - 90px - 0.25rem);
+        align-self: stretch;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    article {
+        display: flex;
+        flex-wrap: wrap;
+        min-height: auto;
+        label {
+            color: $gfl5r-label;
+            margin: 0.25rem;
+            line-height: 1.5rem;
+        }
+        &.attributes {
+            align-self: flex-start;
+            width: 100%;
+            height: 6.5rem;
+            select[name="system.skill"],
+            select[name="system.peculiarity_type"],
+            select[name="system.technique_type"] {
+                flex: 0 0 calc(40% - 0.5rem);
+                margin: 0.25rem;
+            }
+            .attribute-value,
+            .attribute,
+            .value {
+                flex: 1 1 auto;
+                margin: 0.5rem 0.25rem 0.25rem;
+            }
+            select[name="system.skill"] {
+                text-transform: capitalize;
+            }
+            .type {
+                display: block;
+                label {
+                    width: calc(50% - 0.5rem);
+                    float: left;
+                }
+            }
+            .properties {
+                flex: 0 0 calc(50% - 0.5rem);
+                margin: 0.25rem;
+            }
+            .equipped {
+                flex: 100%;
+                margin: 0;
+                text-align: right;
+            }
+            input[type="text"],
+            input[type="number"] {
+                width: 2rem;
+                &.grip {
+                    width: calc(100% - 4rem);
+                    margin-bottom: 0.25rem;
+                }
+            }
+            input[name="system.zeni"] {
+                width: 7rem;
+                float: right;
+            }
+            fieldset {
+                input[type="text"],
+                input[type="number"] {
+                    float: right;
+                }
+            }
+            .attribute {
+                &.full {
+                    flex: 100%;
+                    input {
+                        float: right;
+                        width: 70%;
+                    }
+                }
+            }
+            .bonds-types {
+                flex: 100%;
+                input {
+                    width: 75%;
+                    float: right;
+                }
+            }
+        }
+        &.infos {
+            display: flex;
+            align-self: stretch;
+            height: calc(100% - 7.5rem);
+            width: 100%;
+            padding-bottom: 1.25rem;
+            .reference {
+                display: flex;
+                flex: 0 0 calc(100% - 0.5rem);
+                margin: 0.5rem 0.25rem;
+                input[name="system.source_reference.source"] {
+                    text-align: center;
+                    width: 70%;
+                }
+                input[name="system.source_reference.page"] {
+                    width: 30%;
+                }
+            }
+            fieldset {
+                align-self: stretch;
+                height: calc(100% - 2rem);
+                box-sizing: content-box;
+            }
+        }
+        &.properties {
+            fieldset {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}
+&.technique {
+    article {
+        &.attributes {
+            height: 7.5rem;
+            input[type="text"] {
+                width: 10rem;
+            }
+            .cursus {
+                flex: 0 0 calc(20% - 0.5rem);
+                line-height: 0.75rem;
+                text-align: right;
+                margin: 0 0.25rem;
+                input {
+                    margin-top: 0.25rem;
+                }
+            }
+        }
+        &.infos {
+            height: calc(100% - 8.5rem);
+        }
+    }
+}
+&.peculiarity {
+    article {
+        &.attributes {
+            height: 8.5rem;
+            .cursus {
+                flex: 0 0 calc(20% - 0.5rem);
+                line-height: 0.75rem;
+                text-align: right;
+                margin: 0 0.25rem;
+                input {
+                    margin-top: 0.25rem;
+                }
+            }
+        }
+        &.infos {
+            height: calc(100% - 9.5rem);
+        }
+    }
+}
+&.item {
+    article {
+        &.attributes {
+            height: 4.5rem;
+            .properties {
+                flex: 100%;
+            }
+        }
+        &.infos {
+            flex: 0 0 60%;
+            height: calc(100% - 5.5rem);
+        }
+        &.properties {
+            flex: 0 0 40%;
+            height: calc(100% - 5.5rem);
+        }
+    }
+}
+&.property {
+    article {
+        &.properties {
+            width: 100%;
+        }
+        &.infos {
+            height: calc(100% - 4.5rem);
+        }
+    }
+}
+&.armor {
+    article {
+        &.attributes {
+            height: 9.5rem;
+        }
+        &.infos {
+            flex: 0 0 60%;
+            height: calc(100% - 10.5rem);
+        }
+        &.properties {
+            flex: 0 0 40%;
+            height: calc(100% - 10.5rem);
+        }
+    }
+}
+&.weapon {
+    article {
+        &.attributes {
+            height: 18.5rem;
+            .stats,
+            .attribute-value {
+                flex: 0 0 calc(50% - 0.5rem);
+                flex-wrap: wrap;
+                margin: 0.25rem;
+                label {
+                    width: 100%;
+                }
+            }
+            .stats {
+                input[type="text"] {
+                    text-align: center;
+                }
+            }
+            .value {
+                flex: 0 0 calc(25% - 0.5rem);
+            }
+            .category,
+            .skillType {
+                flex: 0 0 calc(50% - 0.5rem);
+                input,
+                .attribute-dtype {
+                    width: 100%;
+                    margin: 0.25rem;
+                }
+            }
+        }
+        &.infos {
+            flex: 0 0 60%;
+            height: calc(100% - 19.5rem);
+        }
+        &.properties {
+            flex: 0 0 40%;
+            height: calc(100% - 19.5rem);
+        }
+    }
+}
+&.item-pattern {
+    .attribute {
+        &.item {
+            display: inline;
+            .item-properties {
+                display: inline;
+                li {
+                    display: inline;
+                }
+            }
+        }
+    }
+}
+&.title {
+    .sheet-body {
+        height: calc(100% - 90px - 4.25rem);
+    }
+    article {
+        &.infos {
+            height: calc(100% - 3.5rem);
+        }
+        &.attributes {
+            height: auto;
+            background: transparent;
+        }
+        &.experience {
+            flex: 100%;
+            height: calc(100% - 4rem);
+        }
+    }
+}
+&.army-cohort {
+    .sheet-body {
+        height: calc(100% - 92px - 3.6rem);
+    }
+    article {
+        .fa-sign-in-alt {
+            transform: rotate(90deg);
+        }
+        &.attributes {
+            height: 7rem;
+            input[type="text"] {
+                width: 100%;
+            }
+            .actor-remove-control {
+                font-size: 12px;
+            }
+            .flx50 {
+                flex: 0 0 calc(50% - 0.5rem);
+            }
+            .flx100 {
+                flex: 0 0 calc(100% - 0.5rem);
+            }
+            .editor-container {
+                min-height: 8rem;
+                max-height: 14rem;
+            }
+        }
+        &.abilities {
+            align-self: stretch;
+            height: calc(100% - 8rem);
+            width: 100%;
+            box-sizing: content-box;
+        }
+    }
+}
+
+&.army-fortification {
+    .sheet-body {
+        height: calc(100% - 92px);
+    }
+    article {
+        &.infos {
+            height: calc(100% - 4.5rem);
+        }
+        &.attributes {
+            height: 3.5rem;
+        }
+    }
+}
+.item-list {
+    > li {
+        .item-description {
+            flex: unset;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 0.75rem;
+            color: $white-dim;
+            overflow: hidden;
+            background: $bg-primary;
+            border: 0 none;
+            transition: height 0.25s ease-in;
+        }
+        div.item-description {
+            padding: 0;
+            &:hover,
+            &:active {
+                padding: 0;
+            }
+        }
+        &:hover,
+        &:active {
+            .item-description {
+                height: 6rem;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                border: 1px solid $gfl5r-title;
+            }
+            p {
+                .item-description {
+                    padding: 0.25rem;
+                }
+            }
+        }
+    }
+    // Stance content styles are in sheets.scss .stances-content
+}

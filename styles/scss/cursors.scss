@@ -1,0 +1,64 @@
+body,
+#navigation #scene-list .scene.view,
+#navigation #scene-list .scene.context,
+#navigation #nav-toggle,
+#navigation #scene-list .scene.nav-item,
+#controls .scene-control.active,
+#controls .control-tool.active,
+#controls .scene-control:hover,
+#controls .control-tool:hover,
+#client-settings .window-content form .form-group > label,
+#client-settings .window-content form .form-group select,
+#client-settings .form-group input,
+.app.window-app .form-group label,
+#sidebar .sidebar-tab #chat-controls div.roll-type-select select,
+#sidebar .sidebar-tab #chat-controls div.roll-type-select i.fas {
+    cursor: url("../assets/cursors/normal.webp"), default !important;
+}
+a,
+#logo,
+#hotbar .macro,
+#playlists-popout .global-volume::-webkit-slider-thumb,
+#sidebar #playlists .global-volume::-webkit-slider-thumb,
+#playlists-popout li.playlist:not(:first-of-type) li.sound .sound-volume::-webkit-slider-thumb,
+#sidebar #playlists li.playlist:not(:first-of-type) li.sound .sound-volume::-webkit-slider-thumb,
+#sidebar #settings button,
+.app.window-app.sheet.wfrp4e.actor.character-sheet
+    .tab.main.active
+    .main-row
+    .movement.row-section
+    .move-value
+    .auto-calc-toggle,
+.app.window-app.sheet.wfrp4e.actor.npc-sheet .main-row .movement.row-section .move-value .auto-calc-toggle,
+.app.window-app.sheet.wfrp4e.actor.creature-sheet .main-row .movement.row-section .move-value .auto-calc-toggle,
+.app.window-app .form-group input[type="range"]::-webkit-slider-thumb,
+.token-sheet .tab[data-tab="image"] input[type="range"]::-webkit-slider-thumb,
+#drawing-config .tab[data-tab="image"] input[type="range"]::-webkit-slider-thumb,
+.metacurrency-value,
+.overcast-button,
+.chargen-button,
+#controls .scene-control,
+#controls .control-tool,
+#effects-config .flex2::-webkit-slider-thumb,
+#client-settings section.content .submenu > button,
+#client-settings .window-content button label,
+form .form-group .form-fields button,
+.sidebar-tab .action-buttons button,
+.dialog .dialog-buttons button,
+.item-edit,
+.item-delete,
+.item-equip,
+.item-curriculum,
+.technique-edit,
+.technique-delete,
+.peculiarity-edit,
+.peculiarity-delete,
+.attribute-dtype,
+.equip-readied-control,
+form button,
+label {
+    cursor: url("../assets/cursors/pointer.webp"), pointer !important;
+}
+.draggable {
+    cursor: url("../assets/cursors/drag.webp"), move !important;
+}

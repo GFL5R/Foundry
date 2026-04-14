@@ -1,0 +1,46 @@
+<div class="identity-fields">
+    <div class="identity-field">
+        <span class="identity-field__label">{{localize 'gfl5r.identity.character_type'}}</span>
+        <select name="system.identity.characterType" {{^if data.editable}}disabled{{/if}}>
+            <option value="human" {{#ifCond data.system.identity.characterType '==' 'human'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.human'}}</option>
+            <option value="t-doll" {{#ifCond data.system.identity.characterType '==' 't-doll'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.t-doll'}}</option>
+        </select>
+    </div>
+    {{!-- Nationality: humans only --}}
+    {{#if data.isHuman}}
+    <div class="identity-field">
+        <span class="identity-field__label">{{localize 'gfl5r.identity.nationality'}}</span>
+        <select name="system.identity.nationality" {{^if data.editable}}disabled{{/if}}>
+            <option value=""></option>
+            {{#each data.identityOptions.nationalities}}
+            <option value="{{this.key}}" {{#ifCond ../data.system.identity.nationality '==' this.key}}selected{{/ifCond}}>{{this.label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{/if}}
+    <div class="identity-field">
+        <span class="identity-field__label">{{#if data.isTDoll}}{{localize 'gfl5r.identity.manufacturer'}}{{else}}{{localize 'gfl5r.identity.background'}}{{/if}}</span>
+        {{#if data.isTDoll}}
+        <input type="text" name="system.identity.manufacturer" value="{{data.system.identity.manufacturer}}" {{^if data.editable}}disabled{{/if}}/>
+        {{else}}
+        <select name="system.identity.background" {{^if data.editable}}disabled{{/if}}>
+            <option value=""></option>
+            {{#each data.identityOptions.backgrounds}}
+            <option value="{{this.key}}" {{#ifCond ../data.system.identity.background '==' this.key}}selected{{/ifCond}}>{{this.label}}</option>
+            {{/each}}
+        </select>
+        {{/if}}
+    </div>
+    {{!-- Frame: T-Dolls only --}}
+    {{#if data.isTDoll}}
+    <div class="identity-field">
+        <span class="identity-field__label">{{localize 'gfl5r.identity.frame'}}</span>
+        <select name="system.identity.frame" {{^if data.editable}}disabled{{/if}}>
+            <option value=""></option>
+            {{#each data.identityOptions.frames}}
+            <option value="{{this.key}}" {{#ifCond ../data.system.identity.frame '==' this.key}}selected{{/ifCond}}>{{this.manufacturer}} {{this.model}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{/if}}
+</div>

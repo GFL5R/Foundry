@@ -1,0 +1,36 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}"/>
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name"/></h1>
+    </header>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Attributes Tab --}}
+        <article class="attributes" data-group="primary" data-tab="attributes">
+            <input type="text" value="{{data.approachLabel}}" readonly/>
+            <input type="text" value="{{data.techniqueTypeLabel}}" readonly/>
+            <label class="cursus attribute-value checkbox">
+            </label>
+            <label class="attribute">
+                {{localize 'gfl5r.advancements.cost'}}
+                <input class="select-on-focus" type="number" name="system.xp_cost" value="{{data.system.xp_cost}}" data-dtype="Number" min="0" placeholder="0"/>
+            </label>
+            <label class="attribute">
+                {{localize 'gfl5r.sheets.rank'}}
+                <input class="select-on-focus" type="number" name="system.rank_required" value="{{data.system.rank_required}}" data-dtype="Number" min="0" placeholder="0"/>
+            </label>
+            <label class="attribute">
+            </label>
+
+            <label class="attribute">
+                {{localize 'gfl5r.skills.title'}}
+                <input class="select-on-focus" type="text" name="system.skill" value="{{data.system.skill}}" data-dtype="String"/>
+            </label>
+            <label class="attribute">
+                {{localize 'gfl5r.dice.dicepicker.difficulty_title'}}
+                <input class="select-on-focus" type="number" name="system.difficulty" value="{{data.system.difficulty}}" data-dtype="Number" min="0" placeholder="0"/>
+            </label>
+        </article>
+        {{> 'systems/gfl5r/templates/items/item/item-infos.html'}}
+    </section>
+</form>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+     width="512px" height="512px" viewBox="0 0 512 512" xml:space="preserve">
+<style type="text/css">
+	.capstone-fill{fill:#ff8c42;}
+</style>
+<!-- Crown (capstone icon) -->
+<polygon class="capstone-fill" points="64,384 96,160 192,256 256,96 320,256 416,160 448,384"/>
+<rect class="capstone-fill" x="64" y="384" width="384" height="48"/>
+</svg>

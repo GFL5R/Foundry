@@ -1,0 +1,70 @@
+<form class="{{cssClass}}" data-lang="{{localize 'I18N.Language'}}" autocomplete="off">
+    {{!-- L5R Button bar --}}
+    <div class="gfl5r-buttons-bar">
+        {{#each gfl5rHeaderButtons}}
+        <a class="gfl5r-header-button {{this.class}}"><i class="{{this.icon}}"></i>{{localize this.label}}</a>
+        {{/each}}
+    </div>
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <div class="header-fields identity-wrapper">
+            <img class="profile-img dragndrop-actor-uuid pointer" src="{{data.img}}" {{#if
+            data.editable}}data-edit="img" {{/if}} data-actor-uuid="{{actor.uuid}}" draggable="true"
+            title="{{data.name}}" />
+            <h1 class="charname">
+                <input name="name" type="text" value="{{data.name}}" placeholder="Name" {{^if
+                data.editable}}disabled{{/if}} />
+            </h1>
+            {{> 'systems/gfl5r/templates/actors/npc/identity.html'}}
+        </div>
+        <div class="header-fields mid-wrapper">
+            <div class="side-col">
+                <h2>{{localize 'gfl5r.social.title'}}</h2>
+                {{> 'systems/gfl5r/templates/actors/npc/social.html'}}
+            </div>
+            <div class="central-col">{{> 'systems/gfl5r/templates/actors/npc/approaches.html'}}</div>
+            <div class="side-col">
+                <h2 class="right">{{localize 'gfl5r.attributes.title'}}</h2>
+                {{> 'systems/gfl5r/templates/actors/npc/attributes.html'}}
+            </div>
+        </div>
+    </header>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Active effects --}}
+        {{> 'systems/gfl5r/templates/actors/npc/effects.html'}}
+
+        {{!-- Skills No Tab --}}
+        {{> 'systems/gfl5r/templates/actors/npc/skill.html'}}
+
+        {{!-- Sheet Tab Navigation --}}
+        <nav class="sheet-tabs tabs" data-group="primary">
+            <a class="item" data-tab="skills">{{localize 'gfl5r.skills.title'}}</a>
+            <a class="item" data-tab="narrative">{{localize 'gfl5r.sheets.narrative'}}</a>
+            <a class="item" data-tab="conflict">{{localize 'gfl5r.conflict.title'}}</a>
+            <a class="item" data-tab="inventory">{{localize 'gfl5r.sheets.inventory'}}</a>
+        </nav>
+
+        {{!-- Techniques Tab --}}
+        <article class="tab skills" data-group="primary" data-tab="skills">
+            {{> 'systems/gfl5r/templates/actors/npc/techniques.html'}}
+        </article>
+
+        {{!-- Narrative Tab --}}
+        <article class="tab narrative" data-group="primary" data-tab="narrative">
+            {{> 'systems/gfl5r/templates/actors/npc/narrative.html'}}
+        </article>
+
+        {{!-- Conflict Tab --}}
+        <article class="tab conflict" data-group="primary" data-tab="conflict">
+            {{> 'systems/gfl5r/templates/actors/npc/conflict.html'}} {{>
+            'systems/gfl5r/templates/items/weapon/weapons.html'}} {{>
+            'systems/gfl5r/templates/items/armor/armors.html'}}
+        </article>
+
+        {{!-- Inventory Tab --}}
+        <article class="tab inventory" data-group="primary" data-tab="inventory">
+            {{> 'systems/gfl5r/templates/actors/npc/inventory.html'}}
+        </article>
+    </section>
+</form>

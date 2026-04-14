@@ -1,0 +1,35 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name" /></h1>
+    </header>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Attributes Tab --}}
+        <article class="attributes" data-group="primary" data-tab="attributes">
+            <select name="system.approach">
+                {{selectOptions data.approachesList selected=data.system.approach valueAttr='id' labelAttr='label'}}
+            </select>
+            <select class="attribute" name="system.narrative_type">
+                {{selectOptions data.subTypesList selected=data.system.narrative_type valueAttr='id' labelAttr='label'}}
+            </select>
+            <label class="cursus attribute-value checkbox">
+            </label>
+            <label class="attribute">
+                {{localize 'gfl5r.advancements.spent'}}
+                <input class="select-on-focus" type="number" name="system.xp_used" value="{{data.system.xp_used}}" data-dtype="Number" min="0" placeholder="0" />
+            </label>
+            <label class="attribute">
+                {{localize 'gfl5r.sheets.rank' }}
+                <input class="select-on-focus" type="number" name="system.rank" value="{{data.system.rank}}" data-dtype="Number" min="0" placeholder="0" />
+            </label>
+            <label class="attribute">
+            </label>
+            <label class="attribute full">
+                {{localize 'gfl5r.sheets.types' }}
+                <input type="text" name="system.types" value="{{data.system.types}}" />
+            </label>
+        </article>
+        {{> 'systems/gfl5r/templates/items/item/item-infos.html'}}
+    </section>
+</form>

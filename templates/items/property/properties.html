@@ -1,0 +1,8 @@
+<fieldset class="properties">
+    <legend class="section-header">{{#if propertyTitle}}{{localize propertyTitle}}{{else}}{{localize 'gfl5r.sheets.properties'}}{{/if}}</legend>
+    <ul class="item-list">
+        {{#each properties as |property id|}}
+            {{> 'systems/gfl5r/templates/items/property/property-entry.html' property=property id=id editable=../options.editable}}
+        {{/each}}
+    </ul>
+</fieldset>

@@ -1,0 +1,11 @@
+<ul class="effects">
+    {{#each actor.effects as |effect|}}
+    <li class="effect-container" title="{{name}}">
+        <div class="effect-icon" style="background-image: url({{effect.img}})"></div>
+        <div data-effect-id="{{effect.id}}" class="effect-name"><label>{{name}}</label></div>
+        {{#if ../data.editable}}
+        <div data-effect-id="{{effect.id}}" class="effect-delete" title="{{localize 'Delete'}}"><i class="fas fa-remove"></i></div>
+        {{/if}}
+    </li>
+    {{/each}}
+</ul>

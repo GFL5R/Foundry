@@ -1,0 +1,19 @@
+<li class="item armor flexcol" data-item-id="{{armor.id}}">
+    <ul class="item-header item-control">
+        <li class="item-img"><img src="{{armor.img}}" title="{{armor.name}}" width="32px" height="32px"/></li>
+        <li class="item-name gfl5r-tooltip" data-item-id="{{armor.id}}">{{armor.name}}</li>
+        <li class="icon-stat-container">
+            <i class="fas fa-tint" title="{{localize 'gfl5r.armors.type'}} {{localize 'gfl5r.armors.physical'}}"> {{armor.system.protection}}</i>
+            <i class="fas fa-bolt" title="{{localize 'gfl5r.armors.type'}} {{localize 'gfl5r.armors.supernatural'}}"> {{armor.system.signature}}</i>
+        </li>
+        {{#if editable}}
+        <li data-item-id="{{armor.id}}" class="item-edit" title="{{localize 'gfl5r.global.edit'}}"><i class="fas fa-edit"></i></li>
+        <li data-item-id="{{armor.id}}" class="item-delete" title="{{localize 'Delete'}}"><i class="fas fa-trash"></i></li>
+        {{/if}}
+    </ul>
+    <ul class="item-properties">
+        {{#each armor.system.properties as |property id|}}
+            <li class="gfl5r-tooltip" data-property-id="{{property.id}}">{{{property.name}}}</li>
+        {{/each}}
+    </ul>
+</li>

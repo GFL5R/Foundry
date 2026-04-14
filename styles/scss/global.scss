@@ -1,0 +1,317 @@
+/** Global **/
+
+body {
+    > * {
+        scrollbar-width: thin;
+    }
+    &:not(.background) {
+        background: var(--bg-primary, #060a12);
+        background-size: cover;
+    }
+}
+
+.toggle-hidden {
+    display: none !important;
+}
+
+/* Windows */
+.window-app {
+    .window-content {
+        z-index: 1;
+        position: relative;
+        background: $bg-primary;
+        background-size: cover;
+        scrollbar-width: thin;
+        padding: 0;
+        color: $white;
+        > form,
+        > div {
+            padding: 0.5rem;
+        }
+        .compendium,
+        .help-dialog {
+            background-position: top;
+            background-size: 100%;
+            background: var(--bg-panel, #0d1525);
+            border: 1px solid rgba(255, 225, 53, 0.15);
+            border-radius: 0;
+            color: $white;
+            ol {
+                padding-right: 0.25rem;
+                li {
+                    border-bottom: 1px solid $border-color;
+                }
+            }
+            .directory-header {
+                padding: 0.25rem 0;
+            }
+        }
+        .help-dialog {
+            padding: 0.5rem 1.5rem;
+            button {
+                cursor: default;
+                color: $white;
+                background: linear-gradient(
+                    $gfl5r-linear-gradient-third,
+                    $gfl5r-linear-gradient-third-dark,
+                    $gfl5r-linear-gradient-third
+                );
+                background-origin: padding-box;
+                border-image: url("../assets/ui/macro-button.webp") 10 repeat;
+                border-image-width: 0.5rem;
+                border-image-outset: 0px;
+                &:hover {
+                    background: linear-gradient(
+                        $gfl5r-linear-gradient-first-dark,
+                        $gfl5r-linear-gradient-first,
+                        $gfl5r-linear-gradient-first-dark
+                    );
+                }
+            }
+        }
+        // Compendium
+        .compendium {
+            .item {
+                position: relative;
+                i {
+                    float: right;
+                    line-height: 1rem;
+                    text-align: right;
+                    font-size: 0.75rem;
+                    color: rgba(240, 240, 225, 0.75);
+                    font-style: italic;
+                    flex: 0 0 auto;
+                    position: absolute;
+                    right: 0;
+                    text-shadow: 0 0 0 rgba(255, 255, 255, 0.1);
+                    &:before {
+                        margin: 0 0.25rem 0 0;
+                        font-style: normal;
+                    }
+                }
+            }
+        }
+    }
+    &.sheet,
+    &.npc,
+    &.armor,
+    &.item,
+    &.peculiarity,
+    &.property,
+    &.technique,
+    &.weapon,
+    &.twenty-questions-dialog {
+        .window-content {
+            overflow-y: scroll;
+        }
+    }
+    .window-resizable-handle {
+        z-index: 2;
+        background: $black-light;
+    }
+    &.twenty-questions-dialog {
+        .window-content {
+            background: var(--bg-panel-alt, #111b2e);
+            background-size: cover;
+        }
+    }
+}
+
+#gfl5r-twenty-questions-dialog {
+    min-height: 800px;
+    min-width: 600px;
+}
+
+/* Focus, Active */
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus {
+    box-shadow: 0 0 6px $yellow-glow-strong;
+    border-color: $yellow-dim;
+}
+.tabs .item.active {
+    text-shadow: 0 0 10px $yellow-glow-strong;
+    color: $yellow;
+}
+#controls .scene-control.active,
+#controls .control-tool.active,
+#controls .scene-control:hover,
+#controls .control-tool:hover {
+    box-shadow: 0 0 10px $yellow-glow-strong;
+}
+
+#sidebar #settings button,
+#sidebar .sidebar-tab .action-buttons button {
+    height: 2rem;
+    line-height: initial;
+}
+
+button:hover {
+    box-shadow: 0 0 10px $yellow-glow-strong;
+}
+button:focus {
+    box-shadow: 0 0 6px $yellow-glow-strong;
+}
+
+.item-list {
+    > li {
+        padding: 0.25rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-bottom: 0 none;
+        &:nth-child(odd) {
+            background: $gfl5r-odd;
+        }
+        &:nth-child(even) {
+            background: $gfl5r-even;
+        }
+        &:last-child {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+// Fieldset
+fieldset {
+    flex: 1;
+    flex-wrap: wrap;
+    display: flex;
+    margin: 0 0.25rem;
+    padding: 0.5rem;
+    border: 1px solid $border-color;
+    legend {
+        color: $yellow;
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        font-size: 0.85rem;
+    }
+    .editor {
+        height: 100%;
+    }
+}
+
+// Editors
+.editor,
+.editor-container {
+    flex: 1;
+    height: 100%;
+}
+
+table {
+    background: transparent;
+    border: 1px solid $border-color;
+    thead {
+        background: $bg-panel-alt;
+        color: $yellow;
+        text-shadow: none;
+        border-bottom: 2px solid $yellow;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        font-size: 0.8rem;
+    }
+    tbody {
+    }
+    tr {
+        &:nth-child(odd) {
+            background: $gfl5r-odd;
+        }
+        &:nth-child(even) {
+            background: $gfl5r-even;
+        }
+    }
+}
+
+sub,
+sup {
+    color: $gfl5r-black;
+}
+
+.sheet {
+    nav {
+        &.sheet-tabs {
+            font-size: 0.75rem;
+        }
+    }
+}
+
+.editor-container,
+.item-description {
+    ul {
+        margin: 0.5rem 0;
+        li {
+            list-style-type: initial;
+            margin: 0.5rem 0 0.5rem 1.5rem;
+            padding: 0;
+        }
+    }
+}
+
+.prepared {
+    &-character {
+        color: $gfl5r-resilience;
+    }
+    &-adversary {
+        color: $gfl5r-power;
+    }
+    &-minion {
+        color: $gfl5r-swiftness;
+    }
+    &-icon {
+        font-weight: 900;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        line-height: 1;
+        width: 1.5rem;
+        &-true:before {
+            content: "\f06e";
+        }
+        &-false:before {
+            content: "\f070";
+        }
+        &-actor:before {
+            content: "\f2a8";
+        }
+    }
+}
+
+// Entity link style for compendium folder custom link
+a.compendium-link {
+    background: $bg-hover;
+    padding: 1px 4px;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    white-space: nowrap;
+    word-break: break-all;
+    color: $yellow;
+}
+
+// Color for playlist
+#playlists .sound-control {
+    i.fas.fa-random,
+    i.far.fa-arrow-alt-circle-right,
+    i.fas.fa-compress-arrows-alt,
+    i.fas.fa-ban {
+        color: #ff6400;
+    }
+
+    i.fas.fa-square {
+        color: #dd0000;
+    }
+
+    i.fas.fa-play,
+    i.fas.fa-play-circle {
+        color: #00dd00;
+    }
+
+    i.fas.fa-pause,
+    i.fas.fa-backward,
+    i.fas.fa-forward {
+        color: #0096ff;
+    }
+}

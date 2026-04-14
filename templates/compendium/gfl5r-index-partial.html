@@ -1,0 +1,30 @@
+{{!--
+    GFL5R entry partial — mirrors Foundry's index-partial.hbs structure and adds
+    approach/rarity/rank badges from entryFilterData injected by _prepareDirectoryContext.
+
+    NOTE: Foundry's index-partial.hbs renders a complete <li> element so it cannot
+    be composed via {{> partial}} without nesting <li> inside <li>. We therefore
+    duplicate its simple structure here and own it ourselves. If Foundry changes
+    their index-partial.hbs, this file should be checked for parity.
+
+    Foundry original: templates/sidebar/apps/compendium/index-partial.hbs
+--}}
+<li class="directory-item entry document {{ @root.documentCls }} flexrow" data-entry-id="{{ _id }}">
+    {{#if thumb}}
+    <img class="thumbnail" src="{{ thumb }}" alt="{{ name }}" loading="lazy">
+    {{else if img}}
+    <img class="thumbnail" src="{{ img }}" alt="{{ name }}" loading="lazy">
+    {{else}}
+    <i class="{{ @root.sidebarIcon }}" inert></i>
+    {{/if}}
+    <a class="entry-name ellipsis" data-action="activateEntry">{{ name }}</a>
+    {{#with (lookup @root.entryFilterData _id)}}
+        {{#if (or approach rarity rank)}}
+        <div class="gfl5r approach-rarity-rank" data-action="activateEntry">
+           {{#if approach}} <i class="i_{{approach}}"></i>{{/if}}
+            {{#if rarity}}<a>{{localize "gfl5r.sheets.rarity"}} {{rarity}}</a>{{/if}}
+            {{#if rank}}<a>{{localize "gfl5r.sheets.rank"}} {{rank}}</a>{{/if}}
+        </div>
+        {{/if}}
+    {{/with}}
+</li>

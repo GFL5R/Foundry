@@ -1,0 +1,12 @@
+<li class="item technique flexcol" data-item-id="{{technique._id}}" {{#if technique.system.parent_id.item_id}}data-item-parent-id="{{technique.system.parent_id.item_id}}"{{/if}}>
+    <ul class="item-header technique-controls">
+        <li class="item-img"><img src="{{technique.img}}" title="{{technique.name}}" width="32px" height="32px"/></li>
+        <li class="item-name gfl5r-tooltip {{#if technique.system.skill}}dice-picker-tech{{/if}}" data-item-id="{{technique._id}}" {{#if technique.system.parent_id.item_id}}data-item-parent-id="{{technique.system.parent_id.item_id}}"{{/if}}>{{technique.name}}</li>
+        {{#if editable}}
+            <li data-item-id="{{technique._id}}" {{#if technique.system.parent_id.item_id}}data-item-parent-id="{{technique.system.parent_id.item_id}}"{{/if}} class="item-control item-edit" title="{{localize 'gfl5r.global.edit'}}"><i class="fas fa-edit"></i></li>
+            {{^if technique.system.parent_id.item_id}}
+            <li data-item-id="{{technique._id}}" class="item-control item-delete" title="{{localize 'Delete'}}"><i class="fas fa-trash"></i></li>
+            {{/if}}
+        {{/if}}
+    </ul>
+</li>

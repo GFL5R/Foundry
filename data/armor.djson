@@ -1,0 +1,92 @@
+/* Armor data: parsed by docstring-json into webapp/data/armor.json
+   Armor Attributes (from Weapons & Armor page):
+   - Weight: Encumbrance value; adds to non-combat fatigue
+   - Signature: TN for Subterfuge checks to conceal the armor
+   - Protection: Damage reduction applied to incoming damage
+*/
+{
+  "Concealable Vest": {
+    "cost": 500,
+    "rarity": 2,
+    "weight": 1,
+    "signature": 1,
+    "protection": 1,
+    "flavor": "A soft armor panel worn beneath civilian clothing. Rated for pistol rounds at standard velocities, it offers meaningful protection without sacrificing a normal profile.",
+    "description": """
+      <h3>Effects</h3>
+      <ul>
+        <li>Reduces incoming Damage by 1.</li>
+        <li>Low enough profile to be worn under civilian clothing without a Subterfuge check.</li>
+      </ul>
+    """
+  },
+  "Tactical Vest": {
+    "cost": 1500,
+    "rarity": 2,
+    "weight": 2,
+    "signature": 3,
+    "protection": 2,
+    "flavor": "A modular vest with integrated soft armor and MOLLE webbing for attaching pouches and equipment. The backbone of infantry loadouts.",
+    "description": """
+      <h3>Effects</h3>
+      <ul>
+        <li>Reduces incoming Damage by 2.</li>
+      </ul>
+    """
+  },
+  "Plate Carrier": {
+    "cost": 3000,
+    "rarity": 3,
+    "weight": 2,
+    "signature": 4,
+    "protection": 3,
+    "flavor": "A minimal carrier holding hard ceramic plates over the chest and back. Protects the center mass where hits are most likely and most dangerous, at the cost of comprehensive coverage.",
+    "description": """
+      <h3>Effects</h3>
+      <ul>
+        <li>Reduces incoming Damage by 3.</li>
+      </ul>
+    """
+  },
+  "Combat Armor": {
+    "cost": 5000,
+    "rarity": 4,
+    "weight": 3,
+    "signature": 5,
+    "protection": 4,
+    "flavor": "A full hard armor system covering the torso, shoulders, and upper limbs. Its comprehensive coverage limits sustained movement and makes no pretense at concealment.",
+    "description": """
+      <h3>Effects</h3>
+      <ul>
+        <li>Reduces incoming Damage by 4.</li>
+      </ul>
+    """
+  },
+  "Powered Exosuit": {
+    "cost": 20000,
+    "rarity": 6,
+    "weight": 1,
+    "signature": 6,
+    "flavor": "A motorized exoskeleton whose servos bear the weight of whatever armor is mounted to its frame, letting soldiers operate in protection far heavier than the human body can manage alone. Originally developed for front-line infantry in World War III, surplus units have since made their way into private hands.",
+    "description": """
+      <h3>Effects</h3>
+      <ul>
+        <li>The exosuit's powered servos bear the load of worn armor. Reduces the Weight of any armor worn in conjunction with the exosuit by 2, to a minimum of 0.</li>
+        <li>The exosuit's bulk is impossible to conceal. Increases the Signature of any armor worn in conjunction with the exosuit by 2.</li>
+      </ul>
+    """
+  },
+  "Emergency Shield": {
+    "cost": 8000,
+    "rarity": 5,
+    "weight": 0,
+    "signature": 1,
+    "flavor": "A palm-sized capacitor bank wired to a thin emitter mesh worn beneath clothing. When struck, it discharges in a fraction of a second, projecting a kinetic barrier capable of stopping a rifle round dead. The charge is good for exactly one hit. A favorite of diplomats, corporate executives, and anyone else who suspects they may need it but would rather not advertise the fact.",
+    "description": """
+      <h3>Effects</h3>
+      <ul>
+        <li>The first time the wearer takes damage from any source, reduce that damage to 0. The Emergency Shield immediately gains the <strong>Damaged</strong> quality and cannot trigger again until repaired or replaced.</li>
+      </ul>
+    """
+  }
+}

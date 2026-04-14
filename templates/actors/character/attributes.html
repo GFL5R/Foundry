@@ -1,0 +1,14 @@
+<ul class="attributes-list">
+    <li class="attribute-row">
+        <span class="attribute-row__label">{{localize 'gfl5r.attributes.focus'}}</span>
+        <input class="centered-input" type="number" name="system.focus" value="{{data.system.focus}}" data-dtype="Number" disabled/>
+    </li>
+    <li class="attribute-row {{#if data.system.is_afflicted_or_compromised}}compromised{{/if}}">
+        <span class="attribute-row__label">{{localize 'gfl5r.attributes.vigilance'}}</span>
+        {{#if data.system.is_afflicted_or_compromised}}
+        <input class="centered-input" type="number" value="1" disabled/>
+        {{else}}
+        <input class="centered-input" type="number" name="system.vigilance" value="{{data.system.vigilance}}" data-dtype="Number" disabled/>
+        {{/if}}
+    </li>
+</ul>

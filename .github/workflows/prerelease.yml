@@ -1,0 +1,103 @@
+name: Build and pre-release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'system.json'
+      - 'template.json'
+      - 'data/**'
+      - 'scripts/**'
+      - 'styles/**'
+      - 'templates/**'
+      - 'assets/**'
+      - 'lang/**'
+      - 'tools/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  prerelease:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies for plyvel
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libleveldb-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r tools/requirements.txt
+
+      - name: Build compendium packs from djson data
+        run: |
+          python tools/build-compendiums.py --webapp-data data --packs-dir packs
+
+      - name: Read version from system.json
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(python -c "import json; print(json.load(open('system.json', encoding='utf-8'))['version'])")"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Create release zip (gfl5r.zip)
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip -r gfl5r.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "data/*" \
+            -x "tools/*" \
+            -x "**/__pycache__/*" \
+            -x "**/*.pyc" \
+            -x "**/*.py"
+
+      - name: Force-update release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git tag -f "${{ steps.version.outputs.tag }}"
+          git push origin -f "refs/tags/${{ steps.version.outputs.tag }}"
+
+      - name: Create or update pre-release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.version.outputs.tag }}"
+
+          if gh release view "$TAG" &>/dev/null; then
+            echo "Updating existing release $TAG"
+            gh release edit "$TAG" \
+              --prerelease \
+              --title "$TAG" \
+              --generate-notes
+            gh release upload "$TAG" gfl5r.zip system.json --clobber
+          else
+            echo "Creating new pre-release $TAG"
+            gh release create "$TAG" \
+              --prerelease \
+              --title "$TAG" \
+              --generate-notes \
+              gfl5r.zip system.json
+          fi

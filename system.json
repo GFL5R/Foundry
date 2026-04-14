@@ -1,0 +1,291 @@
+{
+    "id": "gfl5r",
+    "title": "Girls' Frontline: Legend of the Five Rings (GFL5R)",
+    "description": "A Foundry VTT system for GFL5R, a near-future military sci-fi tabletop RPG. Forked from L5R5E by Vlyan, Mandar, Carter, and Litasa. Original L5R5E system licensed under CC BY-NC-SA 4.0 by Edge Studio.",
+    "url": "https://github.com/GFL5R/gfl5r-foundry",
+    "version": "0.1.0",
+    "compatibility": {
+        "minimum": "13",
+        "verified": "14",
+        "maximum": "14"
+    },
+    "socket": true,
+    "authors": [
+        {
+            "name": "JackBinary (GFL5R)",
+            "url": "https://gfl5r.org"
+        },
+        {
+            "name": "Vlyan (L5R5E)",
+            "url": "https://ko-fi.com/vlyan"
+        },
+        {
+            "name": "Mandar (L5R5E)"
+        },
+        {
+            "name": "Carter (L5R5E)"
+        },
+        {
+            "name": "Litasa (L5R5E)"
+        }
+    ],
+    "scripts": [],
+    "esmodules": [
+        "./scripts/main-gfl5r.js"
+    ],
+    "styles": [
+        "./styles/gfl5r.css"
+    ],
+    "packFolders": [
+        {
+            "name": "GFL5R",
+            "color": "#8a7200",
+            "sorting": "m",
+            "folders": [
+                {
+                    "name": "Character",
+                    "color": "#019806",
+                    "sorting": "m",
+                    "packs": [
+                        "gfl5r-disciplines",
+                        "gfl5r-discipline-perks",
+                        "gfl5r-discipline-capstones",
+                        "gfl5r-narrative-advantages",
+                        "gfl5r-narrative-disadvantages",
+                        "gfl5r-narrative-passions",
+                        "gfl5r-narrative-anxieties"
+                    ]
+                },
+                {
+                    "name": "Techniques",
+                    "color": "#4b1eb3",
+                    "sorting": "m",
+                    "packs": [
+                        "gfl5r-techniques-combat",
+                        "gfl5r-techniques-command",
+                        "gfl5r-techniques-conditioning",
+                        "gfl5r-techniques-electronic-warfare",
+                        "gfl5r-techniques-remolding",
+                        "gfl5r-techniques-science",
+                        "gfl5r-techniques-social",
+                        "gfl5r-techniques-street",
+                        "gfl5r-techniques-vehicle"
+                    ]
+                },
+                {
+                    "name": "Equipment",
+                    "color": "#0985ae",
+                    "sorting": "m",
+                    "packs": [
+                        "gfl5r-weapons",
+                        "gfl5r-armor",
+                        "gfl5r-items",
+                        "gfl5r-modules",
+                        "gfl5r-vehicles"
+                    ]
+                },
+                {
+                    "name": "NPCs",
+                    "color": "#ae0909",
+                    "sorting": "m",
+                    "packs": [
+                        "gfl5r-npcs"
+                    ]
+                },
+                {
+                    "name": "Reference",
+                    "color": "#6b3d1f",
+                    "sorting": "m",
+                    "packs": [
+                        "gfl5r-journal-conditions"
+                    ]
+                },
+                {
+                    "name": "Tools",
+                    "color": "#834949",
+                    "sorting": "m",
+                    "packs": [
+                        "gfl5r-macros"
+                    ]
+                }
+            ]
+        }
+    ],
+    "packs": [
+        {
+            "name": "gfl5r-disciplines",
+            "label": "Disciplines",
+            "path": "packs/gfl5r-disciplines",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-discipline-perks",
+            "label": "Discipline Perks",
+            "path": "packs/gfl5r-discipline-perks",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-discipline-capstones",
+            "label": "Discipline Capstones",
+            "path": "packs/gfl5r-discipline-capstones",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-narrative-advantages",
+            "label": "Advantages",
+            "path": "packs/gfl5r-narrative-advantages",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-narrative-disadvantages",
+            "label": "Disadvantages",
+            "path": "packs/gfl5r-narrative-disadvantages",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-narrative-passions",
+            "label": "Passions",
+            "path": "packs/gfl5r-narrative-passions",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-narrative-anxieties",
+            "label": "Anxieties",
+            "path": "packs/gfl5r-narrative-anxieties",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-combat",
+            "label": "Combat Techniques",
+            "path": "packs/gfl5r-techniques-combat",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-command",
+            "label": "Command Techniques",
+            "path": "packs/gfl5r-techniques-command",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-conditioning",
+            "label": "Conditioning Techniques",
+            "path": "packs/gfl5r-techniques-conditioning",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-electronic-warfare",
+            "label": "Electronic Warfare Techniques",
+            "path": "packs/gfl5r-techniques-electronic-warfare",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-remolding",
+            "label": "Remolding Techniques",
+            "path": "packs/gfl5r-techniques-remolding",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-science",
+            "label": "Science Techniques",
+            "path": "packs/gfl5r-techniques-science",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-social",
+            "label": "Social Techniques",
+            "path": "packs/gfl5r-techniques-social",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-street",
+            "label": "Street Techniques",
+            "path": "packs/gfl5r-techniques-street",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-techniques-vehicle",
+            "label": "Vehicle Techniques",
+            "path": "packs/gfl5r-techniques-vehicle",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-weapons",
+            "label": "Weapons",
+            "path": "packs/gfl5r-weapons",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-armor",
+            "label": "Armor",
+            "path": "packs/gfl5r-armor",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-items",
+            "label": "Items",
+            "path": "packs/gfl5r-items",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-modules",
+            "label": "T-Doll Modules",
+            "path": "packs/gfl5r-modules",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-vehicles",
+            "label": "Vehicles",
+            "path": "packs/gfl5r-vehicles",
+            "type": "Item",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-npcs",
+            "label": "NPCs",
+            "path": "packs/gfl5r-npcs",
+            "type": "Actor",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-journal-conditions",
+            "label": "Conditions",
+            "path": "packs/gfl5r-journal-conditions",
+            "type": "JournalEntry",
+            "system": "gfl5r"
+        },
+        {
+            "name": "gfl5r-macros",
+            "label": "GFL5R Macros",
+            "path": "packs/gfl5r-macros",
+            "type": "Macro",
+            "system": "gfl5r"
+        }
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en-en.json"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}"/>
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name"/></h1>
+    </header>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- attributes --}}
+        <article class="attributes" data-group="primary" data-tab="description">
+            <label class="equipped checkbox">
+                <input type="checkbox" name="system.equipped" {{checked data.system.equipped}} />
+                {{ localize 'gfl5r.armors.equipped' }}
+            </label>
+            {{> 'systems/gfl5r/templates/items/item/item-value.html' }}
+            <fieldset class="attribute type">
+                <legend class="text-header">{{localize 'gfl5r.armors.type'}}</legend>
+                <label>
+                    {{localize 'gfl5r.armors.physical'}}
+                    <input class="select-on-focus" type="number" name="system.protection" value="{{data.system.protection}}" data-dtype="Number" min="0" placeholder="0"/>
+                </label>
+                <label>
+                    {{localize 'gfl5r.armors.supernatural'}}
+                    <input class="select-on-focus" type="number" name="system.signature" value="{{data.system.signature}}" data-dtype="Number" min="0" placeholder="0"/>
+                </label>
+            </fieldset>
+        </article>
+        <article class="properties" data-group="primary" data-tab="properties">
+            {{> 'systems/gfl5r/templates/items/property/properties.html' properties=data.propertiesList}}
+        </article>
+        {{> 'systems/gfl5r/templates/items/item/item-infos.html'}}
+    </section>
+</form>

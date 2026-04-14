@@ -1,0 +1,40 @@
+<div class="narrative-content">
+    <fieldset>
+        <legend class="text-block-header">{{localize 'gfl5r.sheets.narrative'}}</legend>
+        <label class="attribute-label">
+            {{localize 'gfl5r.npc.behaviors'}}
+            <textarea type="text" name="system.behaviors" {{^if data.editable}}disabled{{/if}}>{{data.system.behaviors}}</textarea>
+        </label>
+        <label class="attribute-label">
+            {{localize 'gfl5r.npc.perk'}}
+            <textarea type="text" name="system.perk" {{^if data.editable}}disabled{{/if}}>{{data.system.perk}}</textarea>
+        </label>
+    </fieldset>
+</div>
+<div class="narrative-list">
+    <fieldset>
+        <legend class="text-block-header">
+            {{localize 'gfl5r.narrative.title'}}
+            {{#if data.editable}}
+            <a data-item-type="narrative" class="item-add" title="{{localize 'gfl5r.global.add'}}"><i class="fas fa-plus"></i></a>
+            {{/if}}
+        </legend>
+        <ul class="item-list">
+            {{#each actor.items as |item id|}}
+                {{#ifCond item.type '==' 'narrative'}}
+                    {{> 'systems/gfl5r/templates/items/peculiarity/peculiarity-entry.html' peculiarity=item id=id editable=../data.editable}}
+                {{/ifCond}}
+            {{/each}}
+        </ul>
+    </fieldset>
+</div>
+<div class="narrative-fluff">
+    <fieldset class="narrative-description">
+        <legend class="text-block-header">{{localize 'gfl5r.sheets.description' }}</legend>
+        {{editor data.enrichedHtml.description target="system.description" button=true editable=options.editable engine="prosemirror" collaborate=false}}
+    </fieldset>
+    <fieldset class="narrative-note">
+        <legend class="text-block-header">{{localize 'gfl5r.sheets.notes' }}</legend>
+        {{editor data.enrichedHtml.notes target="system.notes" button=true editable=options.editable engine="prosemirror" collaborate=false}}
+    </fieldset>
+</div>

@@ -1,0 +1,98 @@
+/** GFL5R Color Palette — Dark Military Sci-Fi **/
+
+// -- Core palette (matches webapp)
+$bg-primary:       #060a12;
+$bg-secondary:     #0c1420;
+$bg-panel:         #0d1525;
+$bg-panel-alt:     #111b2e;
+$bg-hover:         #152238;
+
+$yellow:           #FFE135;
+$yellow-dim:       #8a7200;
+$yellow-glow:      rgba(255, 225, 53, 0.15);
+$yellow-glow-strong: rgba(255, 225, 53, 0.35);
+$dandelion:        #FFC107;
+$amber:            #ff9100;
+$amber-dim:        #b36500;
+$red:              #ff3d3d;
+$dark-red:         #b32d2d;
+$green:            #39ff14;
+$cyan:             #00bfff;
+$purple:           #b388ff;
+
+$white:            #e0e8f0;
+$white-dim:        #8899aa;
+$white-dimmer:     #556677;
+$white-light:      rgba(224, 232, 240, 0.6);
+$black:            #000000;
+$black-light:      rgba(0, 0, 0, 0.5);
+$red-light:        #ff6b6b;
+
+$border-color:     rgba(255, 225, 53, 0.15);
+$border-glow:      rgba(255, 225, 53, 0.3);
+
+// -- Semantic aliases
+$gfl5r-title:      $yellow;
+$gfl5r-bold:       $white;
+$gfl5r-label:      $white-dim;
+$gfl5r-label-light: rgba(136, 153, 170, 0.25);
+$gfl5r-red:        $red;
+$gfl5r-white:      rgba(224, 232, 240, 0.5);
+$gfl5r-white-light: rgba(224, 232, 240, 0.25);
+$gfl5r-black:      rgba(0, 0, 0, 0.5);
+$gfl5r-black-light: rgba(0, 0, 0, 0.25);
+$gfl5r-border-sidebar: $border-color;
+
+// List alternation
+$gfl5r-odd:        rgba(255, 225, 53, 0.06);
+$gfl5r-even:       rgba(255, 225, 53, 0.03);
+
+// Gradients
+$gfl5r-linear-gradient-first:       $bg-panel;
+$gfl5r-linear-gradient-first-dark:  $bg-primary;
+$gfl5r-linear-gradient-second:      $bg-panel-alt;
+$gfl5r-linear-gradient-second-dark: $bg-secondary;
+$gfl5r-linear-gradient-third:       $bg-hover;
+$gfl5r-linear-gradient-third-dark:  $bg-panel;
+
+// Chat colors
+$gfl5r-chat-color:        rgba(224, 232, 240, 0.15);
+$gfl5r-chat-color-roll:   rgba(255, 225, 53, 0.25);
+$gfl5r-chat-color-blind:  transparent;
+$gfl5r-chat-color-whisper: rgba(179, 136, 255, 0.25);
+
+// Misc
+$gfl5r-selection-circle-color: $yellow-dim;
+
+// -- Approaches
+$gfl5r-power:       $red;          // aggressive, forceful
+$gfl5r-precision:   $green;        // precise, controlled
+$gfl5r-swiftness:   $cyan;         // fast, reactive
+$gfl5r-resilience:  $yellow;       // sturdy, enduring
+$gfl5r-fortune:     $purple;       // mystical, trusting
+
+// -- Technique types
+$gfl5r-combat:              $red;
+$gfl5r-command:             $dandelion;
+$gfl5r-conditioning:        $green;
+$gfl5r-electronic-warfare:  $cyan;
+$gfl5r-remolding:           $purple;
+$gfl5r-science:             #64b5f6;
+$gfl5r-social:              $amber;
+$gfl5r-street:              $white-dim;
+$gfl5r-vehicle:             #78909c;
+
+// -- Skill group colors
+$gfl5r-combat-skills:    $red;
+$gfl5r-fieldcraft-skills: $green;
+$gfl5r-technical-skills:  $cyan;
+$gfl5r-social-skills:     $amber;
+
+// -- Legacy L5R element aliases (mapped to GFL5R approaches)
+$gfl5r-earth:      $gfl5r-resilience;
+$gfl5r-void:       $gfl5r-precision;
+$gfl5r-void-light: rgba($gfl5r-precision, 0.6);
+$gfl5r-maho:       $red;
+
+// Dice
+$red-dice: $red;

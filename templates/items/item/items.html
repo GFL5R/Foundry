@@ -1,0 +1,15 @@
+{{#each data.splitItemsList as |cat type|}}
+    <div class="inventory-category">
+        <h3 class="gfl-panel__label inventory-category__header toggle-on-click" data-toggle="inventory-item-list-{{type}}">
+            {{localizeInventoryCategory type}} ({{cat.length}})
+            {{#if ../data.editable}}
+                <a data-item-type="{{type}}" class="item-control item-add gfl-panel__add" title="{{localize 'gfl5r.global.add'}}"><i class="fas fa-plus"></i></a>
+            {{/if}}
+        </h3>
+        <ul class="item-list inventory-item-list-{{type}} {{#ifCond ../data.storeInfos 'includes' (concat 'inventory-item-list-' type)}}toggle-hidden{{/ifCond}}">
+            {{#each cat as |item id|}}
+                {{> 'systems/gfl5r/templates/items/item/item-entry.html' item=item id=id editable=../../options.editable soft_locked=../../data.system.soft_locked}}
+            {{/each}}
+        </ul>
+    </div>
+{{/each}}

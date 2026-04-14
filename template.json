@@ -1,0 +1,341 @@
+{
+    "Actor": {
+        "types": ["character", "npc"],
+        "templates": {
+            "identity": {
+                "identity": {
+                    "characterType": "human",
+                    "age": "",
+                    "nationality": "",
+                    "background": "",
+                    "frame": "",
+                    "manufacturer": "",
+                    "model": "",
+                    "name_origin": ""
+                }
+            },
+            "approaches": {
+                "approaches": {
+                    "power": 1,
+                    "precision": 1,
+                    "swiftness": 1,
+                    "resilience": 1,
+                    "fortune": 1
+                }
+            },
+            "social": {
+                "social": {
+                    "humanity": 50,
+                    "fame": 40,
+                    "status": 30,
+                    "stress_tell": "",
+                    "view_of_dolls": ""
+                }
+            },
+            "skills": {
+                "skills": {
+                    "blades": 0,
+                    "exotic_weapons": 0,
+                    "explosives": 0,
+                    "firearms": 0,
+                    "hand_to_hand": 0,
+                    "tactics": 0,
+                    "conditioning": 0,
+                    "resolve": 0,
+                    "crafting": 0,
+                    "insight": 0,
+                    "stealth": 0,
+                    "survival": 0,
+                    "computers": 0,
+                    "mechanics": 0,
+                    "medicine": 0,
+                    "piloting": 0,
+                    "science": 0,
+                    "subterfuge": 0,
+                    "arts": 0,
+                    "command": 0,
+                    "culture": 0,
+                    "deception": 0,
+                    "negotiation": 0,
+                    "performance": 0
+                },
+                "skills_free": {
+                    "blades": 0,
+                    "exotic_weapons": 0,
+                    "explosives": 0,
+                    "firearms": 0,
+                    "hand_to_hand": 0,
+                    "tactics": 0,
+                    "conditioning": 0,
+                    "resolve": 0,
+                    "crafting": 0,
+                    "insight": 0,
+                    "stealth": 0,
+                    "survival": 0,
+                    "computers": 0,
+                    "mechanics": 0,
+                    "medicine": 0,
+                    "piloting": 0,
+                    "science": 0,
+                    "subterfuge": 0,
+                    "arts": 0,
+                    "command": 0,
+                    "culture": 0,
+                    "deception": 0,
+                    "negotiation": 0,
+                    "performance": 0
+                }
+            },
+            "conflict": {
+                "endurance": 0,
+                "composure": 0,
+                "focus": 0,
+                "vigilance": 0,
+                "fortune_points": {
+                    "max": 0,
+                    "value": 0
+                },
+                "fatigue": {
+                    "max": 0,
+                    "value": 0
+                },
+                "strife": {
+                    "max": 0,
+                    "value": 0
+                },
+                "heat": 0,
+                "stance": "power",
+                "prepared": true
+            },
+            "harm": {
+                "wounded": {
+                    "power": null,
+                    "precision": null,
+                    "swiftness": null,
+                    "resilience": null,
+                    "fortune": null
+                },
+                "elid_stage": 0,
+                "parapluie_stage": 0,
+                "collapse": {
+                    "max": 0,
+                    "value": 0
+                }
+            },
+            "ew": {
+                "ew_rating": 0,
+                "security_rating": 0
+            },
+            "advancement": {
+                "xp_total": 0,
+                "xp_spent": 0,
+                "xp_saved": 0
+            },
+            "disciplines": {
+                "disciplines": {
+                    "slot1": {
+                        "disciplineId": null,
+                        "perkId": null,
+                        "capstoneId": null,
+                        "unlockCost": 0,
+                        "xpSpent": 0,
+                        "currentRank": 1,
+                        "ranksCompleted": 0,
+                        "techniquesLearned": []
+                    },
+                    "slot2": {
+                        "disciplineId": null,
+                        "perkId": null,
+                        "capstoneId": null,
+                        "unlockCost": 0,
+                        "xpSpent": 0,
+                        "currentRank": 1,
+                        "ranksCompleted": 0,
+                        "techniquesLearned": []
+                    },
+                    "slot3": {
+                        "disciplineId": null,
+                        "perkId": null,
+                        "capstoneId": null,
+                        "unlockCost": 0,
+                        "xpSpent": 0,
+                        "currentRank": 1,
+                        "ranksCompleted": 0,
+                        "techniquesLearned": []
+                    },
+                    "slot4": {
+                        "disciplineId": null,
+                        "perkId": null,
+                        "capstoneId": null,
+                        "unlockCost": 0,
+                        "xpSpent": 0,
+                        "currentRank": 1,
+                        "ranksCompleted": 0,
+                        "techniquesLearned": []
+                    },
+                    "slot5": {
+                        "disciplineId": null,
+                        "perkId": null,
+                        "capstoneId": null,
+                        "unlockCost": 0,
+                        "xpSpent": 0,
+                        "currentRank": 1,
+                        "ranksCompleted": 0,
+                        "techniquesLearned": []
+                    }
+                }
+            },
+            "narrative": {
+                "notes": "",
+                "description": "",
+                "personal_goal": "",
+                "name_meaning": "",
+                "story_end": "",
+                "met_commander": ""
+            }
+        },
+        "character": {
+            "templates": [
+                "identity",
+                "approaches",
+                "social",
+                "skills",
+                "conflict",
+                "harm",
+                "ew",
+                "advancement",
+                "disciplines",
+                "narrative"
+            ],
+            "twelve_questions": null
+        },
+        "npc": {
+            "templates": [
+                "identity",
+                "approaches",
+                "social",
+                "conflict",
+                "harm",
+                "narrative"
+            ],
+            "type": "human",
+            "threat_level": "standard",
+            "skill_groups": {
+                "combat": 0,
+                "fieldcraft": 0,
+                "technical": 0,
+                "social": 0
+            },
+            "behaviors": "",
+            "perk": ""
+        }
+    },
+    "Item": {
+        "types": [
+            "technique",
+            "weaponry",
+            "armor",
+            "narrative",
+            "item",
+            "discipline",
+            "module",
+            "condition",
+            "vehicle"
+        ],
+        "templates": {
+            "basics": {
+                "source_reference": {
+                    "source": "",
+                    "page": 0
+                },
+                "flavor": "",
+                "description": ""
+            },
+            "advancement": {
+                "xp_cost": 3,
+                "rank_required": 1
+            }
+        },
+        "technique": {
+            "templates": ["basics", "advancement"],
+            "technique_type": "combat",
+            "approach": null,
+            "skill": null,
+            "activation": "passive",
+            "difficulty": 0
+        },
+        "weaponry": {
+            "templates": ["basics"],
+            "category": "HG",
+            "skill": "firearms",
+            "ideal_range": 2,
+            "damage": 0,
+            "deadliness": 0,
+            "grip": "1-Handed",
+            "threat": 0,
+            "signature": 0,
+            "qualities": [],
+            "price": 0,
+            "equipped": false,
+            "readied": false
+        },
+        "armor": {
+            "templates": ["basics"],
+            "weight": 0,
+            "signature": 0,
+            "protection": 0,
+            "price": 0,
+            "equipped": false
+        },
+        "narrative": {
+            "templates": ["basics"],
+            "narrative_type": "advantage",
+            "ring_bonus": null,
+            "tags": []
+        },
+        "item": {
+            "templates": ["basics"],
+            "quantity": 1,
+            "weight": 0,
+            "price": 0,
+            "rarity": "common",
+            "equipped": false
+        },
+        "discipline": {
+            "templates": ["basics"],
+            "associated_skills": [],
+            "perk": {
+                "name": "",
+                "flavor": "",
+                "description": ""
+            },
+            "capstone": {
+                "name": "",
+                "flavor": "",
+                "description": ""
+            },
+            "techniques": []
+        },
+        "module": {
+            "templates": ["basics"],
+            "module_type": "Frame Augmentation",
+            "cost": 0,
+            "approach": null,
+            "skill": null,
+            "modifies": {}
+        },
+        "condition": {
+            "templates": ["basics"],
+            "duration": "",
+            "removal_trigger": "",
+            "effects_markup": ""
+        },
+        "vehicle": {
+            "templates": ["basics"],
+            "armor_value": 0,
+            "damage_threshold": 0,
+            "current_damage": 0,
+            "passenger_capacity": 1
+        }
+    }
+}

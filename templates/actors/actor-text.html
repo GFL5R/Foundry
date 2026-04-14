@@ -1,0 +1,11 @@
+<div class="{{cssClass}}" data-actor-id="{{actor._id}}">
+    <header class="card-header">
+        <h2 class="item-name">
+            {{data.name}}
+        </h2>
+    </header>
+    <section class="sheet-body">
+        {{#if data.img}}<p><img src="{{data.img}}" title="{{data.name}}" /></p>{{/if}}
+        {{#if data.enrichedHtml.description}}<p>{{{data.enrichedHtml.description}}}</p>{{/if}}
+    </section>
+</div>

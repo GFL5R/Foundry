@@ -1,0 +1,35 @@
+<fieldset class="techniques-wrapper section-header flexrow">
+    <legend class="technique-controls">
+        {{localize 'gfl5r.techniques.title'}}
+    </legend>
+    {{!-- technique types --}}
+    <div class="checklist">
+        <i>{{localize 'gfl5r.techniques.type'}}</i>
+        {{#each data.techniquesList as |technique|}}
+        {{#ifCond ../data.editable '||' (lookup ../data.system.techniques technique.id)}}
+            <label>
+                <input type="checkbox" name="system.techniques.{{technique.id}}" {{checked (lookup ../data.system.techniques technique.id)}} {{^if ../data.editable}}disabled{{/if}} />
+                {{technique.label}}
+            </label>
+        {{/ifCond}}
+        {{/each}}
+    </div>
+    {{!-- technique list --}}
+    {{#each data.splitTechniquesList as |list technique|}}
+        <fieldset class="section-header flexrow">
+            <legend class="technique-controls">
+                <span class="technique-controls toggle-on-click" data-toggle="toggle-technique-category-{{technique}}">
+                    {{localize (localize 'gfl5r.techniques.{technique}' technique=technique)}}
+                </span>
+                {{#ifCond ../data.editable '&&' (lookup ../data.system.techniques technique)}}
+                    <a data-item-type="technique" class="technique-control item-add" data-tech-type="{{technique}}" title="{{localize 'gfl5r.global.add'}}"><i class="fas fa-plus"></i></a>
+                {{/ifCond}}
+            </legend>
+            <ul class="item-list toggle-technique-category-{{technique}} {{#ifCond ../data.storeInfos 'includes' (concat 'toggle-technique-category-' technique)}}toggle-hidden{{/ifCond}}">
+                {{#each list as |item id|}}
+                    {{> 'systems/gfl5r/templates/items/technique/technique-entry.html' technique=item editable=../../data.editable}}
+                {{/each}}
+            </ul>
+        </fieldset>
+    {{/each}}
+</fieldset>

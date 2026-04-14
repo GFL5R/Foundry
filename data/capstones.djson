@@ -1,0 +1,165 @@
+{
+  "Absolute Stealth": {
+    "flavor": "Most operators consider true invisibility impossible. The right combination of training and technology proves them wrong.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per game session, you may elect to become invisible for the rest of the scene. While concealed, you cannot be targeted by attacks or hostile actions and the TN for any check to hide or move stealthily is reduced by 2. However, you can still be affected by area of effect abilities and environmental hazards.</p>
+      <p>This effect ends if you make an attack or hostile action.</p>
+    """
+  },
+  "Professional Cleanup": {
+    "flavor": "A true professional leaves no witnesses. When the job requires absolute discretion, you can eliminate multiple targets with surgical precision, leaving no trace of your presence.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>As an Attack and Movement action, you may make a TN 4 Stealth (Swiftness) check targeting any number of minion NPCs at range 0-4.</p>
+      <p>If you succeed during a narrative scene, you silently eliminate all targets over the course of a few minutes. If you succeed during a conflict scene, at the end of each of your turns, you may silently eliminate one of these targets at range 0-2 (in addition to your other actions).</p>
+    """
+  },
+  "Born To Survive": {
+    "flavor": "You've been in tight spots before, and you know how to get out of them. When the odds are against you, you can push yourself to keep going, even when your body is screaming for you to stop.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene when you would suffer an amount of damage that would cause you to exceed your endurance threshold, you may instead suffer that amount of strife instead.</p>
+    """
+  },
+  "Elementary": {
+    "flavor": "When all the pieces come together, the truth becomes undeniable. Your analysis sharpens everyone around you.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per game session, when you succeed on a Science, Medicine, or Insight check, you may immediately share your analysis with all allies who can hear you. Each ally removes strife equal to your ranks in Science and adds 2 bonus approach dice to the next check they make this scene that is informed by the information you shared.</p>
+    """
+  },
+  "Irresistible Charisma": {
+    "flavor": "People see what they want to see. You've learned to weaponize that instinct, presenting exactly the right facade and punishing anyone foolish enough to think they've figured you out.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>When you perform a check targeting another character to which one of your advantages or disadvantages applies, you may choose another advantage or disadvantage that shares a type with it. Unless they have clear evidence to the contrary, the target comes to believe that you have the advantage or disadvantage you chose instead of the one you actually have.</p>
+      <p>If the target attempts to seize or exploit this false advantage or disadvantage, their check automatically counts as failing with a shortfall of 3. They suffer 3 strife and the <a href="#Conditions::condition-disoriented">Disoriented condition</a>.</p>
+    """
+  },
+  "Master Diplomat": {
+    "flavor": "When the room is on the verge of falling apart, you are the still point at the center. Your composure is contagious.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, you may spend 1 Fortune Point to reduce your strife to 0. When you do, each friendly character in the scene may reduce their strife by your Humanity divided by 10 (rounded down).</p>
+    """
+  },
+  "Battlefield Genius": {
+    "flavor": "Failure is not an option when lives depend on you. A true battlefield genius always finds another way through.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per game session during a skirmish or mass battle, after you fail a check, you may attempt the check again, treating the TN as 1.</p>
+    """
+  },
+  "Proxy": {
+    "flavor": "Every good netrunner keeps a sacrificial layer between themselves and the network's countermeasures. When the trace closes in, it finds a ghost, and you're already somewhere else.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per game session, when your heat would reach 10 (Burned), you may instead reduce your heat to 5 and burn your proxy. The network's security traces the intrusion to the proxy rather than to you, and you remain connected. The proxy is destroyed and must be replaced before this ability can be used again.</p>
+    """
+  },
+  "Unstoppable Force": {
+    "flavor": "When the rage takes hold, every strike becomes a force of nature. Your fists break through any defense as if it weren't there.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per round, when performing an Attack action check while Enraged, you may spend 1 Fortune Point to alter each kept die containing (su) to a result containing (ex).</p>
+    """
+  },
+  "Emergency Shutdown": {
+    "flavor": "Offense finds one way in. Defense has to cover all of them. You've covered all of them.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per game session, when a network you are actively defending would be compromised, you may spend 1 Fortune Point to trigger an emergency shutdown, immediately severing all connections and leaving the network offline for the rest of the scene.</p>
+    """
+  },
+  "Miracle Worker": {
+    "flavor": "You don't accept the assessment. You work the problem.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per game session, when a character would die from their injuries, you may spend 1 Fortune Point as a reaction and make a <strong>TN 5 Medicine (Resilience)</strong> check. On a success, the character is stabilized and does not die — they remain <a href="#Conditions::condition-incapacitated">Incapacitated</a> but are no longer in danger of death. The severity of their most severe critical strike is reduced by your bonus successes.</p>
+    """
+  },
+  "On the Fly": {
+    "flavor": "Given a week and a proper workshop, anyone could do this. You have neither, and it's still getting done.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, you may spend 1 Fortune Point to perform a downtime crafting or modification activity as a Support action. The result is functional but temporary, degrading or requiring proper maintenance after the scene ends. If you succeed with 2 or more bonus successes, the modification is permanent.</p>
+    """
+  },
+  // ── Weapon Discipline Capstones ─────────────────────────────────────
+  "Death's Whisper": {
+    "flavor": "A knife doesn't need power. It needs placement. One inch in the right direction and nothing else matters.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, when you hit a target with a knife attack, you may spend 1 Fortune Point. Instead of dealing normal damage, the attack becomes a critical strike with severity equal to your weapon's deadliness plus your bonus successes on the attack.</p>
+    """
+  },
+  "Living Blade": {
+    "flavor": "A master swordsman doesn't block. They redirect. The blade goes where it was always going to go.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, while wielding a sword and a melee attack targeting you misses, you may immediately make a free Attack action against that attacker as a reaction. This does not count as your action for the round.</p>
+    """
+  },
+  "Deadeye": {
+    "flavor": "Anyone can point a gun. Fewer can put a round exactly where they want it, every time, under pressure.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, before making an Attack action with a pistol, you may declare a called shot. Choose one of the following effects. On a successful hit, the chosen effect triggers in addition to normal damage:</p>
+      <ul>
+        <li><strong>Disarm:</strong> The target drops one item they are holding.</li>
+        <li><strong>Cripple:</strong> The target suffers <a href="#Conditions::wounded">Lightly Wounded</a> in a chosen Approach.</li>
+        <li><strong>Disable:</strong> One piece of equipment on the target is rendered inoperable until repaired.</li>
+      </ul>
+    """
+  },
+  "Bullet Storm": {
+    "flavor": "Trigger discipline is a virtue. Knowing when to throw it out the window is a skill.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>When you succeed on an Attack action with an SMG, you may spend 1 Fortune Point to immediately make a second Attack action against any target within range 2 as a free action.</p>
+    """
+  },
+  "Thunderclap": {
+    "flavor": "It's not the shot that breaks them. It's the sound, the smoke, and the thing that used to be standing next to them.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, when you kill a target with a shotgun, every other character within range 1 of that target must make a TN 3 Resolve (Resilience) check or become Frightened of you until the end of the scene.</p>
+    """
+  },
+  "Lead Rain": {
+    "flavor": "The best weapon is the right weapon. With enough time and the right parts, yours is always both.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>During a downtime activity, if you have reasonable access to supplies, you may apply one weapon quality to your assault rifle that it does not already have. If you use this ability again, the new quality replaces the previous one.</p>
+    """
+  },
+  "Stopping Power": {
+    "flavor": "Cover is a suggestion. At this caliber, the wall is just something that slows the round down slightly.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Your battle rifle attacks ignore all TN bonuses and damage reduction granted by cover. If your attack kills its target, any excess damage is applied to the nearest target directly behind them at range 0-1.</p>
+    """
+  },
+  "One Shot": {
+    "flavor": "You don't fire until you're certain. And when you're certain, you don't miss.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, before making an Attack action with a sniper rifle, you may declare One Shot. Increase the TN of the attack by 2. If you still hit, the attack inflicts a critical strike of severity 5 + your weapon's deadliness + your bonus successes instead of dealing normal damage.</p>
+    """
+  },
+  "Wall of Lead": {
+    "flavor": "Suppression isn't about hitting them. It's about making them very aware that you could.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>When you make an Attack action with a machine gun, you may spend (op) to increase the attack's damage as though they were additional bonus successes, up to a maximum equal to your ranks in this discipline.</p>
+    """
+  },
+  "Unbreakable": {
+    "flavor": "They threw everything they had at you. It wasn't enough. When you stand between your team and the enemy, you become an immovable object.",
+    "description": """
+      <h3>Effect:</h3>
+      <p>Once per scene, when you would suffer damage from an attack while wielding a shield, you may spend 1 Fortune Point to reduce that damage to 0. Additionally, until the end of your next turn, you cannot be moved, knocked prone, or forced to relinquish your grip on your shield by any means.</p>
+    """
+  }
+}

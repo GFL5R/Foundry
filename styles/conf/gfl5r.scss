@@ -1,0 +1,27 @@
+@layer system {
+/* Global */
+@import "../scss/colors";
+@import "../scss/global";
+@import "../scss/compatibility-modules";
+@import "../scss/fonts";
+@import "../scss/cursors";
+@import "../scss/ui";
+@import "../scss/global-appv2.scss";
+
+    .gfl5r {
+        @import "../scss/dices";
+        @import "../scss/gfl5r-global";
+        @import "../scss/dices-chat";
+        @import "../scss/sheets";
+        @import "../scss/npc";
+        @import "../scss/nav";
+        @import "../scss/approaches";
+        @import "../scss/skills";
+        @import "../scss/items";
+        @import "../scss/twenty-questions";
+        @import "../scss/twelve-questions";
+        @import "../scss/status";
+        @import "../scss/disciplines";
+        @import "../scss/tactical-grid";
+    }
+}

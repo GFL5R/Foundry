@@ -1,0 +1,157 @@
+<form class="gfl5r character-builder" autocomplete="off">
+    <div class="builder-content">
+        <h2>Character Creation</h2>
+
+        {{!-- Character Type Toggle --}}
+        <div class="form-group">
+            <label>{{localize 'gfl5r.identity.character_type'}}</label>
+            <div class="form-fields">
+                <select name="buildType">
+                    <option value="human" {{#if isHuman}}selected{{/if}}>{{localize 'gfl5r.identity.human'}}</option>
+                    <option value="t-doll" {{#if isTDoll}}selected{{/if}}>{{localize 'gfl5r.identity.t-doll'}}</option>
+                </select>
+            </div>
+        </div>
+
+        {{!-- Name --}}
+        <div class="form-group">
+            <label>Name</label>
+            <div class="form-fields">
+                <input type="text" name="name" value="{{actor.name}}" placeholder="Character name" />
+            </div>
+        </div>
+
+        {{#if isHuman}}
+        {{!-- HUMAN BUILD --}}
+        <div class="form-group">
+            <label>{{localize 'gfl5r.identity.nationality'}}</label>
+            <div class="form-fields">
+                <select name="human.nationality">
+                    <option value="">Choose...</option>
+                    {{#each nationalities}}
+                    <option value="{{this.key}}">{{this.label}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{localize 'gfl5r.identity.background'}}</label>
+            <div class="form-fields">
+                <select name="human.background">
+                    <option value="">Choose...</option>
+                    {{#each backgrounds}}
+                    <option value="{{this.key}}">{{this.label}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{localize 'gfl5r.social.view_of_dolls'}}</label>
+            <div class="form-fields">
+                <select name="human.viewOfDolls">
+                    <option value="favor">Partners (+5 Humanity)</option>
+                    <option value="tools">Tools (+1 Skill)</option>
+                </select>
+            </div>
+        </div>
+
+        {{else}}
+        {{!-- T-DOLL BUILD --}}
+        <div class="form-group">
+            <label>{{localize 'gfl5r.identity.frame'}}</label>
+            <div class="form-fields">
+                <select name="tdoll.frame">
+                    <option value="">Choose...</option>
+                    {{#each frames}}
+                    <option value="{{this.key}}">{{this.manufacturer}} {{this.model}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{localize 'gfl5r.identity.name_origin'}}</label>
+            <div class="form-fields">
+                <select name="tdoll.nameOrigin">
+                    <option value="human">Human Name (+5 Humanity)</option>
+                    <option value="callsign">Callsign (+5 Fame)</option>
+                    <option value="weapon">Weapon Designation (+1 Firearms, -5 Humanity)</option>
+                    <option value="weird">Weird Name (-5 Fame)</option>
+                </select>
+            </div>
+        </div>
+        {{/if}}
+
+        {{!-- Shared fields --}}
+        <div class="form-group">
+            <label>Discipline (UUID)</label>
+            <div class="form-fields">
+                <input type="text" class="cg-item-drop" data-drop-type="discipline" name="{{#if isHuman}}discipline{{else}}tdoll.discipline{{/if}}" placeholder="Drag a discipline here or paste UUID" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Starting Technique (UUID)</label>
+            <div class="form-fields">
+                <input type="text" class="cg-item-drop" data-drop-type="starting-technique" data-discipline-field="{{#if isHuman}}discipline{{else}}tdoll.discipline{{/if}}" name="{{#if isHuman}}startingTechnique{{else}}tdoll.startingTechnique{{/if}}" placeholder="Drag a rank 1 technique from this discipline here or paste UUID" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Advantage (UUID)</label>
+            <div class="form-fields">
+                <input type="text" name="advantage" placeholder="Drag an advantage here or paste UUID" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Disadvantage (UUID)</label>
+            <div class="form-fields">
+                <input type="text" name="disadvantage" placeholder="Drag a disadvantage here or paste UUID" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Passion (UUID)</label>
+            <div class="form-fields">
+                <input type="text" name="passion" placeholder="Drag a passion here or paste UUID" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Anxiety (UUID)</label>
+            <div class="form-fields">
+                <input type="text" name="anxiety" placeholder="Drag an anxiety here or paste UUID" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Personal Goal</label>
+            <div class="form-fields">
+                <input type="text" name="goal" placeholder="What drives this character?" />
+            </div>
+        </div>
+
+        {{#if isHuman}}
+        <div class="form-group">
+            <label>Name Meaning</label>
+            <div class="form-fields">
+                <input type="text" name="nameMeaning" placeholder="Why this name?" />
+            </div>
+        </div>
+        {{/if}}
+
+        <div class="form-group">
+            <label>Story End</label>
+            <div class="form-fields">
+                <input type="text" name="storyEnd" placeholder="How does this story end?" />
+            </div>
+        </div>
+    </div>
+
+    <footer class="sheet-footer">
+        <button type="submit"><i class="fas fa-check"></i> Apply</button>
+    </footer>
+</form>

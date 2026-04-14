@@ -1,0 +1,47 @@
+{{!-- Initiative --}}
+<div class="gfl-panel initiative-panel">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.conflict.initiative.title'}}</span>
+        <a class="encounter prepared-control" data-id="{{data.type}}">
+            <i class="fa fas prepared-icon prepared-icon-{{data.system.prepared}} prepared-{{data.type}}" title="{{localize (localize 'gfl5r.conflict.initiative.prepared_{value}' value=data.system.prepared)}}"></i>
+        </a>
+    </div>
+    <div class="gfl-panel__body initiative-buttons">
+        <button class="initiative dice-picker" data-initiative="true" data-skill="sentiment">{{localize 'gfl5r.conflict.initiative.intrigue'}}</button>
+        <button class="initiative dice-picker" data-initiative="true" data-skill="meditation">{{localize 'gfl5r.conflict.initiative.duel'}}</button>
+        <button class="initiative dice-picker" data-initiative="true" data-skill="tactics">{{localize 'gfl5r.conflict.initiative.skirmish'}}</button>
+        <button class="initiative dice-picker" data-initiative="true" data-skill="command">{{localize 'gfl5r.conflict.initiative.mass_battle'}}</button>
+    </div>
+</div>
+
+{{!-- Stances --}}
+<div class="gfl-panel stances-panel">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">{{localize 'gfl5r.conflict.stance'}}</span>
+    </div>
+    <div class="gfl-panel__body stances-content">
+        <ul class="item-list">
+            {{#each data.system.approaches as |ringValue ringId|}}
+                {{> 'systems/gfl5r/templates/actors/character/stance.html' stance=../data.system.stance ringId=ringId}}
+            {{/each}}
+        </ul>
+        <fieldset class="stance-mechanics-box">
+            <legend class="section-header">{{localize 'gfl5r.conflict.stance'}}: {{localizeApproach data.system.stance}}</legend>
+            <p>{{localizeStanceTip data.system.stance}}</p>
+        </fieldset>
+    </div>
+</div>
+
+{{!-- Weapons & Armor --}}
+<div class="conflict-gear">
+    {{> 'systems/gfl5r/templates/items/weapon/weapons.html' }}
+    {{> 'systems/gfl5r/templates/items/armor/armors.html' }}
+</div>

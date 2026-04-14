@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+     width="512px" height="512px" viewBox="0 0 512 512" xml:space="preserve">
+<style type="text/css">
+	.perk-fill{fill:#FFE135;}
+</style>
+<!-- Five-pointed star (perk icon) -->
+<polygon class="perk-fill" points="256,48 310,192 462,192 338,288 370,432 256,350 142,432 174,288 50,192 202,192"/>
+</svg>

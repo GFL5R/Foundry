@@ -1,0 +1,30 @@
+<div class="{{cssClass}}" data-actor-id="{{actor._id}}" data-item-id="{{data._id}}">
+    <header class="card-header">
+        <h2 class="item-name"><img src="{{data.img}}" title="{{data.name}}" /> {{data.name}}</h2>
+    </header>
+    <section class="sheet-body">
+        <ul>
+            <li>
+                <strong>{{localize 'gfl5r.approaches.title'}}</strong> : {{localizeApproach data.system.approach}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.types'}}</strong> : {{localize (localize 'gfl5r.narrative.{type}' type=data.system.narrative_type)}}
+            </li>
+            <li>
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.advancements.spent'}}</strong> : {{data.system.xp_used}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.rank'}}</strong> : {{data.system.rank}}
+            </li>
+            <li>
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.types'}}</strong> : {{data.system.types}}
+            </li>
+        </ul>
+        
+        {{> 'systems/gfl5r/templates/items/item/item-text-partial-reference.html'}}
+    </section>
+</div>

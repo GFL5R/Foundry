@@ -1,0 +1,52 @@
+<div class="gfl5r filter-bar">
+
+    {{#if filtersToShow.rank}}
+    <div class="flexrow gfl5r rank-filter number-filter">
+        <label>{{localize 'gfl5r.compendium.filter.rank'}}:</label>
+        {{#each ranks}}
+        <a data-rank="{{this}}"
+           data-tooltip="{{localize 'gfl5r.compendium.filter.rank'}} {{this}}">{{this}}</a>
+        {{/each}}
+        <a data-clear style="display:none" data-tooltip="{{localize 'gfl5r.compendium.filter.clear'}}">×</a>
+    </div>
+    {{/if}}
+
+    {{#if filtersToShow.rarity}}
+    <div class="flexrow gfl5r rarity-filter number-filter">
+        <label>{{localize 'gfl5r.compendium.filter.rarity'}}:</label>
+        {{#each rarities}}
+        <a data-rarity="{{this}}"
+           data-tooltip="{{localize 'gfl5r.compendium.filter.rarity'}} {{this}}">{{this}}</a>
+        {{/each}}
+        <a data-clear style="display:none" data-tooltip="{{localize 'gfl5r.compendium.filter.clear'}}">×</a>
+    </div>
+    {{/if}}
+
+    {{#if filtersToShow.approach}}
+    <div class="flexrow gfl5r approach-filter">
+        <label>{{localize 'gfl5r.approaches.title'}}:</label>
+        {{#each rings}}
+        <i data-approach="{{this}}"
+           data-tooltip="{{localize (concat 'gfl5r.rings.' this)}}"
+           class="i_{{this}}"></i>
+        {{/each}}
+        <a data-clear style="display:none" data-tooltip="{{localize 'gfl5r.compendium.filter.clear'}}">×</a>
+    </div>
+    {{/if}}
+
+    {{#if filtersToShow.source}}
+    <div class="flexrow gfl5r source-filter">
+        <gfl5r-multi-select name="filter-sources" {{#if hideDisabledOptions}}hidedisabledoptions{{/if}}>
+            {{selectOptions sources localize=true}}
+        </gfl5r-multi-select>
+    </div>
+    {{#if showPlayerView}}
+                <button type="button" class="gm applyPlayerFilter"
+                        data-action="applyPlayerView"
+                        data-tooltip="{{localize 'gfl5r.multiselect.player_filter_tooltip'}}">
+                    {{localize 'gfl5r.multiselect.player_filter_label'}}
+                </button>
+            {{/if}}
+    {{/if}}
+
+</div>

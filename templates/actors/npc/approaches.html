@@ -1,0 +1,37 @@
+<ul class="approaches">
+    <li id="power" class="approach-row">
+        <i class="i_power dice-picker rollable" data-approach="earth"></i>
+        <label class="power {{#ifCond 'earth' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localizeApproach 'earth'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.earth" value="{{data.system.approaches.earth}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+    </li>
+    <li id="fortune" class="approach-row">
+        <i class="i_fortune dice-picker rollable" data-approach="air"></i>
+        <label class="fortune {{#ifCond 'air' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localizeApproach 'air'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.air" value="{{data.system.approaches.air}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+    </li>
+    <li id="swiftness" class="approach-row">
+        <i class="i_swiftness dice-picker rollable" data-approach="water"></i>
+        <label class="swiftness {{#ifCond 'water' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localizeApproach 'water'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.water" value="{{data.system.approaches.water}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+    </li>
+    <li id="precision" class="approach-row">
+        <i class="i_precision dice-picker rollable" data-approach="fire"></i>
+        <label class="precision {{#ifCond 'fire' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localizeApproach 'fire'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.fire" value="{{data.system.approaches.fire}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+    </li>
+    <li id="resilience" class="approach-row">
+        <i class="i_resilience dice-picker rollable" data-approach="void"></i>
+        <label class="resilience {{#ifCond 'void' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localizeApproach 'void'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.void" value="{{data.system.approaches.void}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+    </li>
+</ul>

@@ -1,0 +1,92 @@
+/** Approaches — clean card table layout **/
+
+.approaches {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+
+    .approach-row {
+        display: flex;
+        align-items: center;
+        padding: 0.35rem 0.5rem;
+        border-bottom: 1px solid $border-color;
+        gap: 0.5rem;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:nth-child(odd) {
+            background: $gfl5r-odd;
+        }
+        &:nth-child(even) {
+            background: $gfl5r-even;
+        }
+
+        // Approach icon
+        i {
+            flex: 0 0 1.5rem;
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 0.5rem;
+            cursor: pointer;
+
+            strong {
+                flex: 1;
+                font-family: $font-heading;
+                text-transform: uppercase;
+                letter-spacing: 0.05rem;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            &.stance-active strong {
+                text-decoration: underline 2px;
+            }
+        }
+
+        input {
+            width: 2.5rem;
+            height: 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid $border-color;
+            border-radius: 2px;
+            color: $white;
+        }
+    }
+
+    // Per-approach colors
+    #power {
+        i, label strong { color: $gfl5r-power; }
+        input { border-color: rgba($gfl5r-power, 0.4); }
+    }
+    #precision {
+        i, label strong { color: $gfl5r-precision; }
+        input { border-color: rgba($gfl5r-precision, 0.4); }
+    }
+    #swiftness {
+        i, label strong { color: $gfl5r-swiftness; }
+        input { border-color: rgba($gfl5r-swiftness, 0.4); }
+    }
+    #resilience {
+        i, label strong { color: $gfl5r-resilience; }
+        input { border-color: rgba($gfl5r-resilience, 0.4); }
+    }
+    #fortune {
+        i, label strong { color: $gfl5r-fortune; }
+        input { border-color: rgba($gfl5r-fortune, 0.4); }
+    }
+}

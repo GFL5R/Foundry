@@ -1,0 +1,41 @@
+<div class="{{cssClass}}" data-actor-id="{{actor._id}}" data-item-id="{{data._id}}">
+    <header class="card-header">
+        <h2 class="item-name"><img src="{{data.img}}" title="{{data.name}}" /> {{data.name}}</h2>
+    </header>
+    <section class="sheet-body">
+        <ul>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.sheathed'}}</strong> : {{localizeYesNo data.system.equipped}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.weapons.readied'}}</strong> : {{localizeYesNo data.system.readied}}
+            </li>
+            {{!--item-value--}}
+            <li>
+                <strong>{{localize 'gfl5r.sheets.quantity'}} </strong> : {{data.system.quantity}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.weight'}}</strong> : {{data.system.weight}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.rarity'}}</strong> : {{data.system.rarity}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.items.price'}}</strong> : {{data.system.price}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.armors.physical'}}</strong> : {{data.system.protection}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.armors.supernatural'}}</strong> : {{data.system.signature}}
+            </li>
+        </ul>
+        {{!--properties--}}
+        <p>
+            <strong>{{localize 'gfl5r.sheets.properties'}}</strong> :
+            {{#each data.system.properties as |property idx|}}{{#ifCond idx '>' 0}}, {{/ifCond}}{{property.name}}{{/each}}
+        </p>
+        
+        {{> 'systems/gfl5r/templates/items/item/item-text-partial-reference.html'}}
+    </section>
+</div>

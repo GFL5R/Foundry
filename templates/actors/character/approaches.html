@@ -1,0 +1,37 @@
+<ul class="approaches">
+    <li id="power" class="approach-row">
+        <i class="i_power dice-picker rollable" data-approach="power"></i>
+        <label class="power {{#ifCond 'power' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localize 'gfl5r.approaches.power'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.power" value="{{data.system.approaches.power}}" data-dtype="Number" min="1" max="9" placeholder="0" />
+        </label>
+    </li>
+    <li id="precision" class="approach-row">
+        <i class="i_precision dice-picker rollable" data-approach="precision"></i>
+        <label class="precision {{#ifCond 'precision' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localize 'gfl5r.approaches.precision'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.precision" value="{{data.system.approaches.precision}}" data-dtype="Number" min="1" max="9" placeholder="0" />
+        </label>
+    </li>
+    <li id="swiftness" class="approach-row">
+        <i class="i_swiftness dice-picker rollable" data-approach="swiftness"></i>
+        <label class="swiftness {{#ifCond 'swiftness' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localize 'gfl5r.approaches.swiftness'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.swiftness" value="{{data.system.approaches.swiftness}}" data-dtype="Number" min="1" max="9" placeholder="0" />
+        </label>
+    </li>
+    <li id="resilience" class="approach-row">
+        <i class="i_resilience dice-picker rollable" data-approach="resilience"></i>
+        <label class="resilience {{#ifCond 'resilience' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localize 'gfl5r.approaches.resilience'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.resilience" value="{{data.system.approaches.resilience}}" data-dtype="Number" min="1" max="9" placeholder="0" />
+        </label>
+    </li>
+    <li id="fortune" class="approach-row">
+        <i class="i_fortune dice-picker rollable" data-approach="fortune"></i>
+        <label class="fortune {{#ifCond 'fortune' '==' data.system.stance}}stance-active{{/ifCond}}">
+            <strong>{{localize 'gfl5r.approaches.fortune'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.approaches.fortune" value="{{data.system.approaches.fortune}}" data-dtype="Number" min="1" max="9" placeholder="0" />
+        </label>
+    </li>
+</ul>

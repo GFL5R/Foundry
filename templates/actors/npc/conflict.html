@@ -1,0 +1,24 @@
+<fieldset class="initiative initiative-wrapper">
+    <legend class="section-header">
+        {{localize 'gfl5r.conflict.initiative.title'}}
+        <a class="encounter prepared-control" data-id="{{data.type}}">
+            <i class="fa fas prepared-icon prepared-icon-{{data.system.prepared}} prepared-{{data.system.type}}" title="{{localize (localize 'gfl5r.conflict.initiative.prepared_{value}' value=data.system.prepared)}}"></i>
+        </a>
+    </legend>
+    <button class="initiative dice-picker" data-initiative="true" data-skill="sentiment">{{localize 'gfl5r.conflict.initiative.intrigue'}}</button>
+    <button class="initiative dice-picker" data-initiative="true" data-skill="meditation">{{localize 'gfl5r.conflict.initiative.duel'}}</button>
+    <button class="initiative dice-picker" data-initiative="true" data-skill="tactics">{{localize 'gfl5r.conflict.initiative.skirmish'}}</button>
+    <button class="initiative dice-picker" data-initiative="true" data-skill="command">{{localize 'gfl5r.conflict.initiative.mass_battle'}}</button>
+</fieldset>
+<fieldset class="stances-content flexrow">
+    <legend class="section-header">{{localize 'gfl5r.conflict.stance'}}</legend>
+    <ul class="item-list">
+        {{#each data.system.approaches as |ringValue ringId|}}
+            {{> 'systems/gfl5r/templates/actors/character/stance.html' stance=../data.system.stance ringId=ringId}}
+        {{/each}}
+    </ul>
+    <fieldset class="stance-mechanics-box">
+        <legend class="section-header">{{localize 'gfl5r.conflict.stance'}}: {{localizeApproach data.system.stance}}</legend>
+        <p>{{localizeStanceTip data.system.stance}}</p>
+    </fieldset>
+</fieldset>

@@ -1,0 +1,603 @@
+/* T-Doll Modules data: parsed by docstring-json into webapp/data/modules.json */
+{
+  "Power Augmentation": {
+    type: "Approach Augmentation",
+    cost: 12000,
+    skill: null,
+    approach: "Power",
+    flavor: """
+      <p>Structural supports and actuators are strengthened, allowing the frame to safely handle greater force output during attacks.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Power by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Precision Augmentation": {
+    type: "Approach Augmentation",
+    cost: 12000,
+    skill: null,
+    approach: "Precision",
+    flavor: """
+      <p>Micro-adjustments to the frame's balance points and targeting hardware reduce mechanical drift, ensuring more consistent alignment during fine motor tasks.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Precision by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Swiftness Augmentation": {
+    type: "Approach Augmentation",
+    cost: 12000,
+    skill: null,
+    approach: "Swiftness",
+    flavor: """
+      <p>Nonessential mass is removed and motion systems are refined, allowing faster transitions between movement states without compromising frame integrity.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Swiftness by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Resilience Augmentation": {
+    type: "Approach Augmentation",
+    cost: 12000,
+    skill: null,
+    approach: "Resilience",
+    flavor: """
+      <p>Critical components are shielded with improved materials and impact-absorbing mounts, increasing the frame's tolerance to sustained damage and stress.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Resilience by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Fortune Augmentation": {
+    type: "Approach Augmentation",
+    cost: 12000,
+    skill: null,
+    approach: "Fortune",
+    flavor: """
+      <p>The frame is retrofitted with predictive microcontrollers, subtly adjusting timing and execution order to increase the chance that actions resolve favorably under uncertain conditions.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Fortune by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Blades Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Blades",
+    approach: null,
+    flavor: """
+      <p>Rapid implantation of close-quarters engagement heuristics for edged weapons. The Neural Cloud is loaded with optimized distance control, strike sequencing, and pressure-maintenance routines derived from recorded combat data.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Blades by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Exotic Weapons Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Exotic Weapons",
+    approach: null,
+    flavor: """
+      <p>Specialized handling schemas for unconventional weapon systems are integrated into the Neural Cloud. This training focuses on safe operation, activation timing, and compensating for nonstandard balance or recoil profiles.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Exotic Weapons by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Explosives Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Explosives",
+    approach: null,
+    flavor: """
+      <p>The Neural Cloud receives calibrated models for blast radius prediction, fuse timing, and placement logic. This allows precise use of explosive devices with reduced setup errors and improved battlefield shaping.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Explosives by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Firearms Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Firearms",
+    approach: null,
+    flavor: """
+      <p>Marksmanship routines are reinforced through recoil compensation patterns, reload sequencing, and threat-priority targeting logic. Performance remains consistent even under stress or degraded conditions.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Firearms by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Hand-To-Hand Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Hand-To-Hand",
+    approach: null,
+    flavor: """
+      <p>Close-combat movement libraries and grappling response trees are implanted. The Doll gains refined control over balance, leverage, and counters in unarmed engagements.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Hand-To-Hand by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Tactics Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Tactics",
+    approach: null,
+    flavor: """
+      <p>Real-time battlefield reasoning models are reinforced. This training improves threat evaluation, squad positioning logic, and adaptive planning when conditions shift unexpectedly.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Tactics by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Conditioning Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Conditioning",
+    approach: null,
+    flavor: """
+      <p>Physical performance limiters are recalibrated in the Neural Cloud. This training optimizes stamina management, movement efficiency, and exertion pacing in demanding environments.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Conditioning by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Resolve Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Resolve",
+    approach: null,
+    flavor: """
+      <p>Mental stability frameworks are strengthened through stress-response conditioning. This improves resistance to panic states, coercive influence, and hostile signal intrusion.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Resolve by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Crafting Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Crafting",
+    approach: null,
+    flavor: """
+      <p>Procedural knowledge for repair, modification, and improvisation is directly implanted. The Doll gains immediate familiarity with tool use, material substitution, and field-expedient construction.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Crafting by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Insight Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Insight",
+    approach: null,
+    flavor: """
+      <p>Behavioral analysis patterns are reinforced, improving recognition of subtle changes in tone, posture, and intent. This training enhances interpersonal awareness without requiring extended observation.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Insight by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Stealth Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Stealth",
+    approach: null,
+    flavor: """
+      <p>Movement optimization and concealment heuristics are refined. The Neural Cloud emphasizes noise reduction, exposure timing, and exploitation of environmental blind spots.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Stealth by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Survival Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Survival",
+    approach: null,
+    flavor: """
+      <p>Environmental adaptation models are loaded, covering hazard recognition, scavenging priorities, and shelter logic. This training improves decision-making in unstable or resource-poor regions.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Survival by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Computers Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Computers",
+    approach: null,
+    flavor: """
+      <p>Digital intrusion and system navigation routines are implanted. This includes encryption handling, access escalation logic, and rapid interface comprehension across unfamiliar platforms.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Computers by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Mechanics Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Mechanics",
+    approach: null,
+    flavor: """
+      <p>Mechanical system schematics and repair workflows are integrated. The Doll gains immediate competence in disassembly, calibration, and restoration of physical hardware.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Mechanics by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Medicine Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Medicine",
+    approach: null,
+    flavor: """
+      <p>Medical assessment and treatment protocols are reinforced. This training focuses on injury prioritization, stabilization techniques, and efficient use of limited medical supplies.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Medicine by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Piloting Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Piloting",
+    approach: null,
+    flavor: """
+      <p>Vehicle control models and emergency response routines are loaded into the Neural Cloud. This improves handling precision, reaction timing, and situational awareness during operation.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Piloting by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Science Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Science",
+    approach: null,
+    flavor: """
+      <p>Analytical frameworks for experimentation and data interpretation are implanted. This training improves hazard analysis, material identification, and sensor data evaluation.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Science by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Subterfuge Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Subterfuge",
+    approach: null,
+    flavor: """
+      <p>Covert mechanical manipulation routines are reinforced. The Doll gains refined capability in lock interaction, trap handling, and discreet system interference.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Subterfuge by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Arts Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Arts",
+    approach: null,
+    flavor: """
+      <p>Creative process frameworks and stylistic references are implanted. This training improves the Doll's ability to produce, analyze, and interpret artistic works.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Arts by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Command Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Command",
+    approach: null,
+    flavor: """
+      <p>Authority projection and directive framing routines are reinforced. This training enhances compliance generation and unit cohesion under pressure.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Command by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Culture Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Culture",
+    approach: null,
+    flavor: """
+      <p>Linguistic, historical, and social-context datasets are integrated. This allows rapid adaptation to unfamiliar communities and interpretation of symbolic behavior.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Culture by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Deception Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Deception",
+    approach: null,
+    flavor: """
+      <p>Misleading communication models are implanted. This training improves consistency in false narratives, controlled information release, and signal manipulation.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Deception by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Negotiation Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Negotiation",
+    approach: null,
+    flavor: """
+      <p>Dialogue optimization frameworks are reinforced. This training improves bargaining position assessment, concession timing, and conflict de-escalation strategies.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Negotiation by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Performance Flash Training": {
+    type: "Flash Training",
+    cost: 6000,
+    skill: "Performance",
+    approach: null,
+    flavor: """
+      <p>Persona maintenance and behavioral consistency routines are implanted. This allows the Doll to sustain convincing roles, disguises, or public-facing presentations without error.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Performance by 1 rank.</li>
+      </ul>
+    """
+  },
+  "Electronic Warfare Suite": {
+    type: "EW Augmentation",
+    cost: 9000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Dedicated signal processing hardware and an expanded exploit library are integrated directly into the frame's Neural Cloud interface, tuning its offensive and support capabilities for active network operations.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases <a href="#Electronic Warfare::ew-rating">EW Rating</a> by 1.</li>
+      </ul>
+    """
+  },
+  "Hardened Encryption Module": {
+    type: "EW Augmentation",
+    cost: 9000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Advanced encryption protocols and intrusion-detection countermeasures are layered into the frame's network stack, hardening it against unauthorized access and signal exploitation.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases <a href="#Electronic Warfare::security-rating">Security Rating</a> by 1, raising the TN for hostile EW actions targeting her systems.</li>
+      </ul>
+    """
+  },
+  "Vigilance Enhancer": {
+    type: "Frame Augmentation",
+    cost: 10000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Sensor arrays are recalibrated and expanded, sharpening passive threat detection across all active input channels. Peripheral awareness improves, reducing the gap between stimulus and recognition.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Vigilance by 1.</li>
+      </ul>
+    """
+  },
+  "Focus Amplifier": {
+    type: "Frame Augmentation",
+    cost: 10000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Sustained-task processing is restructured to reduce interrupt latency and prioritize deep execution states. The frame maintains concentrated attention longer before fatigue-driven degradation sets in.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases Focus by 1.</li>
+      </ul>
+    """
+  },
+  "Subdermal Ballistic Material": {
+    type: "Frame Augmentation",
+    cost: 15000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Layers of impact-resistant composite are implanted beneath the outer chassis shell. The addition is invisible from the outside, but meaningfully increases the force required to breach the frame.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Increases your <a href="#Weapons & Armor::armor">armor value</a> by 1. This bonus stacks with any equipped armor.</li>
+      </ul>
+    """
+  },
+  "Radiation Shielding Module": {
+    type: "Frame Augmentation",
+    cost: 12000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Lead-composite shielding and neural isolation systems are integrated into the frame's internal cavity, reducing the rate at which collapse radiation accumulates in the Doll's systems during extended field operations in contaminated zones.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Reduces your effective <a href="#Collapse Radiation::gaining-collapse-by-zone">Collapse Zone</a> exposure tier by 1 for all mechanical purposes. This cannot reduce your exposure below 0.</li>
+      </ul>
+    """
+  },
+  "Olfactory Unit": {
+    type: "Frame Augmentation",
+    cost: 6000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>A compact scent-detection array is installed, granting the frame a functional sense of smell. This allows the Doll to perceive and react to olfactory stimuli in ways that were previously impossible.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>You may take <a href="#Passions">Passions</a> related to food, drink, scent, or taste. Without this unit, such Passions are unavailable to T-Dolls.</li>
+      </ul>
+    """
+  },
+  "Locomotive Booster": {
+    type: "Frame Augmentation",
+    cost: 20000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>The hip actuators and thrust-distribution systems are rebuilt for rapid lateral repositioning. Free movement feels almost effortless, until the increased power draw makes itself known.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>When you take a free movement action, you may move 2 range bands instead of 1.</li>
+      </ul>
+    """
+  },
+  "Remolding Unit": {
+    type: "Remolding",
+    cost: 60000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Remolding is a highly experimental tech that allows the user to harness ambient collapse radiation to affect reality. Unpredictable and dangerous, these modules are the domain of those willing to risk everything for a chance at power beyond imagination.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Allows you to use <a href="#techniques-remolding">Remolding techniques</a>.</li>
+      </ul>
+    """
+  },
+  "Overclocking Unit": {
+    type: "Frame Augmentation",
+    cost: 9000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Core systems are overclocked, pushing the frame beyond its original limits, but also increasing the risk of critical failure.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>You may take one additional advantage from the list of advantages at the cost of one additional disadvantage.</li>
+      </ul>
+    """
+  },
+  "Trauma Buffer": {
+    type: "Frame Augmentation",
+    cost: 18000,
+    skill: null,
+    approach: null,
+    flavor: """
+      <p>Dense composite layers and reactive hydraulic dampeners are fitted across the frame's most vulnerable structural junctions. The result is a chassis that absorbs the worst of any impact before it reaches the systems underneath.</p>
+    """,
+    description: """
+      <h3>Effects</h3>
+      <ul>
+        <li>Whenever you suffer a critical strike, reduce its severity by 2 before applying any other reductions.</li>
+      </ul>
+    """
+  }
+}

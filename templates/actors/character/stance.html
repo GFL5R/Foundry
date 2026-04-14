@@ -1,0 +1,9 @@
+<li class="stance-content">
+    <label class="stance-title {{ringId}}">
+        {{localizeApproach ringId}}
+        <input id="stance_{{ringId}}" type="radio" name="system.stance" value="{{ringId}}" {{radioChecked ringId stance}}/>
+    </label>
+    {{#ifCond ringId '==' stance}}
+        <span class="stance-active" aria-hidden="true"></span>
+    {{/ifCond}}
+</li>

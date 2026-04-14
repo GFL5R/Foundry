@@ -1,0 +1,17 @@
+<article class="tab infos active" data-group="primary" data-tab="infos">
+    <fieldset>
+        <legend class="text-block-header">{{localize 'gfl5r.sheets.description'}}</legend>
+        {{editor data.enrichedHtml.description target="system.description" button=true owner=owner editable=editable engine="prosemirror" collaborate=false}}
+    </fieldset>
+    <label class="reference">
+        {{localize 'gfl5r.sheets.source_reference.reference'}}
+        <input type="text" name="system.source_reference.source" value="{{data.system.source_reference.source}}" list="source_books" />
+        <datalist id="source_books">
+            {{#each source_references as |source|}}
+                <option>{{source}}</option>
+            {{/each}}
+        </datalist>
+        {{localize 'gfl5r.sheets.source_reference.page_abbreviation'}}
+        <input type="number" name="system.source_reference.page" value="{{data.system.source_reference.page}}" />
+    </label>
+</article>

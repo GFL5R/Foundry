@@ -1,0 +1,12 @@
+<div class="{{cssClass}}" data-actor-id="{{actor._id}}" data-item-id="{{data._id}}">
+    <header class="card-header">
+        <h2 class="item-name"><img src="{{data.img}}" title="{{data.name}}" /> {{data.name}}</h2>
+    </header>
+    <section class="sheet-body">
+        {{#if data.enrichedHtml.flavor}}
+        <div class="description">{{{data.enrichedHtml.flavor}}}</div>
+        {{else}}
+        <p><em>{{localize 'gfl5r.sheets.description'}} {{localize 'gfl5r.global.none'}}</em></p>
+        {{/if}}
+    </section>
+</div>

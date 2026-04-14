@@ -1,0 +1,34 @@
+<li class="skill-card {{#if skill.freeRank}}skill-card--has-free{{/if}}" data-skill-id="{{skillId}}" data-category-id="{{categoryId}}">
+    <div class="skill-card__header">
+        <span class="skill-card__title dice-picker rollable" data-skill="{{skillId}}">{{localizeSkill categoryId skillId}}</span>
+    </div>
+    <div class="skill-card__body">
+        <button type="button"
+                class="skill-card__btn skill-card__btn--minus skill-rank-control"
+                data-skill="{{skillId}}"
+                data-mod="-1"
+                title="{{#if skill.canDecrement}}Refund {{skill.refundAmount}} XP{{else}}{{#if skill.freeRank}}Free starting rank — cannot reduce{{else}}Already at 0{{/if}}{{/if}}"
+                {{#unless data.editable}}disabled{{/unless}}
+                {{#unless skill.canDecrement}}disabled{{/unless}}>−</button>
+        <input
+            class="skill-card__value centered-input select-on-focus"
+            type="number"
+            name="system.skills.{{skillId}}"
+            value="{{skill.rank}}"
+            data-dtype="Number"
+            min="{{skill.freeRank}}"
+            max="9"
+            placeholder="0"
+            {{#unless data.editable}}disabled{{/unless}}
+        />
+        <button type="button"
+                class="skill-card__btn skill-card__btn--plus skill-rank-control"
+                data-skill="{{skillId}}"
+                data-mod="1"
+                title="Spend {{skill.nextCost}} XP"
+                {{#unless data.editable}}disabled{{/unless}}>+</button>
+    </div>
+    {{#if skill.freeRank}}
+    <div class="skill-card__free-badge" title="{{skill.freeRank}} free rank{{#ifCond skill.freeRank '>' 1}}s{{/ifCond}} from character creation">★{{skill.freeRank}}</div>
+    {{/if}}
+</li>

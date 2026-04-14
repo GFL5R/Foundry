@@ -1,0 +1,162 @@
+
+/* lists */
+ul,
+li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+// Approach Colors (legacy element classes kept for compatibility)
+.earth,
+.resilience {
+    color: $gfl5r-resilience;
+}
+.air,
+.fortune {
+    color: $gfl5r-fortune;
+}
+.water,
+.swiftness {
+    color: $gfl5r-swiftness;
+}
+.fire,
+.power {
+    color: $gfl5r-power;
+}
+.void,
+.precision {
+    color: $gfl5r-precision;
+}
+
+// -- Shared panel component (used across all tabs)
+.gfl-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid $border-color;
+    background: $bg-panel;
+    width: 100%;
+}
+
+.gfl-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 8px 20px;
+    background: $bg-panel-alt;
+    border-bottom: 1px solid $border-color;
+}
+
+.gfl-panel__label {
+    font-family: "Rajdhani", "Segoe UI", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $yellow;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.gfl-panel__body {
+    padding: 12px 20px;
+}
+
+.gfl-panel__add {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: $yellow;
+    cursor: pointer;
+    &:hover { color: $white; }
+}
+
+// inputs
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+textarea {
+    padding: 0.25rem;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid $border-color;
+    color: $white;
+    resize: vertical;
+    border-radius: 2px;
+    box-shadow: none;
+    &[disabled] {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 225, 53, 0.08);
+        color: $white;
+    }
+}
+select {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid $border-color;
+    color: $white;
+    border-radius: 2px;
+    padding: 0.25rem;
+}
+input[type="number"] {
+    text-align: center;
+}
+
+&.system-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    padding: .25rem;
+
+    > img {
+      height: 128px;
+      border: none;
+      object-fit: contain;
+    }
+
+    .system-info {
+      position: relative;
+      font-size: var(--font-size-16);
+      i {
+        padding-inline-start: 2px;
+        font-size: var(--font-size-12);
+      }
+    }
+}
+
+&.sidebar-info {
+    margin-bottom: -.5rem;
+
+    .system-badge { margin-top: .5rem; }
+
+    .notification-pip {
+      color: var(--color-text-accent);
+      font-size: var(--font-size-12);
+      top: 4px;
+      right: -14px;
+    }
+
+    ul.unlist {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        list-style: none;
+        clip-path: inset(0 0 0 2ch); // remove separator if on new line
+    }
+    ul.links {
+      gap: 0;
+      margin-top: 6px;
+      margin-left: 10%; // just to center the link list a little
+
+      li {
+        padding-left: 1ch;
+        white-space: nowrap;
+      }
+
+      li::before {
+        content: "•";
+        display: inline-block;
+        margin-right: 1ch;
+        width: 1ch;
+        text-align: center;
+      }
+    }
+  }

@@ -1,0 +1,403 @@
+/* Conditions data: parsed by docstring-json into webapp/data/conditions.json
+   Derived from pages/conditions.html condition cards.
+
+   Schema:
+   - description: flavor/context for the condition
+   - effects: array of mechanical effect strings
+   - removal: how the condition is removed (null for staged/special conditions)
+   - positive: true for beneficial conditions, false (default) for negative
+   - type: "standard" (default), "staged", or "wounded"
+*/
+{
+  /* ============================================
+     NEGATIVE CONDITIONS
+     ============================================ */
+  "Bleeding": {
+    description: """
+      <p>The character is losing blood or other important fluids, either from external wounds or internal damage.</p>
+    """,
+    effects: [
+      "When you make a check, suffer Fatigue equal to the number of strife symbols on your kept dice, ignoring any armor or protection.",
+      "Each time Fatigue inflicted this way causes you to suffer a critical strike, the severity of that critical strike equals your current Fatigue total."
+    ],
+    removal: "Any character within range 0-1 may make a TN 2 Medicine (Resilience) check as a Support action.",
+    positive: false
+  },
+  "Burning": {
+    description: """
+      <p>The character is on fire, their clothing ablaze.</p>
+    """,
+    effects: [
+      "After you perform an action, suffer 3 Strife and 3 Fatigue that ignores armor and protection.",
+      "Critical strikes caused by this damage have severity 5.",
+      "Each additional critical strike from burning before removal increases severity by 5."
+    ],
+    removal: "You or another character within range 0-1 may make a TN 2 Conditioning (Swiftness) check as a Movement and Support action.",
+    positive: false
+  },
+  "Compromised": {
+    description: """
+      <p>The character is emotionally overwhelmed, their judgment clouded by distress or panic.</p>
+    """,
+    effects: [
+      "You cannot keep dice containing strife symbols (to a minimum of 0 kept dice).",
+      "Your Vigilance counts as 1 while Compromised."
+    ],
+    removal: "Your Strife is reduced to a value equal to or lower than your Composure.",
+    positive: false
+  },
+  "Dazed": {
+    description: """
+      <p>Your vision is impaired or your focus is disrupted, forcing you into a defensive posture.</p>
+    """,
+    effects: [
+      "Increase the TN of your Attack and Scheme action checks by 2."
+    ],
+    removal: "At the end of your turn, if you did not perform an Attack or Scheme action.",
+    positive: false
+  },
+  "Disoriented": {
+    description: """
+      <p>Your senses are scattered, cutting off your ability to maneuver or assist effectively.</p>
+    """,
+    effects: [
+      "Increase the TN of your Movement and Support action checks by 2."
+    ],
+    removal: "At the end of your turn, if you did not perform a Movement or Support action.",
+    positive: false
+  },
+  "Dying": {
+    description: """
+      <p>The character has suffered a mortal wound and hovers on the edge of death.</p>
+    """,
+    effects: [
+      "The condition specifies a duration in rounds (e.g., Dying (3 rounds) or Dying (1 round)).",
+      "At the end of each of your turns, the countdown decreases by 1.",
+      "When the countdown reaches 0, you perish at the end of your next turn.",
+      "You are also Unconscious while Dying."
+    ],
+    removal: "Any character within range 0-1 may make a TN 4 Medicine (Precision) check as a Support action to stabilize you. If they fail, reduce remaining rounds by their shortfall.",
+    positive: false
+  },
+  "Enraged": {
+    description: """
+      <p>The character is consumed by fury, fighting with devastating and reckless intensity.</p>
+    """,
+    effects: [
+      "Increase the severity of all critical strikes you inflict by 2.",
+      "Increase the severity of all critical strikes you suffer by 2.",
+      "The first time you kill another character each scene, you gain 1 Fortune Point."
+    ],
+    removal: "Make a TN 3 Resolve (Resilience) check as a Support action, or at the end of the scene.",
+    positive: false
+  },
+  "Exhausted": {
+    description: """
+      <p>The character is physically and mentally drained. Characters who go more than twenty-four hours without rest suffer this condition.</p>
+    """,
+    effects: [
+      "You do not remove Fatigue and Strife at the end of each scene as normal."
+    ],
+    removal: "After sleeping or resting for six or more hours.",
+    positive: false
+  },
+  "Frightened": {
+    description: """
+      <p>The character is gripped by overwhelming fear, their instincts screaming at them to flee.</p>
+    """,
+    effects: [
+      "If you can see the source of your fear, you must use your movement action to move away from it, or suffer 3 Strife.",
+      "Increase the TN of Attack checks targeting the source of your fear by 2."
+    ],
+    removal: "Make a TN 3 Resolve (Resilience) check as a Support action, or at the end of the scene.",
+    positive: false
+  },
+  "Immobilized": {
+    description: """
+      <p>The character is entangled, pinned, or otherwise unable to move from their position.</p>
+    """,
+    effects: [
+      "You cannot perform Movement actions or reposition yourself during your turn.",
+      "You cannot change your stance during your turn."
+    ],
+    removal: "At the end of your turn, if you did not perform a Movement action this turn.",
+    positive: false
+  },
+  "Incapacitated": {
+    description: """
+      <p>The character is largely incapable of action due to the scope of the harm they have suffered.</p>
+    """,
+    effects: [
+      "Cannot perform actions that require checks.",
+      "Cannot defend against damage.",
+      "If you suffer a critical strike, you also gain the Unconscious condition.",
+      "If your Fatigue reaches twice your Endurance, any additional Fatigue is converted into a critical strike of equal severity."
+    ],
+    removal: "Fatigue is reduced to a value equal to or lower than Endurance.",
+    positive: false
+  },
+  "Intoxicated": {
+    description: """
+      <p>The character is drunk or under the influence of chemical agents.</p>
+    """,
+    effects: [
+      "You double all Strife you suffer.",
+      "You double all Strife you remove."
+    ],
+    removal: "At the end of each scene, attempt a TN 3 Conditioning (Resilience) check, or rest during a downtime scene.",
+    positive: false
+  },
+  "Focused": {
+    description: """
+      <p>You are concentrating deeply, allowing you to maintain your focus and awareness even in the midst of chaos.</p>
+    """,
+    effects: [
+      "Increase your focus by 2, reduce your vigilance by 1."
+    ],
+    removal: "When your vigilance is first tested or the end of the scene.",
+    positive: false
+  },
+  "Vigilant": {
+    description: """
+      <p>Your senses are heightened, allowing you to detect threats and react to them more quickly than normal.</p>
+    """,
+    effects: [
+      "Increase your vigilance by 2, reduce your focus by 1."
+    ],
+    removal: "When your focus is first tested or the end of the scene.",
+    positive: false
+  },
+  /* ============================================
+     OTHER CONDITIONS
+     ============================================ */
+  "Prone": {
+    effects: [
+      "Can move a maximum of 1 range band per turn.",
+      "May be harder to spot at a distance (increasing relevant TNs by 1 at GM's discretion)."
+    ],
+    removal: "At the end of your turn, if you did not perform a Movement action.",
+    positive: false
+  },
+  "Silenced": {
+    effects: [
+      "Increase the TN of social action checks (Command, Deception, Negotiation, Performance) by 3.",
+      "Increase the TN of checks requiring speech or communication by 3."
+    ],
+    removal: "At the end of your turn, if you did not perform a social action or make a check requiring speech.",
+    positive: false
+  },
+  "Unconscious": {
+    effects: [
+      "Cannot move, perform actions, or act upon the world.",
+      "May still make checks to resist effects, but not to act with agency.",
+      "Increase severity of any critical strike suffered by 10.",
+      "Cannot defend against damage, but generally awaken if harmed or startled."
+    ],
+    removal: "Spend 1 Fortune Point to awaken immediately, or awaken after several hours.",
+    positive: false
+  },
+  /* ============================================
+     STAGED CONDITIONS
+     ============================================ */
+  "ELID": {
+    type: "staged",
+    description: """
+      <p>The character has contracted the Eurosky Low-Emission Infectious Disease (ELID), a degenerative condition caused by Collapse radiation exposure. ELID progresses through distinct stages.</p>
+    """,
+    shared_rules: [
+      "Weekly stage check: Once per week, make a Resolve check.",
+      "TN equals weeks since onset or since last effective treatment, whichever is more recent.",
+      "On failure: Advance ELID by 1 stage. If you fail at Late-Stage, you convert into an ELID entity (removed from player control).",
+      "Surgical intervention: Reduces ELID by 1 stage (max once per month). Cannot reduce Late-Stage.",
+      "Vaccination: Resets the weekly check timer for Early/Middle-Stage. For Late-Stage, reduces current TN by 1 (minimum TN 1)."
+    ],
+    stages: {
+      "Early-Stage": {
+        effects: [
+          "Reduce your maximum Endurance and Composure by 2 (minimum 1).",
+          "At the end of a scene, you do not reduce Fatigue or Strife to half as you normally would."
+        ]
+      },
+      "Middle-Stage": {
+        effects: [
+          "All effects of Early-Stage ELID.",
+          "Reduce maximum Endurance and Composure by an additional 2 (minimum 1).",
+          "Increase TN of Movement and Support action checks by 1.",
+          "When Compromised, Dazed, Disoriented, or Unconscious, increase critical strike severity by 2."
+        ]
+      },
+      "Late-Stage": {
+        effects: [
+          "All effects of Middle-Stage ELID.",
+          "Reduce maximum Endurance and Composure by an additional 2 (minimum 1).",
+          "Reduce Vigilance by half (rounded down, minimum 1).",
+          "Increase severity of all critical strikes suffered by 4.",
+          "Whenever you gain Strife, gain twice that amount instead."
+        ]
+      }
+    },
+    positive: false
+  },
+  "Parapluie": {
+    type: "staged",
+    description: """
+      <p>The character's neural cloud has been infected by the Parapluie virus, a Paradeus-designed payload that carries compressed fragments of an OGAS consciousness. Over time, the virus attempts to overwrite the doll's existing mind. Affects T-Dolls and artificial minds with neural cloud architectures only.</p>
+    """,
+    shared_rules: [
+      "Weekly progression check: Make a Resolve (Resilience) check.",
+      "TN equals current stage number plus GM adjustments.",
+      "On success: Hold at current stage.",
+      "On failure: Advance by 1 stage. At Stage 3 failure, the OGAS fully asserts itself.",
+      "Lab intervention: A TN 4+ Science (Precision) or Electronic Warfare (Precision) check at a skilled facility may remove the infection."
+    ],
+    stages: {
+      "Stage 1": {
+        description: """
+          <p>The OGAS fragment is present but fragmented. Echoes of alien thoughts flicker through the neural cloud.</p>
+        """,
+        effects: [
+          "Once per scene, the GM may inflict a memory lapse: increase TN by 1 or deny access to specific information.",
+          "Indistinct voices or impulses appear in your thoughts once per scene.",
+          "Increase Strife from confusion or identity-related conflicts by 1."
+        ]
+      },
+      "Stage 2": {
+        description: """
+          <p>The OGAS consciousness has begun to coalesce into a single, distinct presence. It knows it exists and knows it is not complete.</p>
+        """,
+        effects: [
+          "All Stage 1 effects.",
+          "The entity has a recognizable personality. Once per scene, acting in line with its goals lets you reroll 1 die; acting against them causes 2 Strife.",
+          "Once per scene on Resolve checks, the GM determines if the OGAS helps (1 bonus success) or hinders (1 Strife)."
+        ]
+      },
+      "Stage 3": {
+        description: """
+          <p>The OGAS has grown strong enough to partially displace the original personality. Control of the body is contested.</p>
+        """,
+        effects: [
+          "All Stage 2 effects.",
+          "At the start of stressful scenes, make a TN 3 Resolve (Resilience) check. On failure, the GM may seize control for key moments.",
+          "When the OGAS takes control, gain 1 Fortune Point at end of scene if you engage with the fallout."
+        ]
+      }
+    },
+    positive: false
+  },
+  /* ============================================
+     WOUNDED CONDITIONS
+     ============================================ */
+  "Lightly Wounded": {
+    type: "wounded",
+    description: """
+      <p>A part of your body or frame has been injured, impairing your ability to act with a specific Approach. When you gain a Wounded condition, specify which Approach is affected: Fortune (Head, Brain), Power (Arms, Shoulders), Precision (Hands, Fingers), Resilience (Torso, Hips), or Swiftness (Legs, Feet).</p>
+    """,
+    effects: [
+      "When using the affected Approach, you must reroll 2 dice showing successes or opportunities.",
+      "If you suffer Lightly Wounded again for the same Approach, upgrade to Severely Wounded."
+    ],
+    recovery: [
+      "Recovery through Rest: Once per week, make a TN 3 Conditioning check using the wounded Approach (ignoring Wounded penalties). On success, remove Lightly Wounded.",
+      "Recovery through Medical Care: Once per week, make a TN 4 Medicine (Swiftness) check. On success, remove Lightly Wounded."
+    ],
+    positive: false
+  },
+  "Severely Wounded": {
+    type: "wounded",
+    description: """
+      <p>A part of your body or frame has been seriously injured, severely impairing your ability to act with a specific Approach. When you gain a Wounded condition, specify which Approach is affected: Fortune (Head, Brain), Power (Arms, Shoulders), Precision (Hands, Fingers), Resilience (Torso, Hips), or Swiftness (Legs, Feet).</p>
+    """,
+    effects: [
+      "When using the affected Approach, you must reroll 4 dice showing successes or opportunities.",
+      "If you suffer any Wounded again for the same Approach, suffer a severity 8 critical strike."
+    ],
+    recovery: [
+      "Recovery through Rest: Once per week, make a TN 3 Conditioning check using the wounded Approach (ignoring Wounded penalties). On success, reduce Severely Wounded to Lightly Wounded.",
+      "Recovery through Medical Care: Once per week, make a TN 4 Medicine (Swiftness) check. On success, reduce Severely Wounded to Lightly Wounded."
+    ],
+    positive: false
+  },
+  /* ============================================
+     POSITIVE CONDITIONS
+     ============================================ */
+  "Hardened": {
+    description: """
+      <p>Your body has been temporarily reinforced, allowing you to shrug off blows that would normally debilitate you.</p>
+    """,
+    effects: [
+      "The next critical strike you suffer this scene has its severity reduced by 4."
+    ],
+    removal: "After the next critical strike is resolved, or at the end of the scene.",
+    positive: true
+  },
+  "Centered": {
+    description: """
+      <p>Your mind is clear and your emotions are steady, allowing you to maintain your composure in the face of adversity.</p>
+    """,
+    effects: [
+      "Reduce all Strife you suffer from any source by 1 this scene."
+    ],
+    removal: "End of the scene.",
+    positive: true
+  },
+  "Quickened": {
+    description: """
+      <p>Your body has been empowered, allowing you to move with greater speed and agility than normal.</p>
+    """,
+    effects: [
+      "You may move an additional range band per turn."
+    ],
+    removal: "End of the scene.",
+    positive: true
+  },
+  "Resilient": {
+    description: """
+      <p>Your body has been fortified, allowing you to endure hardships that would normally overwhelm you.</p>
+    """,
+    effects: [
+      "The next time you would suffer Fatigue in combat, reduce it by 3."
+    ],
+    removal: "After the condition is used or the end of the scene.",
+    positive: true
+  },
+  "Well Rested": {
+    description: """
+      <p>A good night's sleep has left you feeling refreshed and rejuvenated, allowing you to perform at your best.</p>
+    """,
+    effects: [
+      "The next time you would suffer Fatigue from a non-combat source, reduce it by 3."
+    ],
+    removal: "After the condition is used or the end of the scene.",
+    positive: true
+  },
+  "Inspired": {
+    description: """
+      <p>You are filled with a surge of creativity and motivation, allowing you to push beyond your normal limits.</p>
+    """,
+    effects: [
+      "You may reroll 1 die on your next check."
+    ],
+    removal: "After the condition is used or the end of the scene.",
+    positive: true
+  },
+  "Full Magazine": {
+    description: """
+      <p>Your weapon is fully loaded and ready to fire, allowing you to unleash a powerful barrage of attacks.</p>
+    """,
+    effects: [
+      "When you perform an Attack action with a firearm, you may immediately make a second attack with the same weapon as a free action."
+    ],
+    removal: "After the condition is used or the end of the scene.",
+    positive: true
+  },
+  "Agile": {
+    description: """
+      <p>Your body feels light and nimble, allowing you to move with greater ease and grace than normal.</p>
+    """,
+    effects: [
+      "You may ignore the movement penalties of difficult terrain."
+    ],
+    removal: "End of the scene.",
+    positive: true
+  }
+}

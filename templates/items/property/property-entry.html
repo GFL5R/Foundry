@@ -1,0 +1,9 @@
+<li class="item property flexcol" data-property-id="{{property.id}}">
+    <ul class="item-header property-control">
+        <li class="item-img"><img src="{{property.img}}" title="{{property.name}}" width="32px" height="32px"/></li>
+        <li class="item-name {{#if removed}}removed{{else}}gfl5r-tooltip{{/if}}" data-property-id="{{property.id}}">{{property.name}}</li>
+        {{#if editable}}
+            <li class="property-delete" title="{{localize 'Delete'}}"><i class="fas fa-trash"></i></li>
+        {{/if}}
+    </ul>
+</li>

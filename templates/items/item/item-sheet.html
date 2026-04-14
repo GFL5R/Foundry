@@ -1,0 +1,21 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}"/>
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name"/></h1>
+    </header>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- properties Tab --}}
+        <article class="attributes" data-group="primary" data-tab="checkbox">
+            <label class="equipped checkbox">
+                <input type="checkbox" name="system.equipped" {{checked data.system.equipped}} />
+                {{ localize 'gfl5r.armors.equipped' }}
+            </label>
+            {{> 'systems/gfl5r/templates/items/item/item-value.html' }}
+        </article>
+        <article class="properties" data-group="primary" data-tab="properties">
+            {{> 'systems/gfl5r/templates/items/property/properties.html' properties=data.propertiesList }}
+        </article>
+        {{> 'systems/gfl5r/templates/items/item/item-infos.html'}}
+    </section>
+</form>

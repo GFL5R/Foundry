@@ -1,0 +1,144 @@
+<div class="gfl5r chat dice-roll">
+    {{#if isPublicRoll}}
+
+    {{#if gfl5r.stance}}
+    <div class="gfl5r profil">
+        <header class="part-header flexrow chat-profil">
+            <span class="chat-profil-element">
+                <img class="profile-img" src="{{profileImg}}" data-edit="img" alt="{{#if gfl5r.actor.name}}{{gfl5r.actor.name}}{{else}}mystery-man{{/if}}" />
+            </span>
+
+            <span class="chat-profil-element">
+                <i class="chat-profil-stance {{gfl5r.stance}} i_{{gfl5r.stance}}" title="{{localizeApproach gfl5r.stance}}"></i>
+            </span>
+
+            <span class="chat-profil-element-skill">
+                {{#if gfl5r.skillId}}
+                    {{localizeSkillId gfl5r.skillId}}
+                {{else}}
+                    {{#if gfl5r.skillCatId}}{{localizeSkill gfl5r.skillCatId 'title'}}{{/if}}
+                {{/if}}
+            </span>
+
+            <span class="chat-profil-element">
+                {{#if gfl5r.difficultyHidden}}
+                    <span class="player-only" title="{{localize 'gfl5r.dice.dicepicker.difficulty_hidden_label'}}">{{localize 'gfl5r.dice.chat.difficulty'}} {{localize 'gfl5r.dice.chat.difficulty_hidden'}}</span>
+                {{/if}}
+                <span class="{{#if gfl5r.difficultyHidden}}gm-only{{/if}}">{{localize 'gfl5r.dice.chat.difficulty'}} {{gfl5r.difficulty}} {{#if gfl5r.difficultyHidden}}<i class="fas fa-eye-slash" title="{{localize 'gfl5r.dice.dicepicker.difficulty_hidden_label'}}"></i>{{/if}}</span>
+                <br>
+                {{#if gfl5r.fortunePointUsed}}
+                    <i class="i_void" title="{{localize 'gfl5r.dice.chat.fortune_point_used'}}"></i>
+                {{/if}}
+                {{#if gfl5r.skillAssistance}}
+                    <i class="i_skill" title="{{gfl5r.skillAssistance}}x {{localize 'gfl5r.dice.chat.assistance_used'}}"></i>
+                {{/if}}
+            </span>
+        </header>
+    </div>
+    {{/if}}
+
+    {{#if gfl5r.target.uuid}}
+    <div class="gfl5r target {{#if noTargetDisclosure}}gm-only{{/if}}">
+        <div class="profile"><img class="profile-img" src="{{gfl5r.target.texture.src}}" alt="{{gfl5r.target.name}}" /></div>
+        <div class="name"> &nbsp; @UUID[{{gfl5r.target.actor.uuid}}]&#123;{{gfl5r.target.name}}&#125;</div>
+    </div>
+    {{#if noTargetDisclosure}}
+        <div class="gfl5r target player-only">
+            <div class="profile"><img class="profile-img" src="icons/svg/mystery-man.svg" alt="{{localize 'gfl5r.dice.chat.unknown_target'}}" /></div>
+            <div class="name"> &nbsp; {{localize 'gfl5r.dice.chat.unknown_target'}}</div>
+        </div>
+    {{/if}}
+    {{/if}}
+
+    {{#if gfl5r.item.uuid}}
+    <div class="gfl5r item-infos">
+        <div class="profile"><img class="profile-img" src="{{gfl5r.item.img}}" alt="{{gfl5r.item.name}}" /></div>
+        <div class="name">
+         @UUID[{{gfl5r.item.uuid}}]
+         {{#ifCond gfl5r.item.type '==' 'weaponry'}}
+            <p>
+            <i class="fas fa-arrows-alt-h" title="{{localize 'gfl5r.weapons.ideal_range'}}"> {{gfl5r.item.system.ideal_range}}</i>
+            / <i class="fas fa-tint" title="{{localize 'gfl5r.weapons.damage'}}"> {{gfl5r.item.system.damage}}</i>
+            / <i class="fas fa-skull" title="{{localize 'gfl5r.weapons.deadliness'}}"> {{gfl5r.item.system.deadliness}}</i>
+            </p>
+         {{/ifCond}}
+        </div>
+    </div>
+    {{/if}}
+
+    <div class="gfl5r dice-formula">{{#if gfl5r.initialFormula}}{{gfl5r.initialFormula}}{{else}}{{formula}}{{/if}}</div>
+
+    <div class="gfl5r dice-result">
+        {{#if gfl5r.dicesTypes.gfl5r}}
+        <div class="gfl5r item-display dices-gfl5r">
+            <div class="gfl5r dice-container">
+            {{!-- Dices list --}}
+            {{#each gfl5r.dices}}
+                {{#if this.diceTypeL5r}}
+                    {{#each this.rolls}}
+                        <span class="gfl5r fas chat-dice {{this.classes}}">{{{this.result}}}</span>
+                    {{/each}}
+                {{/if}}
+            {{/each}}
+            </div>
+
+            {{!-- Roll & Keep Button --}}
+            {{^if gfl5r.dicesTypes.std}}
+                <button class="gfl5r chat-dice-rnk {{#if this.gfl5r.rnkEnded}}chat-dice-rnk-ended{{/if}}">{{localize "gfl5r.dice.chat.roll_n_keep"}}</button>
+            {{/if}}
+
+            {{#gfl5r.summary}}
+            {{!-- summary symbols --}}
+            <div class="gfl5r dice-total dice-total-rnk">
+                {{#if success}}
+                    <i class="i_success" title="{{localize 'gfl5r.dice.chat.successes'}}"></i>x{{success}}
+                {{/if}}
+
+                {{#if explosive}}
+                    <i class="i_explosive" title="{{localize 'gfl5r.dice.chat.explosives'}}"></i>x{{explosive}}
+                {{/if}}
+
+                {{#if opportunity}}
+                    <i class="i_opportunity" title="{{localize 'gfl5r.dice.chat.opportunities'}}"></i>x{{opportunity}}
+                {{/if}}
+
+                {{#if strife}}
+                    <i class="i_strife" title="{{localize 'gfl5r.dice.chat.strife'}}"></i>x{{strife}} {{#if ../gfl5r.strifeApplied}}<sup>{{../gfl5r.strifeApplied}}</sup>{{/if}}
+                {{/if}}
+            </div>
+
+            {{!-- Result text --}}
+            {{#if ../gfl5r.difficultyHidden}}
+                <div class="gfl5r dice-result-rnk unknown player-only">
+                    {{totalSuccess}} {{localize 'gfl5r.dice.chat.successes'}}
+                </div>
+            {{/if}}
+            <div class="gfl5r dice-result-rnk {{#ifCond totalSuccess '>=' ../gfl5r.difficulty}}success{{else}}fail{{/ifCond}} {{#if ../gfl5r.difficultyHidden}}gm-only{{/if}}">
+                {{#ifCond totalSuccess '>=' ../gfl5r.difficulty}}
+                    {{localize "gfl5r.dice.chat.success_text"}} <i title="{{totalBonus}} {{localize 'gfl5r.dice.chat.successes'}}">({{totalBonus}} {{localize "gfl5r.dice.chat.bonus_text"}})</i>
+                {{else}}
+                    {{localize "gfl5r.dice.chat.fail_text"}}
+                {{/ifCond}}
+            </div>
+            {{/gfl5r.summary}}
+        </div>
+        {{/if}}
+
+        {{!-- Regular dices --}}
+        {{#if gfl5r.dicesTypes.std}}
+        <div class="gfl5r dices-std">
+            {{#each results}}
+            {{#each this.rolls}}
+            <span class="gfl5r chat-dice">{{{this.result}}}</span>
+            {{/each}}
+            {{/each}}
+        </div>
+
+        {{{tooltip}}}
+        <h4 class="gfl5r dice-total dice-total-std">{{{total}}}</h4>
+        {{/if}}
+    </div>
+
+    {{/if}}
+</div>
+

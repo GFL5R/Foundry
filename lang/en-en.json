@@ -1,0 +1,617 @@
+{
+    "I18N": {
+        "Language": "English",
+        "Maintainers": ["GFL5R Team"]
+    },
+    "SETTINGS": {
+        "None": "No option",
+        "ReverseTokenBars": {
+            "Title": "Reverse tokens bar",
+            "Hint": "Change the order in which the bars under the tokens are filled in",
+            "None": "None",
+            "Fatigue": "Fatigue only",
+            "Strife": "Strife",
+            "Both": "Both Fatigue and Strife"
+        },
+        "RollNKeep": {
+            "DeleteOldMessage": "RnK Delete previous chat message",
+            "DeleteOldMessageHint": "Choose to keep or delete the previous message for a RnK series"
+        },
+        "Initiative": {
+            "SetTn1OnTypeChange": "Set TN to 1 on encounter change",
+            "SetTn1OnTypeChangeHint": "Set the TN to 1 when the encounter type is selected"
+        },
+        "ShowAllStatusEffects": {
+            "Title": "Show all Status Effects",
+            "Hint": "If unchecked (default), only GFL5R conditions are shown."
+        },
+        "CustomItemsHeight": {
+            "Title": "Custom items window height",
+            "Hint": "Adjust the height of item sheet windows (in pixels)"
+        }
+    },
+    "TYPES": {
+        "Actor": {
+            "character": "Character",
+            "npc": "NPC"
+        },
+        "Item": {
+            "technique": "Technique",
+            "weaponry": "Weapon",
+            "armor": "Armor",
+            "narrative": "Narrative Trait",
+            "item": "Item",
+            "discipline": "Discipline",
+            "module": "Module",
+            "condition": "Condition",
+            "vehicle": "Vehicle"
+        }
+    },
+    "gfl5r": {
+        "title": "GFL5R",
+        "approaches": {
+            "title": "Approaches",
+            "power": "Power",
+            "precision": "Precision",
+            "swiftness": "Swiftness",
+            "resilience": "Resilience",
+            "fortune": "Fortune"
+        },
+        "rings": {
+            "title": "Approaches",
+            "label": "Approach",
+            "power": "Power",
+            "precision": "Precision",
+            "swiftness": "Swiftness",
+            "resilience": "Resilience",
+            "fortune": "Fortune"
+        },
+        "attributes": {
+            "title": "Attributes",
+            "endurance": "Endurance",
+            "composure": "Composure",
+            "focus": "Focus",
+            "vigilance": "Vigilance",
+            "fortification": "Fortification",
+            "approach_limit": "Approach Limit"
+        },
+        "skills": {
+            "title": "Skills",
+            "label": "Skill",
+            "groups": {
+                "combat": "Combat",
+                "fieldcraft": "Fieldcraft",
+                "technical": "Technical",
+                "social": "Social & Cultural"
+            },
+            "blades": "Blades",
+            "exotic_weapons": "Exotic Weapons",
+            "explosives": "Explosives",
+            "firearms": "Firearms",
+            "hand_to_hand": "Hand-To-Hand",
+            "tactics": "Tactics",
+            "conditioning": "Conditioning",
+            "resolve": "Resolve",
+            "crafting": "Crafting",
+            "insight": "Insight",
+            "stealth": "Stealth",
+            "survival": "Survival",
+            "computers": "Computers",
+            "mechanics": "Mechanics",
+            "medicine": "Medicine",
+            "piloting": "Piloting",
+            "science": "Science",
+            "subterfuge": "Subterfuge",
+            "arts": "Arts",
+            "command": "Command",
+            "culture": "Culture",
+            "deception": "Deception",
+            "negotiation": "Negotiation",
+            "performance": "Performance"
+        },
+        "social": {
+            "title": "Social",
+            "humanity": "Humanity",
+            "fame": "Fame",
+            "status": "Status",
+            "stress_tell": "Stress Tell",
+            "view_of_dolls": "View of Dolls"
+        },
+        "conflict": {
+            "title": "Conflict",
+            "fatigue": "Fatigue",
+            "strife": "Strife",
+            "fortune_points": "Fortune Points",
+            "heat": "Heat",
+            "stance": "Stance",
+            "prepared": "Prepared",
+            "unprepared": "Unprepared",
+            "stances": {
+                "powertip": "When you succeed on a check, each Strife symbol on your kept dice counts as 1 additional bonus success.",
+                "precisiontip": "Increase TN of Attack and Scheme checks targeting you by 1 (or by 2 if your total Discipline rank is 4 or higher).",
+                "swiftnesstip": "On your turn, perform 1 additional action that does not require a check. This extra action cannot be the same action type as another action you perform that turn.",
+                "resiliencetip": "Others cannot spend Opportunity on Attack or Scheme checks targeting you to inflict critical strikes or conditions.",
+                "fortunetip": "You do not receive Strife from Strife symbols on your kept dice. Other sources of Strife still apply."
+            },
+            "initiative": {
+                "title": "Initiative",
+                "already_set": "Initiative has already been set for this combatant.",
+                "intrigue": "Intrigue",
+                "duel": "Duel",
+                "skirmish": "Skirmish",
+                "mass_battle": "Mass Battle",
+                "prepared_true": "Prepared",
+                "prepared_false": "Unprepared",
+                "encounter_types": {
+                    "skirmish": "Skirmish",
+                    "intrigue": "Intrigue",
+                    "duel": "Duel",
+                    "mass_battle": "Mass Battle"
+                }
+            }
+        },
+        "status": {
+            "title": "Status"
+        },
+        "harm": {
+            "title": "Harm",
+            "wounded": "Wounded",
+            "lightly_wounded": "Lightly Wounded",
+            "severely_wounded": "Severely Wounded",
+            "collapse": "Collapse",
+            "elid": "ELID",
+            "parapluie": "Parapluie"
+        },
+        "ew": {
+            "title": "Electronic Warfare",
+            "ew_rating": "EW Rating",
+            "security_rating": "Security Rating",
+            "heat": "Heat"
+        },
+        "identity": {
+            "title": "Identity",
+            "character_type": "Character Type",
+            "human": "Human",
+            "t-doll": "T-Doll",
+            "age": "Age",
+            "nationality": "Nationality",
+            "background": "Background",
+            "frame": "Frame",
+            "manufacturer": "Manufacturer",
+            "model": "Model",
+            "name_origin": "Name Origin"
+        },
+        "disciplines": {
+            "title": "Disciplines",
+            "slot": "Slot",
+            "empty_slot": "Empty",
+            "rank": "Rank",
+            "ranks_completed": "Ranks Completed",
+            "fortification": "Fortification",
+            "perk": "Perk",
+            "capstone": "Capstone",
+            "associated_skills": "Associated Skills",
+            "techniques": "Techniques",
+            "xp_to_rank": "XP to Rank",
+            "remove_technique": "Remove from discipline",
+            "remove_discipline": "Remove Discipline",
+            "remove_discipline_confirm": "Remove {name} from this slot? Associated techniques and XP progress will be lost.",
+            "drop_techniques_here": "Drop techniques here",
+            "drop_discipline_here": "Drop a discipline here",
+            "xp_spent": "XP Spent",
+            "unlock_cost": "Unlock Cost",
+            "warning": {
+                "assign_discipline_first": "Assign a discipline before adding techniques.",
+                "invalid_technique_for_discipline": "{technique} is not a valid technique for the {discipline} discipline.",
+                "rank_requirement_not_met": "{technique} requires discipline rank {requiredRank}. Current rank: {currentRank}."
+            }
+        },
+        "techniques": {
+            "title": "Techniques",
+            "type": "Technique Types",
+            "combat": "Combat",
+            "command": "Command",
+            "conditioning": "Conditioning",
+            "electronic_warfare": "Electronic Warfare",
+            "remolding": "Remolding",
+            "science": "Science",
+            "social": "Social",
+            "street": "Street",
+            "vehicle": "Vehicle",
+            "perk": "Perk",
+            "capstone": "Capstone",
+            "activation": "Activation",
+            "approach": "Approach",
+            "skill": "Skill"
+        },
+        "conditions": {
+            "title": "Conditions",
+            "lightly_wounded_power": "Lightly Wounded (Power)",
+            "lightly_wounded_precision": "Lightly Wounded (Precision)",
+            "lightly_wounded_swiftness": "Lightly Wounded (Swiftness)",
+            "lightly_wounded_resilience": "Lightly Wounded (Resilience)",
+            "lightly_wounded_fortune": "Lightly Wounded (Fortune)",
+            "severely_wounded_power": "Severely Wounded (Power)",
+            "severely_wounded_precision": "Severely Wounded (Precision)",
+            "severely_wounded_swiftness": "Severely Wounded (Swiftness)",
+            "severely_wounded_resilience": "Severely Wounded (Resilience)",
+            "severely_wounded_fortune": "Severely Wounded (Fortune)",
+            "bleeding": "Bleeding",
+            "burning": "Burning",
+            "compromised": "Compromised",
+            "dazed": "Dazed",
+            "disoriented": "Disoriented",
+            "dying": "Dying",
+            "enraged": "Enraged",
+            "exhausted": "Exhausted",
+            "incapacitated": "Incapacitated",
+            "immobilized": "Immobilized",
+            "prone": "Prone",
+            "silenced": "Silenced",
+            "unconscious": "Unconscious",
+            "no_active_conditions": "No active conditions.",
+            "centered": "Centered",
+            "emboldened": "Emboldened",
+            "elid_stage_1": "Early ELID",
+            "elid_stage_2": "Midgrade ELID",
+            "elid_stage_3": "Late Stage ELID",
+            "parapluie_stage_1": "Parapluie Stage 1",
+            "parapluie_stage_2": "Parapluie Stage 2",
+            "parapluie_stage_3": "Parapluie Stage 3"
+        },
+        "weapons": {
+            "title": "Weapons",
+            "stats": "Stats",
+            "category": "Category",
+            "range": "Range",
+            "ideal_range": "Ideal Range",
+            "sheathed": "Sheathed",
+            "damage": "Damage",
+            "deadliness": "Deadliness",
+            "grip": "Grip",
+            "threat": "Threat",
+            "signature": "Signature",
+            "qualities": "Qualities",
+            "price": "Price",
+            "equipped": "Equipped",
+            "readied": "Readied",
+            "categories": {
+                "knf": "Knives",
+                "bld": "Swords",
+                "hg": "Handguns",
+                "smg": "Submachine Guns",
+                "sg": "Shotguns",
+                "ar": "Assault Rifles",
+                "br": "Battle Rifles",
+                "rf": "Rifles",
+                "mg": "Machine Guns"
+            }
+        },
+        "armor": {
+            "title": "Armor",
+            "weight": "Weight",
+            "signature": "Signature",
+            "protection": "Protection",
+            "price": "Price"
+        },
+        "armors": {
+            "title": "Armor",
+            "type": "Type",
+            "physical": "Physical",
+            "supernatural": "Supernatural",
+            "equipped": "Equipped"
+        },
+        "items": {
+            "title": "Items",
+            "quantity": "Quantity",
+            "weight": "Weight",
+            "price": "Price",
+            "rarity": "Rarity",
+            "equipped": "Equipped"
+        },
+        "modules": {
+            "title": "Modules",
+            "module_type": "Module Type",
+            "cost": "Cost (URNC)",
+            "types": {
+                "approach_augmentation": "Approach Augmentation",
+                "flash_training": "Flash Training",
+                "ew_augmentation": "EW Augmentation",
+                "frame_augmentation": "Frame Augmentation",
+                "remolding": "Remolding"
+            }
+        },
+        "narrative": {
+            "title": "Narrative Traits",
+            "advantage": "Advantage",
+            "disadvantage": "Disadvantage",
+            "passion": "Passion",
+            "anxiety": "Anxiety",
+            "type": "Type",
+            "personal_goal": "Personal Goal",
+            "name_meaning": "Name Meaning",
+            "story_end": "Story End"
+        },
+        "npc": {
+            "title": "NPC",
+            "threat_levels": {
+                "minion": "Minion",
+                "standard": "Standard",
+                "elite": "Elite",
+                "boss": "Boss"
+            },
+            "skill_groups": {
+                "combat": "Combat",
+                "fieldcraft": "Fieldcraft",
+                "technical": "Technical",
+                "social": "Social"
+            },
+            "behaviors": "Behaviors",
+            "perk": "Perk"
+        },
+        "sheets": {
+            "narrative": "Narrative",
+            "inventory": "Inventory",
+            "experience": "Experience",
+            "description": "Description",
+            "notes": "Notes",
+            "flavor": "Flavor",
+            "source_reference": "Source",
+            "page": "Page",
+            "properties": "Properties",
+            "quantity": "Quantity",
+            "weight": "Weight",
+            "rarity": "Rarity",
+            "rank": "Required Rank"
+        },
+        "advancements": {
+            "title": "Advancement",
+            "cost": "XP Required",
+            "xp_total": "Total XP",
+            "xp_spent": "Spent XP",
+            "xp_saved": "Available XP",
+            "approach_cost": "Approach Cost",
+            "skill_cost": "Skill Cost",
+            "technique_cost": "Technique Cost",
+            "warning": {
+                "total_less_then_spent": "Warning: XP total is less than XP spent!"
+            }
+        },
+        "dice": {
+            "title": "Dice",
+            "approach_die": "Approach Die",
+            "skill_die": "Skill Die",
+            "fortune_point": "Fortune Point",
+            "fortune_points_used": "Fortune Point Used",
+            "chat": {
+                "successes": "Successes",
+                "opportunities": "Opportunities",
+                "strife": "Strife",
+                "explosives": "Explosions",
+                "total_successes": "Total Successes",
+                "bonus_successes": "Bonus Successes",
+                "difficulty": "TN",
+                "difficulty_hidden": "???",
+                "fortune_point_used": "Fortune point used",
+                "assistance_used": "Skill assistance used",
+                "keep_limit": "Keep Limit",
+                "roll_n_keep": "Roll & Keep",
+                "initiative_roll": "Initiative Roll",
+                "success_text": "Success!",
+                "bonus_text": "Bonus Successes.",
+                "fail_text": "Failure!"
+            },
+            "dicepicker": {
+                "title": "Dice Picker",
+                "difficulty_title": "Difficulty",
+                "difficulty_hidden_label": "Hide TN",
+                "fortune_point_tooltip": "Fortune Point",
+                "use_fortune_point_label": "Spend Fortune Point",
+                "skill_assistance_label": "Assistance",
+                "roll_label": "Roll",
+                "bt_add_macro": "Add Macro"
+            },
+            "picker": {
+                "title": "Dice Picker",
+                "approach": "Approach",
+                "skill": "Skill",
+                "bonus_approach": "Bonus Approach Dice",
+                "bonus_skill": "Bonus Skill Dice",
+                "difficulty": "Target Number",
+                "hidden_tn": "Hidden TN",
+                "roll": "Roll",
+                "fortune_point": "Spend Fortune Point"
+            },
+            "rnk": {
+                "title": "Roll and Keep",
+                "kept": "Kept",
+                "unkept": "Unkept",
+                "reroll": "Reroll",
+                "explode": "Explode",
+                "confirm": "Confirm",
+                "cancel": "Cancel"
+            },
+            "roll_n_keep": {
+                "title": "Roll & Keep",
+                "discard_drop_here": "Discard",
+                "reroll_drop_here": "Re-roll",
+                "swap_drop_here": "Swap",
+                "keep_drop_here": "Keep",
+                "max": "Max",
+                "bt_validate": "Finalize this step",
+                "bt_strife": "Apply strife",
+                "undo": "[GM] Undo the last step choices"
+            }
+        },
+        "global": {
+            "send_to_chat": "Send to Chat",
+            "delete_confirm": "Delete {name}?",
+            "add": "Add",
+            "edit": "Edit",
+            "delete": "Delete",
+            "name": "Name",
+            "type": "Type",
+            "rank": "Rank",
+            "xp": "XP",
+            "none": "None",
+            "yes": "Yes",
+            "no": "No"
+        },
+        "twelve_questions": {
+            "title": "Character Creation — 12 Questions",
+            "intro": "Answer twelve questions to define your character. Choose a character type to begin.",
+            "type_human": "Human (Commander)",
+            "type_tdoll": "T-Doll",
+            "human_intro": "You are a human commander working for B.R.I.E.F., a PMC that hunts bounties in a post-Collapse world. These twelve questions will define who you are, where you came from, and what drives you forward.",
+            "tdoll_intro": "You are a Tactical Doll — an autonomous android built for combat. Assigned to a commander, you operate in the field as weapon and partner. These twelve questions will define your frame, your history, and who you are becoming.",
+            "next": "Next",
+            "prev": "Back",
+            "choose": "Choose...",
+            "generate": "Create Character",
+            "summary": "Summary",
+            "ready": "All required fields are complete. Ready to create character.",
+            "drop_discipline": "Drop a discipline here",
+            "starting_technique_title": "Starting Technique (Rank 1)",
+            "drop_starting_technique": "Drop a starting technique here",
+            "drop_module": "Drop a module here",
+            "drop_advantage": "Drop an advantage here",
+            "drop_disadvantage": "Drop a disadvantage here",
+            "drop_passion": "Drop a passion here",
+            "drop_anxiety": "Drop an anxiety here",
+            "goal_placeholder": "What drives this character?",
+            "nav": {
+                "setup": "Setup",
+                "origin": "Origin",
+                "training": "Training",
+                "traits": "Traits",
+                "worldview": "Worldview",
+                "identity": "Identity"
+            },
+            "human": {
+                "q1": {
+                    "title": "Question 1: Where are you from?",
+                    "flavor": "The post-Collapse world is fractured into rival power blocs. Your nationality shaped your worldview, your training, and the way you approach problems."
+                },
+                "q2": {
+                    "title": "Question 2: What is your background?",
+                    "flavor": "Before you signed on with B.R.I.E.F., you had a life. Your background defines the skills and mindset you bring to the field."
+                },
+                "q3": {
+                    "title": "Question 3: What path have you chosen?",
+                    "flavor": "Your discipline is your combat doctrine — the framework that determines how you operate in the field. Drag a discipline and one rank 1 technique from that discipline."
+                },
+                "q4": {
+                    "title": "Question 4: How do you stand out in your field?",
+                    "flavor": "Every operator has something that sets them apart. What advantage gives you an edge over others? Drag an advantage from the compendium."
+                },
+                "q5": {
+                    "title": "Question 5: What holds you back the most?",
+                    "flavor": "Nobody is perfect. What flaw, limitation, or burden do you carry? Drag a disadvantage from the compendium."
+                },
+                "q6": {
+                    "title": "Question 6: What sets you apart from other humans?",
+                    "flavor": "Beyond your combat role, what personal obsession or hobby defines you? Drag a passion from the compendium."
+                },
+                "q7": {
+                    "title": "Question 7: What do you fear the most?",
+                    "flavor": "Fear drives decisions under pressure. What psychological trigger haunts you? Drag an anxiety from the compendium."
+                },
+                "q8": {
+                    "title": "Question 8: How do you view Dolls?",
+                    "flavor": "This is the defining question for a commander. Do you see your T-Doll as a person — a partner with agency and feelings? Or as a tool — a weapon system to be maintained and deployed?",
+                    "option_person": "Person — They're people. (+5 Humanity)",
+                    "option_tool": "Tool — They're equipment. (+1 Skill)",
+                    "bonus_skill": "Choose a bonus skill"
+                },
+                "q9": {
+                    "title": "Question 9: What do you fight for?",
+                    "flavor": "Beyond survival and paychecks, what motivates you to keep going into the field?"
+                },
+                "q10": {
+                    "title": "Question 10: What does your name mean?",
+                    "flavor": "Names carry weight. Was yours inherited, earned, gifted, or taken?",
+                    "placeholder": "The story behind your name..."
+                },
+                "q12": {
+                    "flavor": "Every story ends. How do you see yours ending? Quiet retirement? Glorious last stand? Something classified?"
+                }
+            },
+            "tdoll": {
+                "q1": {
+                    "title": "Question 1: Who made you, and what is your model number?",
+                    "flavor": "Your manufacturer and frame model define your physical capabilities. Each frame was designed for a purpose — your approaches and starting skills come from your hardware."
+                },
+                "q2": {
+                    "title": "Question 2: What weapon were you imprinted with?",
+                    "flavor": "Your weapon imprint is hardwired into your fire control core. It defines your combat doctrine. Drag a discipline from the compendium."
+                },
+                "q3": {
+                    "title": "Question 3: What upgrades set you apart?",
+                    "flavor": "Factory stock gets you killed. What modifications and software upgrades have been installed? Drag modules from the compendium."
+                },
+                "q4": {
+                    "title": "Question 4: What is your greatest achievement so far?",
+                    "flavor": "You once exceeded your design parameters. What did you accomplish? Drag an advantage from the compendium."
+                },
+                "q5": {
+                    "title": "Question 5: What holds you back the most?",
+                    "flavor": "Hardware limitations or behavioral quirks that affect your performance. Drag a disadvantage from the compendium."
+                },
+                "q6": {
+                    "title": "Question 6: What makes you different?",
+                    "flavor": "Despite official claims, Dolls develop personal quirks and interests. What hobby or fixation proves you're more than programming? Drag a passion from the compendium."
+                },
+                "q7": {
+                    "title": "Question 7: What are you most afraid of?",
+                    "flavor": "Officially, Dolls don't experience fear. But your neural cloud processes something that looks exactly like it. Drag an anxiety from the compendium."
+                },
+                "q8": {
+                    "title": "Question 8: When did you meet your Commander?",
+                    "flavor": "The bond between a Doll and their Commander is the core of your operational life. Were you factory-fresh? Secondhand? Rescued from a scrapyard?",
+                    "label": "How you met",
+                    "placeholder": "Describe the circumstances of your assignment..."
+                },
+                "q9": {
+                    "title": "Question 9: What do you want for yourself?",
+                    "flavor": "Beyond your mission parameters, what do you desire? Freedom? Recognition? Answers about your own design?"
+                },
+                "q10": {
+                    "title": "Question 10: How were you named?",
+                    "flavor": "Your name carries mechanical implications. A human name makes you relatable; a callsign earns reputation; a weapon designation defines you by your imprint; a strange name confuses everyone.",
+                    "option_human": "Human Name (+5 Humanity)",
+                    "option_callsign": "Callsign / Nickname (+5 Fame)",
+                    "option_weapon": "Weapon Designation (+1 Firearms, −5 Humanity)",
+                    "option_weird": "Weird Name (−5 Fame)"
+                },
+                "q12": {
+                    "flavor": "Dolls aren't immortal, just durable. How does your service end? Civilian life? Field death? Scrapped? Something else?"
+                }
+            },
+            "q11": {
+                "title": "Question 11: What is your name?",
+                "flavor": "The name that will appear on mission reports and be spoken by those who know you.",
+                "placeholder": "Enter character name"
+            },
+            "q12": {
+                "title": "Question 12: How will your story end?",
+                "placeholder": "How do you see your story ending?"
+            }
+        },
+        "tactical_grid": {
+            "settings": {
+                "title": "Tactical Grid Settings",
+                "label": "Configure",
+                "hint": "Configure range band display on the tactical grid"
+            },
+            "range_bands": {
+                "0": "Range 0 (Melee)",
+                "1": "Range 1 (Close)",
+                "2": "Range 2 (Short)",
+                "3": "Range 3 (Medium)",
+                "4": "Range 4 (Long)",
+                "5": "Range 5 (Extreme)",
+                "6": "Range 6 (Maximum)"
+            }
+        }
+    }
+}

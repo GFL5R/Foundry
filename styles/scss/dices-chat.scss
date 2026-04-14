@@ -1,0 +1,201 @@
+// Dice in chat
+&.chat.dice-roll {
+
+    .chat-dice {
+        display: inline;
+        position: relative;
+        padding: 0;
+        margin: 0;
+        &:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-radius: 0.15rem;
+            padding: 0 0.15rem;
+            font-size: 0.65em;
+            line-height: 1rem;
+            //width: 1em;
+            text-align: center;
+            color: white;
+            background: transparent;
+        }
+        &:last-of-type,
+        &:nth-child(6),
+        &:nth-child(12),
+        &:nth-child(18) {
+            &:after {
+                padding: 0 0.175rem 0 0.15rem;
+            }
+        }
+        &.rerolled {
+            > img {
+                border-bottom: 0 none;
+            }
+            &:after {
+                content: "\f2f9";
+                background: orangered;
+            }
+        }
+
+        &.swapped {
+            > img {
+                border-bottom: 0 none;
+            }
+            &:after {
+                content: "\f337";
+                background: fuchsia;
+            }
+        }
+
+        > img {
+            border: 1px solid transparent;
+            height: auto;
+        }
+    }
+    td {
+        .chat-dice {
+        }
+    }
+
+    .chat-profil {
+        text-align: center;
+        vertical-align: middle;
+
+        .profile-img {
+            margin: 0.25rem 0.25rem 0 0;
+        }
+
+        &-stance {
+            font-size: 2.5rem;
+            line-height: 2.5rem;
+            margin: 0.25rem;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+        &-element {
+            flex-wrap: wrap;
+            flex-grow: 1;
+
+            &-skill {
+                flex-grow: 3;
+            }
+            &:last-child {
+                flex-grow: 2;
+            }
+        }
+    }
+    .dice-formula,
+    .dice-total {
+        background: $bg-panel-alt;
+        border: 1px solid $border-color;
+        text-align: center;
+        margin: 0.5rem 0;
+        padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+        &-rnk {
+            line-height: 2rem;
+            i {
+                margin-left: 0.5rem;
+            }
+        }
+    }
+    button {
+        justify-self: center;
+        &.chat-dice-rnk {
+            cursor: url("../assets/cursors/pointer.webp"), pointer;
+            color: $white;
+            background: linear-gradient(
+                $gfl5r-linear-gradient-third,
+                $gfl5r-linear-gradient-third-dark,
+                $gfl5r-linear-gradient-third
+            );
+            background-origin: padding-box;
+            border-image: url("../assets/ui/macro-button.webp") 10 repeat;
+            border-image-width: 0.5rem;
+            border-image-outset: 0px;
+            margin: 0.5rem 0 0;
+            &:hover {
+                background: linear-gradient(
+                    $gfl5r-linear-gradient-first-dark,
+                    $gfl5r-linear-gradient-first,
+                    $gfl5r-linear-gradient-first-dark
+                );
+            }
+        }
+        &.chat-dice-rnk-ended {
+            background: linear-gradient(
+                $gfl5r-linear-gradient-second,
+                $gfl5r-linear-gradient-second-dark,
+                $gfl5r-linear-gradient-second
+            );
+        }
+    }
+    .dice-result-rnk {
+        background: rgba($cyan, 0.1);
+        border: 1px solid rgba($cyan, 0.5);
+        padding: 0.25rem;
+        color: $cyan;
+        text-align: center;
+        font-weight: bold;
+        text-shadow: 0 0 0 $black;
+        &.success {
+            background: rgba($green, 0.1);
+            border-color: rgba($green, 0.5);
+            color: $green;
+            i.i_success {
+                font-size: 1rem;
+            }
+        }
+        &.unknown {
+            background: rgba($white-dim, 0.1);
+            border-color: rgba($white-dim, 0.5);
+            color: $white-dim;
+        }
+        &.fail {
+            background: rgba($red, 0.1);
+            border-color: rgba($red, 0.5);
+            color: $red;
+        }
+    }
+    .target,
+    .item-infos {
+        display: flex;
+        align-items: center;
+        flex: 0 0 100%;
+        margin: 0.5rem 0;
+        padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+        background: $bg-panel-alt;
+        border: solid 1px $border-color;
+        border-radius: 3px;
+        .profile {
+            flex: 1;
+            margin: 0.25rem 0.25rem 0 0;
+            position: relative;
+            .profile-img {
+                position: relative;
+                border: none;
+                filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.66));
+            }
+        }
+        .name {
+            flex: 6;
+            font-family: "Rajdhani", sans-serif;
+        }
+        .content-link {
+            background: unset;
+            border: unset;
+            i {
+                display: none;
+            }
+        }
+    }
+    .item-infos {
+        border: solid 1px rgba($cyan, 0.3);
+        i {
+            font-size: var(--font-size-12);
+        }
+    }
+
+    .dice-container {
+        display: flex;
+    }
+}

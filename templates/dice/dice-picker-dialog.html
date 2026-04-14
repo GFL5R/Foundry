@@ -1,0 +1,192 @@
+<form class="{{cssClass}}" autocomplete="off">
+    {{!-- Profile header (mirrors RnK header / discipline-row__header) --}}
+    <header class="gfl5r profil dp-header">
+        <div class="rnk-corner rnk-corner--tl"></div>
+        <div class="rnk-corner rnk-corner--tr"></div>
+        <div class="rnk-corner rnk-corner--bl"></div>
+        <div class="rnk-corner rnk-corner--br"></div>
+
+        <img class="dp-profile-img" src="{{#if actor.img}}{{actor.img}}{{else}}icons/svg/mystery-man.svg{{/if}}" alt="{{#if actor.name}}{{actor.name}}{{else}}mystery-man{{/if}}" />
+        <div class="dp-header-title">
+            {{#if actor.name}}{{actor.name}}{{else}}—{{/if}}
+        </div>
+        {{> 'systems/gfl5r/templates/actors/character/effects.html'}}
+    </header>
+
+    {{!-- Body --}}
+    <section class="dp-body">
+        {{!-- Approach selection zone --}}
+        <div class="dp-zone dp-zone--approaches">
+            <div class="rnk-corner rnk-corner--tl"></div>
+            <div class="rnk-corner rnk-corner--tr"></div>
+            <div class="rnk-corner rnk-corner--bl"></div>
+            <div class="rnk-corner rnk-corner--br"></div>
+            <div class="dp-zone__header">
+                <span class="dp-zone__label">{{localize "gfl5r.rings.title"}}</span>
+            </div>
+            <div class="dp-zone__body">
+                <ul class="dp-approaches">
+                    {{#each ringsList}}
+                    <li class="dp-approach-row {{this.id}} {{#ifCond ../data.approach.id '==' this.id}}approach-selected{{/ifCond}}">
+                        <input class="dp-approach-input" type="text" name="approach" data-ringid="{{this.id}}" value="{{this.value}}" readonly="readonly" />
+                        <i class="i_{{this.id}}"></i>
+                        <strong>{{this.label}}</strong>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+        {{!-- Skill zone --}}
+        <div class="dp-zone dp-zone--skill">
+            <div class="rnk-corner rnk-corner--tl"></div>
+            <div class="rnk-corner rnk-corner--tr"></div>
+            <div class="rnk-corner rnk-corner--bl"></div>
+            <div class="rnk-corner rnk-corner--br"></div>
+            <div class="dp-zone__header">
+                <span class="dp-zone__label">{{localize "gfl5r.skills.title"}}</span>
+            </div>
+            <div class="dp-zone__body dp-skill-body">
+                {{#if data.skill.name}}
+                    {{#if data.skill.list}}
+                        {{^if useCategory}}
+                            <div class="dp-skill-cat">{{localizeSkill data.skill.cat 'title'}}</div>
+                        {{/if}}
+                        <select class="dp-skill-select" name="skill">
+                        {{#if useCategory}}
+                            {{selectOptions data.skill.list selected=data.skill.cat valueAttr='id' labelAttr='label'}}
+                        {{else}}
+                            {{selectOptions data.skill.list selected=data.skill.id valueAttr='id' labelAttr='label'}}
+                        {{/if}}
+                        </select>
+                    {{else}}
+                        <div class="dp-skill-cat">{{localizeSkill data.skill.cat 'title'}}</div>
+                        {{^if useCategory}}
+                            <div class="dp-skill-name">{{data.skill.name}}</div>
+                        {{/if}}
+                    {{/if}}
+                    <div class="dp-skill-stance">{{localizeSkill data.skill.cat data.approach.id}}</div>
+                    <div class="dp-skill-dice" id="skill_default_value">
+                        <div class="dp-dice-block">
+                            <img src="systems/gfl5r/assets/dices/default/skill_blank.svg" alt="skill" />
+                            <span class="dp-dice-val">{{data.skill.defaultValue}}</span>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="dp-no-skill">
+                        <img src="systems/gfl5r/assets/imgs/noskill.webp" alt="no skill selected" />
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+
+        {{!-- Dice pool row: Difficulty | Approach dice | Skill dice --}}
+        <div class="dp-pool-row">
+            {{!-- Difficulty --}}
+            <div class="dp-zone dp-zone--pool">
+                <div class="rnk-corner rnk-corner--tl"></div>
+                <div class="rnk-corner rnk-corner--tr"></div>
+                <div class="rnk-corner rnk-corner--bl"></div>
+                <div class="rnk-corner rnk-corner--br"></div>
+                <div class="dp-zone__header">
+                    <span class="dp-zone__label">{{localize "gfl5r.dice.dicepicker.difficulty_title"}}</span>
+                </div>
+                <div class="dp-zone__body dp-counter-body">
+                    {{#if data.difficulty.hidden}}
+                        <label class="dp-checkbox">
+                            <input type="checkbox" id="diff_add_fortune_point" name="difficulty.addVoidPoint" value="1" {{checked data.difficulty.addVoidPoint}} />
+                            +1 <i class="i_void" title="{{localize 'gfl5r.dice.dicepicker.fortune_point_tooltip'}}"></i>
+                        </label>
+                    {{else}}
+                        <div class="dp-counter">
+                            <i class="quantity pointer-choice fa fa-minus-square" data-item="difficulty" data-value="-1"></i>
+                            <div class="dp-dice-block">
+                                <img src="systems/gfl5r/assets/dices/default/3d/blank.png" alt="tn" />
+                                <span class="dp-dice-val">
+                                    <input class="dp-dice-input" type="text" name="difficulty.value" value="{{data.difficulty.value}}" readonly="readonly" />
+                                </span>
+                            </div>
+                            <i class="quantity pointer-choice fa fa-plus-square" data-item="difficulty" data-value="1"></i>
+                        </div>
+                    {{/if}}
+                    {{^if difficultyHiddenIsLock}}
+                        <label class="dp-checkbox dp-hide-tn">
+                            <input type="checkbox" id="diff_hidden" name="difficulty.hidden" value="1" {{checked data.difficulty.hidden}} />
+                            {{localize 'gfl5r.dice.dicepicker.difficulty_hidden_label'}}
+                        </label>
+                    {{/if}}
+                </div>
+            </div>
+
+            {{!-- Approach dice --}}
+            <div class="dp-zone dp-zone--pool">
+                <div class="rnk-corner rnk-corner--tl"></div>
+                <div class="rnk-corner rnk-corner--tr"></div>
+                <div class="rnk-corner rnk-corner--bl"></div>
+                <div class="rnk-corner rnk-corner--br"></div>
+                <div class="dp-zone__header">
+                    <span class="dp-zone__label">{{localize "gfl5r.rings.label"}}</span>
+                </div>
+                <div class="dp-zone__body dp-counter-body">
+                    <div class="dp-counter">
+                        <i class="quantity pointer-choice fa fa-minus-square" data-item="approach" data-value="-1"></i>
+                        <div class="dp-dice-block">
+                            <img src="systems/gfl5r/assets/dices/default/ring_blank.svg" alt="approach" />
+                            <span class="dp-dice-val">
+                                <input class="dp-dice-input" type="text" name="approach.value" value="{{data.approach.value}}" readonly="readonly" />
+                            </span>
+                        </div>
+                        <i class="quantity pointer-choice fa fa-plus-square" data-item="approach" data-value="1"></i>
+                    </div>
+                    {{#if canUseVoidPoint}}
+                        <label class="dp-checkbox">
+                            <input type="checkbox" id="use_fortune_point" name="useVoidPoint" value="1" {{checked data.useVoidPoint}} />
+                            {{localize 'gfl5r.dice.dicepicker.use_fortune_point_label'}} <i class="i_void" title="{{localize 'gfl5r.dice.dicepicker.fortune_point_tooltip'}}"></i>
+                        </label>
+                    {{/if}}
+                </div>
+            </div>
+
+            {{!-- Skill dice --}}
+            <div class="dp-zone dp-zone--pool">
+                <div class="rnk-corner rnk-corner--tl"></div>
+                <div class="rnk-corner rnk-corner--tr"></div>
+                <div class="rnk-corner rnk-corner--bl"></div>
+                <div class="rnk-corner rnk-corner--br"></div>
+                <div class="dp-zone__header">
+                    <span class="dp-zone__label">{{localize "gfl5r.skills.title"}}</span>
+                </div>
+                <div class="dp-zone__body dp-counter-body">
+                    <div class="dp-counter">
+                        <i class="quantity pointer-choice fa fa-minus-square" data-item="skill" data-value="-1"></i>
+                        <div class="dp-dice-block">
+                            <img src="systems/gfl5r/assets/dices/default/skill_blank.svg" alt="skill" />
+                            <span class="dp-dice-val">
+                                <input class="dp-dice-val" type="text" name="skill.value" value="{{data.skill.value}}" readonly="readonly" />
+                            </span>
+                        </div>
+                        <i class="quantity pointer-choice fa fa-plus-square" data-item="skill" data-value="1"></i>
+                    </div>
+                    <div class="dp-assistance">
+                        <span class="dp-assist-label"><i class="i_skill"></i> {{localize 'gfl5r.dice.dicepicker.skill_assistance_label'}}</span>
+                        <div class="dp-counter dp-counter--sm">
+                            <i class="assistance pointer-choice fa fa-minus-square" data-item="assistance" data-value="-1"></i>
+                            <div class="dp-dice-block dp-dice-block--sm">
+                                <img src="systems/gfl5r/assets/dices/default/3d/blank.png" alt="assist" />
+                                <span class="dp-dice-val">
+                                    <input class="dp-dice-input" type="text" name="skill.assistance" value="{{data.skill.assistance}}" readonly="readonly" />
+                                </span>
+                            </div>
+                            <i class="assistance pointer-choice fa fa-plus-square" data-item="assistance" data-value="1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Roll button --}}
+        <button class="dp-roll-bt" name="roll" type="submit" {{#if disableSubmit}}disabled{{/if}}>
+            {{localize 'gfl5r.dice.dicepicker.roll_label'}} <i class="fas fa-arrow-circle-right"></i>
+        </button>
+    </section>
+</form>

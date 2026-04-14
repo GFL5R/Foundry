@@ -1,0 +1,8 @@
+<li class="skill-category-wrapper">
+    <h4 class="gfl-panel__label toggle-on-click" data-toggle="toggle-skill-category-{{group.id}}">{{localize group.label}}</h4>
+    <ul class="skill-category-skills-list toggle-skill-category-{{group.id}} {{#ifCond data.storeInfos 'includes' (concat 'toggle-skill-category-' group.id)}}toggle-hidden{{/ifCond}}">
+        {{#each group.skills as |skill|}}
+            {{> 'systems/gfl5r/templates/actors/character/skill.html' categoryId=../group.id skillId=skill.id skill=skill data=../data}}
+        {{/each}}
+    </ul>
+</li>

@@ -1,0 +1,8 @@
+<form class="{{cssClass}} flexcol limited" data-lang="{{localize 'I18N.Language'}}" autocomplete="off">
+    <img class="profile-img full" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+    {{!-- Sheet Header --}}
+    <div class="sheet-header">
+        <h1 class="charname"><input name="name" type="text" value="{{data.name}}" placeholder="Name"/></h1>
+        {{{data.enrichedHtml.description}}}
+    </div>
+</form>

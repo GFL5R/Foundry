@@ -1,0 +1,37 @@
+<section class="standard-form scrollable">
+    {{!-- GM-only: Enable/Disable Tactical Grid --}}
+    {{#if isGm}}
+        <fieldset>
+            {{formGroup tactical_grid_enabled.field value=tactical_grid_enabled.value localize=true}}
+        </fieldset>
+    {{/if}}
+
+    {{!-- Range Band Configuration --}}
+    <div class="range_band">
+        {{#each rangeBands as |band|}}
+            <fieldset>
+                <legend>
+                    {{localize "gfl5r.tactical_grid.range_band" band=band.worldField.name}}
+                </legend>
+                
+                {{!-- GM-only: Range start distance --}}
+                {{#if @root.isGm}}
+                    {{formGroup band.worldField.fields.start 
+                               value=band.worldValue.start 
+                               localize=true 
+                               type="number" 
+                               readonly=(eq band.index 0)}}
+                {{/if}}
+                
+                {{!-- Client: Visual settings --}}
+                {{formGroup band.clientFields.fields.color 
+                           value=band.clientValue.color 
+                           localize=true}}
+                
+                {{formGroup band.clientFields.fields.alpha 
+                           value=band.clientValue.alpha 
+                           localize=true}}
+            </fieldset>
+        {{/each}}
+    </div>
+</section>

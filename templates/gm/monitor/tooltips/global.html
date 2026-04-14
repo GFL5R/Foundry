@@ -1,0 +1,27 @@
+<section>
+    <ul>
+        {{!-- Ninjo/Giri --}}
+        <li><b>{{localize 'gfl5r.social.stress_tell'}}</b> : {{actorData.system.social.stress_tell}}</li>
+        <li><b>{{localize 'gfl5r.social.view_of_dolls'}}</b> : {{actorData.system.social.view_of_dolls}}</li>
+
+        {{!-- Bushido Tenet --}}
+
+        {{!-- Peculiarities --}}
+        <li><b>{{localize 'gfl5r.social.npc.advantages'}}</b> : {{advantages}}</li>
+        <li><b>{{localize 'gfl5r.social.npc.disadvantages'}}</b> : {{disadvantages}}</li>
+
+        {{!-- Honor/Glory/Status --}}
+        <li><b>{{localize 'gfl5r.social.humanity'}}</b> : <span class="{{#ifCond actorData.system.social.humanity '>' 64}}goodvalue{{/ifCond}}{{#ifCond actorData.system.social.humanity '<' 30}}badvalue{{/ifCond}}">{{actorData.system.social.humanity}}</span></li>
+        <li><b>{{localize 'gfl5r.social.fame'}}</b> : <span class="{{#ifCond actorData.system.social.fame '>' 64}}goodvalue{{/ifCond}}{{#ifCond actorData.system.social.fame '<' 20}}badvalue{{/ifCond}}">{{actorData.system.social.fame}}</span></li>
+        <li><b>{{localize 'gfl5r.social.status'}}</b> : {{actorData.system.social.status}}</li>
+    </ul>
+    {{#ifCond actor_type "==" "character"}}
+    {{!-- 20Q --}}
+    <ul>
+        <li><b>{{localize (localize 'gfl5r.twenty_questions.part5.q14{suffix}' suffix=suffix)}}</b> : {{actorData.system.twenty_questions.step14.first_sight}}</li>
+        <li><b>{{localize (localize 'gfl5r.twenty_questions.part5.q15{suffix}' suffix=suffix)}}</b> : {{actorData.system.twenty_questions.step15.stress}}</li>
+        <li><b>{{localize (localize 'gfl5r.twenty_questions.part7.q20{suffix}' suffix=suffix)}}</b> : {{actorData.system.twenty_questions.step20.death}}</li>
+    </ul>
+    {{/ifCond}}
+    <p>{{{actorData.enrichedHtml.description}}}</p>
+</section>

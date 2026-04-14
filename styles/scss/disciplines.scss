@@ -1,0 +1,578 @@
+/** Disciplines tab — full-width row layout with corner accents **/
+
+// -- Shared corner accents (used by both XP row and discipline rows)
+.discipline-card__corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: $yellow-dim;
+    pointer-events: none;
+}
+.discipline-card__corner--tl { top: 0; left: 0; border-top: 2px solid; border-left: 2px solid; }
+.discipline-card__corner--tr { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; }
+.discipline-card__corner--bl { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; }
+.discipline-card__corner--br { bottom: 0; right: 0; border-bottom: 2px solid; border-right: 2px solid; }
+
+// -- XP Summary row
+.discipline-xp-row {
+    display: flex;
+    gap: 0.5rem;
+    padding: 10px 20px;
+    background: $bg-panel-alt;
+    border: 1px solid $border-color;
+    position: relative;
+    overflow: hidden;
+
+    .xp-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex: 1;
+    }
+
+    .xp-label {
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.7rem;
+        color: $yellow;
+        white-space: nowrap;
+    }
+
+    input {
+        width: 3.5rem;
+        height: 1.5rem;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .increment-control {
+        display: flex;
+        gap: 0.15rem;
+        i {
+            font-size: 0.85rem;
+            color: $white-dim;
+            cursor: pointer;
+            &:hover { color: $yellow; }
+        }
+    }
+
+    .fortification-item {
+        flex: 0 0 auto;
+        border-left: 1px solid $border-color;
+        padding-left: 0.5rem;
+    }
+
+    .fortification-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: $yellow;
+    }
+}
+
+// -- Discipline rows container
+.discipline-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+// -- Individual discipline row
+.discipline-row {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid $border-color;
+    background: $bg-panel;
+    width: 100%;
+
+    &.empty {
+        border-style: dashed;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    &.drag-over {
+        border-color: $yellow;
+        box-shadow: 0 0 6px rgba(255, 225, 53, 0.3);
+    }
+}
+
+// -- Row header (mirrors compendium discipline-card__header)
+.discipline-row__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 10px 20px;
+    background: $bg-panel-alt;
+    border-bottom: 1px solid $border-color;
+
+    .discipline-row__img {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        object-fit: cover;
+    }
+
+    .discipline-row__title {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .discipline-row__name {
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        color: $yellow;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 0;
+        padding: 0;
+        border: none;
+        line-height: 1.2;
+    }
+
+    .discipline-row__rank {
+        font-size: 0.7rem;
+        color: $white-dim;
+    }
+
+    .discipline-row__xp {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $white;
+        white-space: nowrap;
+        letter-spacing: 1px;
+    }
+
+    .discipline-remove {
+        font-size: 0.8rem;
+        color: $white-dimmer;
+        cursor: pointer;
+        margin-left: 0.25rem;
+        &:hover { color: $red; }
+    }
+}
+
+// -- Row body (two-column: meta + techniques)
+.discipline-row__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.discipline-row__meta {
+    padding: 12px 20px;
+    border-right: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+// -- Rank progress bar
+.discipline-progress-bar {
+    position: relative;
+    width: 100%;
+    height: 1.2rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    overflow: hidden;
+
+    .discipline-progress-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: $yellow-dim;
+        transition: width 0.3s ease;
+    }
+
+    .discipline-progress-label {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.65rem;
+        color: $white;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+}
+
+// -- Associated skills
+.discipline-row__skills {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .discipline-row__skills-label {
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: $yellow;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .discipline-skills-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .discipline-skill-tag {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        padding: 3px 8px;
+        border: 1px solid $yellow-dim;
+        color: $yellow;
+        text-transform: uppercase;
+    }
+}
+
+// -- Techniques panel
+.discipline-row__techniques {
+    padding: 12px 20px;
+    // Reset .discipline-card overrides from drag-drop binding
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.discipline-row__section-label {
+    font-family: "Rajdhani", "Segoe UI", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $yellow;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 8px 0;
+}
+
+.discipline-tech-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.discipline-tech-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 4px 8px;
+
+    &:nth-child(odd) {
+        background: $gfl5r-odd;
+    }
+
+    img {
+        flex: 0 0 20px;
+        border-radius: 2px;
+    }
+
+    .item-name {
+        flex: 1;
+        font-size: 0.8rem;
+        color: $white;
+        cursor: pointer;
+        &:hover { color: $yellow; }
+    }
+
+    .discipline-tech-remove {
+        font-size: 0.7rem;
+        color: $white-dimmer;
+        cursor: pointer;
+        &:hover { color: $red; }
+    }
+}
+
+// -- Drop hint text
+.discipline-drop-hint {
+    font-size: 0.65rem;
+    color: $white-dimmer;
+    font-style: italic;
+    text-align: center;
+    margin: 0.2rem 0 0;
+    padding: 0;
+}
+
+// -- Perk section label
+.discipline-row__section-label--perk {
+    color: $yellow;
+}
+
+// -- Perk entry
+.discipline-perk-list {
+    margin-bottom: 8px;
+}
+
+.discipline-perk-entry {
+    background: rgba(255, 225, 53, 0.06) !important;
+
+    .discipline-perk-marker {
+        color: $yellow;
+        font-size: 0.65rem;
+        flex: 0 0 auto;
+    }
+
+    .item-name {
+        color: $yellow !important;
+        font-weight: 600;
+    }
+}
+
+// -- Capstone section label
+.discipline-row__section-label--capstone {
+    color: #ff8c42;
+}
+
+// -- Capstone entry
+.discipline-capstone-list {
+    margin-bottom: 8px;
+}
+
+.discipline-capstone-entry {
+    background: rgba(255, 100, 50, 0.08) !important;
+
+    .discipline-capstone-marker {
+        color: #ff8c42;
+        font-size: 0.65rem;
+        flex: 0 0 auto;
+    }
+
+    .item-name {
+        color: #ff8c42 !important;
+        font-weight: 600;
+    }
+}
+
+// -- Empty slot
+.discipline-row__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    // Reset .discipline-card overrides
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+// =============================================================================
+// Discipline Item Sheet (compendium / standalone view)
+// =============================================================================
+
+&.discipline .window-content {
+    padding: 0;
+    background: $bg-primary;
+}
+
+.discipline-sheet-card {
+    background: $bg-panel;
+    border: 1px solid $border-color;
+    position: relative;
+    overflow: hidden;
+
+    .discipline-card__header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 16px 20px;
+        background: $bg-panel-alt;
+        border-bottom: 1px solid $border-color;
+
+        .discipline-sheet-img {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 40px;
+            border: 1px solid $border-color;
+            border-radius: 2px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        h1 {
+            flex: 1;
+            margin: 0;
+        }
+
+        input[name="name"] {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: $yellow;
+            letter-spacing: 2px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            width: 100%;
+            text-transform: uppercase;
+        }
+    }
+
+    .discipline-card__content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        min-height: 300px;
+    }
+
+    .discipline-card__left {
+        padding: 20px;
+        border-right: 1px solid $border-color;
+    }
+
+    .discipline-card__right {
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .discipline-card__flavor {
+        font-style: italic;
+        color: $white-dim;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 16px;
+
+        p { margin-bottom: 10px; }
+    }
+
+    .discipline-card__skills {
+        margin-bottom: 16px;
+
+        h3 {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $yellow;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+        }
+    }
+
+    .discipline-card__perk {
+        background: $bg-panel-alt;
+        padding: 14px;
+        border: 1px solid $border-color;
+
+        h3 {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $yellow;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+        }
+
+        p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 0 0 6px 0;
+        }
+    }
+
+    .discipline-perk-flavor {
+        font-style: italic;
+        color: $white-dim;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+    .discipline-card__right h3 {
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $yellow;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin: 0 0 10px 0;
+    }
+
+    .discipline-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+
+        thead {
+            background: $bg-panel-alt;
+        }
+
+        th {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: $yellow;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid $border-color;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid $border-color;
+            vertical-align: top;
+        }
+    }
+
+    .discipline-table__rank-header th {
+        font-size: 0.75rem;
+        color: $yellow;
+        background: $bg-panel;
+        border-top: 2px solid $border-color;
+    }
+
+    .discipline-table__name {
+        font-weight: 500;
+        color: $white;
+    }
+
+    .discipline-table__type {
+        color: $white-dim;
+        font-size: 0.8rem;
+    }
+
+    .discipline-card__capstone {
+        padding: 16px 20px;
+        background: $bg-panel-alt;
+        border-top: 1px solid $border-color;
+
+        h3 {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $yellow;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+        }
+
+        p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 0 0 6px 0;
+        }
+    }
+
+    .discipline-capstone-flavor {
+        font-style: italic;
+        color: $white-dim;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+}

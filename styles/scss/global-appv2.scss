@@ -1,0 +1,167 @@
+.application {
+    color: var(--color-text-primary);
+
+    .scrollable {
+        --scroll-margin: 0;
+    }
+
+    .window-header {
+        background: linear-gradient(
+            $gfl5r-linear-gradient-second,
+            $gfl5r-linear-gradient-second-dark,
+            $gfl5r-linear-gradient-second
+        );
+        .window-title {
+            font-family: $font-heading;
+            font-size: 1.25rem;
+            color: $yellow;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+        }
+    }
+
+    .window-content {
+        padding: 0.25rem;
+    }
+}
+
+// More specified stuff down here as to not make it too hard to read the overridden defaults
+.application {
+    .window-content {
+        table {
+            background: transparent;
+            border: 1px solid $border-color;
+            thead {
+                background: $bg-panel-alt;
+                color: $yellow;
+                text-shadow: none;
+                border-bottom: 2px solid $yellow;
+                text-transform: uppercase;
+                letter-spacing: 0.05rem;
+                font-size: 0.8rem;
+            }
+            tbody {
+            }
+            tr {
+                &:nth-child(odd) {
+                    background: $gfl5r-odd;
+                }
+                &:nth-child(even) {
+                    background: $gfl5r-even;
+                }
+            }
+        }
+    }
+}
+
+// Handle Sidebar here. Starting with custom icons
+$gfl5r-custom-icons: (
+  chatIcon: "../assets/ui/sidebar/chat.svg",
+  combatIcon: "../assets/ui/sidebar/combat-tracker.svg",
+  sceneIcon: "../assets/ui/sidebar/scenes.svg",
+  actorIcon: "../assets/ui/sidebar/actors.svg",
+  itemIcon: "../assets/ui/sidebar/object.svg",
+  journalIcon: "../assets/ui/sidebar/journal.svg",
+  rolltableIcon: "../assets/ui/sidebar/rolltable.svg",
+  playlistIcon: "../assets/ui/sidebar/playlist.svg",
+  compendiumIcon: "../assets/ui/sidebar/compendium.svg",
+  settingsIcon: "../assets/ui/sidebar/settings.svg"
+);
+
+$selectors: (
+  "#sidebar-tabs button.gfl5r",
+  "#sidebar-content .create-button.gfl5r",
+  "#sidebar-content i.gfl5r"
+);
+
+@each $selector in $selectors {
+  #{$selector} {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    @if str-index($selector, "i.") {
+      width: 2em;
+      height: 2em;
+      color: currentColor;
+    }
+    
+    @if str-index($selector, "create-button") {
+      filter: drop-shadow(0 0 3px var(--color-dark-1));
+    }
+    
+    // Apply masks for each icon
+    @each $name, $url in $gfl5r-custom-icons {
+      &.#{$name}::before {
+        content: "";
+        position: absolute;
+        width: 95%;
+        height: 95%;
+        background-color: currentColor;
+        mask: url($url) no-repeat center / contain;
+        -webkit-mask: url($url) no-repeat center / contain;
+        z-index: 0;
+      }
+    }
+    
+    // Generic plus icon badge
+    &.icon-plus::after {
+      z-index: 2;
+    }
+  }
+}
+
+#sidebar-tabs > menu {
+    gap: 4px; // halve the distance between menu icons
+}
+
+
+#sidebar-content.expanded {
+    background: var(--bg-secondary, #0c1420);
+    border-image: url("../assets/ui/macro-button.webp") 10 repeat;
+    border-style: solid;
+    border-image-width: 0.5rem;
+    border-image-outset: 0px;
+    margin-top: 2px;
+    margin-right: 2px;
+    height: calc(100% - 10px); // use height calculation to add margin at bottom
+
+    .sidebar-tab,.tab {
+        margin: 3px; // center content in sidebar
+        border-radius: 5px; // round of the inside content
+    }
+
+    #chat {
+        margin: unset;
+        padding-right: 4px; // scrollbar should be inside the container
+        .chat-scroll {
+          direction: unset;     // Scrollbar on right
+          scrollbar-color:  var(--color-light-4) var(--color-dark-3);
+          scrollbar-width: thin;
+        }
+    }
+}
+
+// hotbar
+#hotbar {
+    //margin: 0;
+    #action-bar {
+        //flex: 0 0 100%;
+        .slot {
+            border-image: url("../assets/ui/macro-button.webp");
+            border-image-slice: 8 fill;
+            border-image-width: 0.25rem;
+        }
+    }
+}
+
+#menu.active {
+    transition: max-height 150ms ease-in;
+}
+
+#menu {
+    // Foundry listens to transitionend and then close the menu so need something here.
+    // otherwise using ESC will result in a long wait and missed trigger events
+    transition: max-height 10ms ease-out;
+}

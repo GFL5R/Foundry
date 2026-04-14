@@ -1,0 +1,57 @@
+<ul class="attributes-wrapper">
+    <li class="endurance-content">
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.endurance'}}</strong>
+            <input class="centered-input" type="number" name="system.endurance" value="{{data.system.endurance}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.fatigue'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.fatigue.value" value="{{data.system.fatigue.value}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+            <span class="increment-control fatigue">
+                <i class="addsub-control pointer-choice fa fa-plus-square" data-type="fatigue" data-value="1"></i>
+                <i class="addsub-control pointer-choice fa fa-minus-square" data-type="fatigue" data-value="-1"></i>
+            </span>
+        </label>
+        <p class="item-description"> {{localize 'gfl5r.attributes.endurancetip'}}</p>
+    </li>
+    <li class="composure-content">
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.composure'}}</strong>
+            <input class="centered-input" type="number" name="system.composure" value="{{data.system.composure}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.strife'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.strife.value" value="{{data.system.strife.value}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+            <span class="increment-control strife">
+                <i class="addsub-control pointer-choice fa fa-plus-square" data-type="strife" data-value="1"></i>
+                <i class="addsub-control pointer-choice fa fa-minus-square" data-type="strife" data-value="-1"></i>
+            </span>
+        </label>
+        <p class="item-description"> {{localize 'gfl5r.attributes.composuretip'}}</p>
+    </li>
+    <li class="focus-content">
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.focus' }}</strong>
+            <input class="centered-input" type="number" name="system.focus" value="{{data.system.focus}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </label>
+        <p class="item-description"> {{localize 'gfl5r.attributes.focustip'}}</p>
+    </li>
+    <li class="vigilance-content {{#if data.system.is_afflicted_or_compromised}}compromised{{/if}}">
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.vigilance'}}</strong>
+            {{#if data.system.is_afflicted_or_compromised}}
+            <input class="centered-input" type="number" value="1" disabled/>
+            {{else}}
+            <input class="centered-input" type="number" name="system.vigilance" value="{{data.system.vigilance}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+            {{/if}}
+        </label>
+        <p class="item-description"> {{localize 'gfl5r.attributes.vigilancetip'}}</p>
+    </li>
+    <li class="void-content">
+        <label class="attribute-label">
+            <strong>{{localize 'gfl5r.attributes.voidpoints'}}</strong>
+            <input class="centered-input select-on-focus" type="number" name="system.fortune_points.value" value="{{data.system.fortune_points.value}}" data-dtype="Number" placeholder="0" min="0" max="{{data.system.fortune_points.max}}" {{^if data.editable}}disabled{{/if}}/>
+            <input class="centered-input" type="number" name="system.fortune_points.max" value="{{data.system.fortune_points.max}}" data-dtype="Number" disabled/>
+        </label>
+    </li>
+</ul>

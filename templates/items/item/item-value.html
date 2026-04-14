@@ -1,0 +1,18 @@
+<label class="value">
+    {{localize 'gfl5r.sheets.quantity'}}
+    <input class="select-on-focus" type="number" name="system.quantity" value="{{data.system.quantity}}" data-dtype="Number" min="0" placeholder="0"/>
+</label>
+{{#unless hideWeight}}
+<label class="value">
+    {{localize 'gfl5r.sheets.weight'}}
+    <input class="select-on-focus" type="number" name="system.weight" value="{{data.system.weight}}" data-dtype="Number" min="0" placeholder="0"/>
+</label>
+{{/unless}}
+<label class="value">
+    {{localize 'gfl5r.sheets.rarity'}}
+    <input class="select-on-focus" type="text" name="system.rarity" value="{{data.system.rarity}}" data-dtype="String" min="0" placeholder="0"/>
+</label>
+<label class="value">
+    <i class="fas fa-coins"></i>
+    <input class="select-on-focus" type="text" name="system.price" value="{{data.system.price}}" data-dtype="String" min="0" placeholder="0"/>
+</label>

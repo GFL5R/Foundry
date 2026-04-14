@@ -1,0 +1,133 @@
+{{!-- XP Summary --}}
+<div class="discipline-xp-row">
+    <div class="discipline-card__corner discipline-card__corner--tl"></div>
+    <div class="discipline-card__corner discipline-card__corner--tr"></div>
+    <div class="discipline-card__corner discipline-card__corner--bl"></div>
+    <div class="discipline-card__corner discipline-card__corner--br"></div>
+
+    <div class="xp-item">
+        <span class="xp-label">{{localize 'gfl5r.advancements.xp_total'}}</span>
+        <input class="centered-input select-on-focus" type="number" name="system.xp_total" value="{{data.system.xp_total}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        {{#if data.editable}}
+        <span class="increment-control xp">
+            <i class="xp-control pointer-choice fa fa-plus-square" data-type="xp" data-value="1"></i>
+            <i class="xp-control pointer-choice fa fa-minus-square" data-type="xp" data-value="-1"></i>
+        </span>
+        {{/if}}
+    </div>
+    <div class="xp-item">
+        <span class="xp-label">{{localize 'gfl5r.advancements.xp_spent'}}</span>
+        <input class="centered-input" type="number" value="{{data.system.xp_spent}}" disabled/>
+    </div>
+    <div class="xp-item">
+        <span class="xp-label">{{localize 'gfl5r.advancements.xp_saved'}}</span>
+        <input class="centered-input" type="number" value="{{data.system.xp_saved}}" disabled/>
+    </div>
+    <div class="xp-item fortification-item">
+        <span class="xp-label">{{localize 'gfl5r.disciplines.fortification'}}</span>
+        <span class="fortification-value">{{fortification}}</span>
+    </div>
+</div>
+
+{{!-- Discipline Rows --}}
+<div class="discipline-rows">
+    {{#each data.disciplineCards as |card|}}
+    <div class="discipline-row {{#if card.active}}active{{else}}empty{{/if}}" data-slot="{{card.slotKey}}">
+        <div class="discipline-card__corner discipline-card__corner--tl"></div>
+        <div class="discipline-card__corner discipline-card__corner--tr"></div>
+        <div class="discipline-card__corner discipline-card__corner--bl"></div>
+        <div class="discipline-card__corner discipline-card__corner--br"></div>
+
+        {{#if card.active}}
+        {{!-- Header --}}
+        <div class="discipline-row__header">
+            {{#if card.img}}
+            <img class="discipline-row__img" src="{{card.img}}" title="{{card.name}}" />
+            {{/if}}
+            <div class="discipline-row__title">
+                <h3 class="discipline-row__name gfl5r-tooltip" data-item-id="{{card.disciplineId}}">{{card.name}}</h3>
+                <span class="discipline-row__rank">{{localize 'gfl5r.disciplines.rank'}} {{card.currentRank}} ({{card.ranksCompleted}} {{localize 'gfl5r.disciplines.ranks_completed'}})</span>
+            </div>
+            <span class="discipline-row__xp">{{card.xpSpent}} {{localize 'gfl5r.global.xp'}}</span>
+            {{#if ../data.editable}}
+            <a class="discipline-remove" data-slot="{{card.slotKey}}" title="{{localize 'gfl5r.disciplines.remove_discipline'}}"><i class="fas fa-times"></i></a>
+            {{/if}}
+        </div>
+
+        {{!-- Body --}}
+        <div class="discipline-row__body">
+            {{!-- Left: progress + skills --}}
+            <div class="discipline-row__meta">
+                <div class="discipline-progress-bar" data-current="{{card.rankXp}}" data-max="{{card.rankNeeded}}">
+                    <div class="discipline-progress-fill"></div>
+                    <span class="discipline-progress-label">{{card.rankXp}} / {{card.rankNeeded}} {{localize 'gfl5r.disciplines.xp_to_rank'}} {{card.currentRank}}</span>
+                </div>
+
+                {{#if card.associatedSkills.length}}
+                <div class="discipline-row__skills">
+                    <span class="discipline-row__skills-label">{{localize 'gfl5r.disciplines.associated_skills'}}</span>
+                    <div class="discipline-skills-list">
+                        {{#each card.associatedSkills}}
+                        <span class="discipline-skill-tag">{{this}}</span>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+
+            {{!-- Right: perk, capstone, techniques --}}
+            <div class="discipline-row__techniques discipline-card" data-slot="{{card.slotKey}}">
+
+                {{!-- Perk section --}}
+                {{#if card.perkItem}}
+                <h4 class="discipline-row__section-label discipline-row__section-label--perk">{{localize 'gfl5r.disciplines.perk'}}</h4>
+                <ul class="discipline-tech-list discipline-perk-list">
+                    <li class="discipline-tech-entry discipline-perk-entry">
+                        <i class="discipline-perk-marker fas fa-star" title="{{localize 'gfl5r.disciplines.perk'}}"></i>
+                        <img src="{{card.perkItem.img}}" width="20" height="20" />
+                        <span class="item-name gfl5r-tooltip" data-item-id="{{card.perkItem._id}}">{{card.perkItem.name}}</span>
+                    </li>
+                </ul>
+                {{/if}}
+
+                {{!-- Capstone section (only when rank 3 complete) --}}
+                {{#if card.capstoneItem}}
+                <h4 class="discipline-row__section-label discipline-row__section-label--capstone">{{localize 'gfl5r.disciplines.capstone'}}</h4>
+                <ul class="discipline-tech-list discipline-capstone-list">
+                    <li class="discipline-tech-entry discipline-capstone-entry">
+                        <i class="discipline-capstone-marker fas fa-crown" title="{{localize 'gfl5r.disciplines.capstone'}}"></i>
+                        <img src="{{card.capstoneItem.img}}" width="20" height="20" />
+                        <span class="item-name gfl5r-tooltip" data-item-id="{{card.capstoneItem._id}}">{{card.capstoneItem.name}}</span>
+                    </li>
+                </ul>
+                {{/if}}
+
+                {{!-- Techniques section --}}
+                <h4 class="discipline-row__section-label">{{localize 'gfl5r.disciplines.techniques'}}</h4>
+
+                {{#if card.techniques.length}}
+                <ul class="discipline-tech-list">
+                    {{#each card.techniques as |tech|}}
+                    <li class="discipline-tech-entry">
+                        <img src="{{tech.img}}" width="20" height="20" />
+                        <span class="item-name gfl5r-tooltip {{#if tech.system.skill}}dice-picker-tech{{/if}}" data-item-id="{{tech.itemId}}">{{tech.name}}</span>
+                        {{#if ../../../data.editable}}
+                        <i class="discipline-tech-remove fas fa-times" data-tech-id="{{tech.itemId}}" title="{{localize 'gfl5r.disciplines.remove_technique'}}"></i>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+
+                <p class="discipline-drop-hint">{{localize 'gfl5r.disciplines.drop_techniques_here'}}</p>
+            </div>
+        </div>
+        {{else}}
+        {{!-- Empty slot --}}
+        <div class="discipline-row__empty discipline-card" data-slot="{{card.slotKey}}">
+            <p class="discipline-drop-hint">{{localize 'gfl5r.disciplines.drop_discipline_here'}}</p>
+        </div>
+        {{/if}}
+    </div>
+    {{/each}}
+</div>

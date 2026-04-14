@@ -1,0 +1,36 @@
+<div class="{{cssClass}}" data-actor-id="{{actor._id}}" data-item-id="{{data._id}}">
+    <header class="card-header">
+        <h2 class="item-name"><img src="{{data.img}}" title="{{data.name}}" /> {{data.name}}</h2>
+    </header>
+    <section class="sheet-body">
+        <ul>
+            <li>
+                <strong>{{localize 'gfl5r.approaches.title'}}</strong> : {{localizeApproach data.system.approach}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.types'}}</strong> : {{localizeTechnique data.system.technique_type}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.skills.title'}}</strong> : {{data.system.skill}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.dice.dicepicker.difficulty_title'}}</strong> : {{data.system.difficulty}}
+            </li>
+            <li>
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.advancements.cost'}}</strong> : {{data.system.xp_cost}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.advancements.spent'}}</strong> : {{data.system.xp_used}}
+            </li>
+            <li>
+                <strong>{{localize 'gfl5r.sheets.rank'}}</strong> : {{data.system.rank_required}}
+            </li>
+            <li>
+            </li>
+        </ul>
+        
+        {{> 'systems/gfl5r/templates/items/item/item-text-partial-reference.html'}}
+    </section>
+</div>

@@ -1,0 +1,86 @@
+<div class="techniques-wrapper">
+    {{!-- technique types --}}
+    <div class="gfl-panel technique-types-panel">
+        <div class="discipline-card__corner discipline-card__corner--tl"></div>
+        <div class="discipline-card__corner discipline-card__corner--tr"></div>
+        <div class="discipline-card__corner discipline-card__corner--bl"></div>
+        <div class="discipline-card__corner discipline-card__corner--br"></div>
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">{{localize 'gfl5r.techniques.type'}}</span>
+        </div>
+        <div class="gfl-panel__body checklist">
+            {{#each data.techniquesList as |technique|}}
+            {{#ifCond ../data.editable '||' (lookup ../data.system technique.id)}}
+                <label class="checklist-tag">
+                    <input type="checkbox" name="system.techniques.{{technique.id}}" {{checked (lookup ../data.system technique.id)}} {{^if ../data.editable}}disabled{{/if}} />
+                    {{technique.label}}
+                </label>
+            {{/ifCond}}
+            {{/each}}
+        </div>
+    </div>
+    {{!-- Perks section --}}
+    {{#if data.perkTechniques.length}}
+    <div class="gfl-panel technique-category-panel technique-category-panel--perk">
+        <div class="discipline-card__corner discipline-card__corner--tl"></div>
+        <div class="discipline-card__corner discipline-card__corner--tr"></div>
+        <div class="discipline-card__corner discipline-card__corner--bl"></div>
+        <div class="discipline-card__corner discipline-card__corner--br"></div>
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label gfl-panel__label--perk"><i class="fas fa-star"></i> {{localize 'gfl5r.disciplines.perk'}}</span>
+        </div>
+        <div class="gfl-panel__body">
+            <ul class="item-list">
+                {{#each data.perkTechniques as |item id|}}
+                    {{> 'systems/gfl5r/templates/items/technique/technique-entry.html' technique=item editable=../data.editable}}
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    {{/if}}
+
+    {{!-- Capstones section --}}
+    {{#if data.capstoneTechniques.length}}
+    <div class="gfl-panel technique-category-panel technique-category-panel--capstone">
+        <div class="discipline-card__corner discipline-card__corner--tl"></div>
+        <div class="discipline-card__corner discipline-card__corner--tr"></div>
+        <div class="discipline-card__corner discipline-card__corner--bl"></div>
+        <div class="discipline-card__corner discipline-card__corner--br"></div>
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label gfl-panel__label--capstone"><i class="fas fa-crown"></i> {{localize 'gfl5r.disciplines.capstone'}}</span>
+        </div>
+        <div class="gfl-panel__body">
+            <ul class="item-list">
+                {{#each data.capstoneTechniques as |item id|}}
+                    {{> 'systems/gfl5r/templates/items/technique/technique-entry.html' technique=item editable=../data.editable}}
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    {{/if}}
+
+    {{!-- technique list --}}
+    {{#each data.splitTechniquesList as |list technique|}}
+    <div class="gfl-panel technique-category-panel">
+        <div class="discipline-card__corner discipline-card__corner--tl"></div>
+        <div class="discipline-card__corner discipline-card__corner--tr"></div>
+        <div class="discipline-card__corner discipline-card__corner--bl"></div>
+        <div class="discipline-card__corner discipline-card__corner--br"></div>
+        <div class="gfl-panel__header technique-controls">
+            <span class="gfl-panel__label toggle-on-click" data-toggle="toggle-technique-category-{{technique}}">
+                {{localize (localize 'gfl5r.techniques.{technique}' technique=technique)}}
+            </span>
+            {{#ifCond ../data.editable '&&' (lookup ../data.system technique)}}
+                <a data-item-type="technique" class="technique-control item-add gfl-panel__add" data-tech-type="{{technique}}" title="{{localize 'gfl5r.global.add'}}"><i class="fas fa-plus"></i></a>
+            {{/ifCond}}
+        </div>
+        <div class="gfl-panel__body">
+            <ul class="item-list toggle-technique-category-{{technique}} {{#ifCond ../data.storeInfos 'includes' (concat 'toggle-technique-category-' technique)}}toggle-hidden{{/ifCond}}">
+                {{#each list as |item id|}}
+                    {{> 'systems/gfl5r/templates/items/technique/technique-entry.html' technique=item editable=../../data.editable}}
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    {{/each}}
+</div>

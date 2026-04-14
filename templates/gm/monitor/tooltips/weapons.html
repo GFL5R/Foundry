@@ -1,0 +1,21 @@
+{{#if readied}}
+<h2>{{localize 'gfl5r.weapons.readied'}}</h2>
+<section>
+    <ul>
+        {{#each readied as |weapon|}}
+        <li>{{{weapon}}}</li>
+        {{/each}}
+    </ul>
+</section>
+{{/if}}
+
+{{#if sheathed}}
+<h2>{{localize 'gfl5r.weapons.sheathed'}}</h2>
+<section>
+    <ul>
+        {{#each sheathed as |weapon|}}
+        <li>{{{weapon}}}</li>
+        {{/each}}
+    </ul>
+</section>
+{{/if}}

@@ -1,0 +1,107 @@
+<div class="{{cssClass}}" data-actor-id="{{data._id}}">
+    <header class="card-header">
+        <h2 class="item-name">{{data.name}}</h2>
+    </header>
+    <section class="sheet-body">
+        {{#if data.img}}<p><img src="{{data.img}}" title="{{data.name}}" /></p>{{/if}}
+
+        {{!-- Identity --}}
+        <h2>{{localize 'gfl5r.identity.title'}}</h2>
+        <ul>
+            <li>{{localize 'gfl5r.identity.character_type'}} : {{data.system.identity.characterType}}</li>
+            {{#if data.system.identity.nationality}}<li>{{localize 'gfl5r.identity.nationality'}} : {{data.system.identity.nationality}}</li>{{/if}}
+            {{#if data.system.identity.background}}<li>{{localize 'gfl5r.identity.background'}} : {{data.system.identity.background}}</li>{{/if}}
+            {{#if data.system.identity.frame}}<li>{{localize 'gfl5r.identity.frame'}} : {{data.system.identity.frame}}</li>{{/if}}
+            {{#if data.system.identity.manufacturer}}<li>{{localize 'gfl5r.identity.manufacturer'}} : {{data.system.identity.manufacturer}}</li>{{/if}}
+        </ul>
+
+        {{!-- Approaches --}}
+        <h2>{{localize 'gfl5r.approaches.title'}}</h2>
+        <ul>
+            {{#each data.system.approaches as |value key|}}
+            <li>{{localize (concat 'gfl5r.approaches.' key)}} : {{value}}</li>
+            {{/each}}
+        </ul>
+
+        {{!-- Derived Attributes --}}
+        <h2>{{localize 'gfl5r.attributes.title'}}</h2>
+        <ul>
+            <li>{{localize 'gfl5r.attributes.endurance'}} : {{data.system.endurance}}</li>
+            <li>{{localize 'gfl5r.attributes.composure'}} : {{data.system.composure}}</li>
+            <li>{{localize 'gfl5r.attributes.focus'}} : {{data.system.focus}}</li>
+            <li>{{localize 'gfl5r.attributes.vigilance'}} : {{data.system.vigilance}}</li>
+        </ul>
+
+        {{!-- Social --}}
+        <h2>{{localize 'gfl5r.social.title'}}</h2>
+        <ul>
+            <li>{{localize 'gfl5r.social.humanity'}} : {{data.system.social.humanity}}</li>
+            <li>{{localize 'gfl5r.social.fame'}} : {{data.system.social.fame}}</li>
+            <li>{{localize 'gfl5r.social.status'}} : {{data.system.social.status}}</li>
+        </ul>
+
+        {{!-- Skills --}}
+        {{#if data.system.skills}}
+        <h2>{{localize 'gfl5r.skills.title'}}</h2>
+        <ul>
+            {{#each data.system.skills as |value key|}}
+            {{#if value}}<li>{{localize (concat 'gfl5r.skills.' key)}} : {{value}}</li>{{/if}}
+            {{/each}}
+        </ul>
+        {{/if}}
+
+        {{!-- Techniques --}}
+        <h2>{{localize 'gfl5r.techniques.title'}}</h2>
+        <ul>
+        {{#each data.items as |item|}}
+            {{#ifCond item.type '==' 'technique'}}
+                <li>{{item.name}} ({{item.system.technique_type}})</li>
+            {{/ifCond}}
+        {{/each}}
+        </ul>
+
+        {{!-- Narrative Traits --}}
+        <h2>{{localize 'gfl5r.narrative.title'}}</h2>
+        <ul>
+        {{#each data.items as |item|}}
+            {{#ifCond item.type '==' 'narrative'}}
+                <li>{{item.name}} ({{item.system.narrative_type}})</li>
+            {{/ifCond}}
+        {{/each}}
+        </ul>
+
+        {{!-- Inventory --}}
+        <h2>{{localize 'gfl5r.sheets.inventory'}}</h2>
+        <ul>
+        {{#each data.items as |item|}}
+            {{#ifCond item.type '==' 'weaponry'}}
+                <li>{{item.name}} ({{localize 'gfl5r.weapons.damage'}}: {{item.system.damage}}, {{localize 'gfl5r.weapons.deadliness'}}: {{item.system.deadliness}})</li>
+            {{/ifCond}}
+            {{#ifCond item.type '==' 'armor'}}
+                <li>{{item.name}} ({{localize 'gfl5r.armor.protection'}}: {{item.system.protection}})</li>
+            {{/ifCond}}
+            {{#ifCond item.type '==' 'item'}}
+                <li>{{item.name}} x{{item.system.quantity}}</li>
+            {{/ifCond}}
+        {{/each}}
+        </ul>
+
+        {{!-- XP --}}
+        <h2>{{localize 'gfl5r.advancements.title'}}</h2>
+        <ul>
+            <li>{{localize 'gfl5r.advancements.xp_total'}} : {{data.system.xp_total}}</li>
+            <li>{{localize 'gfl5r.advancements.xp_spent'}} : {{data.system.xp_spent}}</li>
+        </ul>
+
+        {{!-- Notes --}}
+        {{#if data.system.notes}}
+        <h2>{{localize 'gfl5r.sheets.notes'}}</h2>
+        <div>{{{data.enrichedHtml.notes}}}</div>
+        {{/if}}
+
+        {{#if data.system.description}}
+        <h2>{{localize 'gfl5r.sheets.description'}}</h2>
+        <div>{{{data.enrichedHtml.description}}}</div>
+        {{/if}}
+    </section>
+</div>
