@@ -55,7 +55,10 @@
             "precision": "Precision",
             "swiftness": "Swiftness",
             "resilience": "Resilience",
-            "fortune": "Fortune"
+            "fortune": "Fortune",
+            "warning": {
+                "highest_exceeds_two_lowest": "Cannot set approach: the highest approach cannot exceed the sum of the two lowest."
+            }
         },
         "rings": {
             "title": "Approaches",

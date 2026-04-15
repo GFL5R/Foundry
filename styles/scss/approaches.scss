@@ -1,92 +1,130 @@
-/** Approaches — clean card table layout **/
+/** Approaches — skill-card-style fixed-width cards, strict 3 top / 2 bottom **/
 
 .approaches {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 0;
+    // 6-column grid where each card spans 2 cols → exactly 3 per row.
+    // Items 4 and 5 are explicitly placed to center them in the second row.
+    display: grid;
+    grid-template-columns: repeat(6, 2.825rem); // card spans 2 cols: 2×2.825 + 0.35gap = 6rem
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.5rem;
     margin: 0;
-    border: 1px solid $border-color;
-    border-radius: 2px;
+    width: 100%;
+    border: none;
+    list-style: none;
 
-    .approach-row {
+    .approach-card              { grid-column: span 2; }
+    .approach-card:nth-child(4) { grid-column: 2 / span 2; }
+    .approach-card:nth-child(5) { grid-column: 4 / span 2; }
+
+    // -- Card base
+    .approach-card {
         display: flex;
-        align-items: center;
-        padding: 0.35rem 0.5rem;
-        border-bottom: 1px solid $border-color;
-        gap: 0.5rem;
+        flex-direction: column;
+        background: $bg-panel-alt;
+        border: 1px solid $border-color;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
-        &:last-child {
-            border-bottom: none;
+        &:hover {
+            border-color: $border-glow;
+            box-shadow: 0 0 4px $yellow-glow;
         }
 
-        &:nth-child(odd) {
-            background: $gfl5r-odd;
-        }
-        &:nth-child(even) {
-            background: $gfl5r-even;
-        }
-
-        // Approach icon
-        i {
-            flex: 0 0 1.5rem;
-            font-size: 1.5rem;
-            line-height: 1.5rem;
-        }
-
-        label {
+        // -- Header: icon (absolute) + centered title
+        .approach-card__header {
+            position: relative;
             display: flex;
             align-items: center;
-            flex: 1;
-            gap: 0.5rem;
-            cursor: pointer;
+            justify-content: center;
+            padding: 4px 6px 2px;
+            border-bottom: 1px solid $border-color;
+            background: rgba(0, 0, 0, 0.25);
+            min-height: 1.6rem;
 
-            strong {
-                flex: 1;
-                font-family: $font-heading;
-                text-transform: uppercase;
-                letter-spacing: 0.05rem;
-                font-size: 0.85rem;
-                font-weight: 600;
-            }
-
-            &.stance-active strong {
-                text-decoration: underline 2px;
+            i {
+                position: absolute;
+                left: 0.3rem;
+                font-size: 1rem;
+                line-height: 1;
             }
         }
 
-        input {
-            width: 2.5rem;
-            height: 2rem;
+        .approach-card__title {
+            width: 100%;
+            font-size: 0.7rem;
+            line-height: 1.1;
+            color: $white-dim;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
             text-align: center;
-            font-size: 1.1rem;
+
+            &.stance-active {
+                text-decoration: underline 2px;
+                color: $yellow;
+            }
+        }
+
+        // -- Body: − value +
+        .approach-card__body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 6px;
+            gap: 4px;
+        }
+
+        .approach-card__value {
+            flex: 1 1 auto;
+            width: auto;
+            min-width: 0;
+            height: 1.6rem;
+            background: transparent;
+            border: none;
+            color: $white;
+            text-align: center;
+            font-family: "Share Tech Mono", monospace;
+            font-size: 1.05rem;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.07);
+            padding: 0;
+
+            &:focus { outline: 1px solid $border-glow; }
+        }
+
+        .approach-card__btn {
+            flex: 0 0 auto;
+            width: 1.4rem;
+            height: 1.4rem;
+            padding: 0;
+            line-height: 1;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: $yellow;
+            background: rgba(0, 0, 0, 0.35);
             border: 1px solid $border-color;
             border-radius: 2px;
-            color: $white;
+            cursor: pointer;
+            font-family: "Share Tech Mono", monospace;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+            &:hover:not(:disabled) {
+                background: $yellow-glow;
+                border-color: $border-glow;
+                color: $yellow;
+                text-shadow: 0 0 4px $yellow-glow-strong;
+            }
+
+            &:disabled {
+                opacity: 0.35;
+                cursor: not-allowed;
+                color: $white-dimmer;
+            }
         }
     }
 
-    // Per-approach colors
-    #power {
-        i, label strong { color: $gfl5r-power; }
-        input { border-color: rgba($gfl5r-power, 0.4); }
-    }
-    #precision {
-        i, label strong { color: $gfl5r-precision; }
-        input { border-color: rgba($gfl5r-precision, 0.4); }
-    }
-    #swiftness {
-        i, label strong { color: $gfl5r-swiftness; }
-        input { border-color: rgba($gfl5r-swiftness, 0.4); }
-    }
-    #resilience {
-        i, label strong { color: $gfl5r-resilience; }
-        input { border-color: rgba($gfl5r-resilience, 0.4); }
-    }
-    #fortune {
-        i, label strong { color: $gfl5r-fortune; }
-        input { border-color: rgba($gfl5r-fortune, 0.4); }
-    }
+    // -- Per-approach accent colors
+    #power   { border-color: rgba($gfl5r-power,     0.4); .approach-card__header i, .approach-card__title { color: $gfl5r-power;     } }
+    #precision { border-color: rgba($gfl5r-precision, 0.4); .approach-card__header i, .approach-card__title { color: $gfl5r-precision; } }
+    #swiftness { border-color: rgba($gfl5r-swiftness, 0.4); .approach-card__header i, .approach-card__title { color: $gfl5r-swiftness; } }
+    #resilience { border-color: rgba($gfl5r-resilience, 0.4); .approach-card__header i, .approach-card__title { color: $gfl5r-resilience; } }
+    #fortune  { border-color: rgba($gfl5r-fortune,   0.4); .approach-card__header i, .approach-card__title { color: $gfl5r-fortune;   } }
 }

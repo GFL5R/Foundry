@@ -1,6 +1,6 @@
 /** Sheets **/
 &.sheet {
-    min-width: 37rem;
+    min-width: 50rem;
 
     label {
         &:hover {
@@ -319,6 +319,7 @@
         background: $bg-panel;
         padding: 0.5rem;
         flex-wrap: wrap;
+        align-content: flex-start;
         min-height: calc(100% - 3.25rem);
 
         // Narrative tab layout
@@ -374,6 +375,7 @@
         // Conflict tab
         .initiative-panel {
             flex: 100%;
+            align-self: flex-start;
             margin-bottom: 0.5rem;
         }
         .initiative-buttons {
@@ -384,6 +386,7 @@
         }
         .stances-panel {
             flex: 100%;
+            align-self: flex-start;
             margin-bottom: 0.5rem;
         }
         .stances-content {

@@ -243,6 +243,9 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
         // Heat +/-
         html.find(".heat-control").on("click", this._modifyHeat.bind(this));
 
+        // Approach rank +/- (spends XP)
+        html.find(".approach-rank-control").on("click", this._modifyApproachRank.bind(this));
+
         // Skill rank +/- (spends XP)
         html.find(".skill-rank-control").on("click", this._modifySkillRank.bind(this));
 
@@ -313,6 +316,19 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
     }
 
     /**
+     * Cumulative XP cost to reach the given approach rank from the free baseline of 1.
+     * Each rank N costs N × approachCostMultiplier, so cumulative = mult × N(N+1)/2.
+     * Subtract the cost of rank 1 (which is free) to get net XP spent.
+     * @param {number} rank
+     * @returns {number}
+     */
+    static cumulativeApproachXp(rank) {
+        const r = Math.max(0, parseInt(rank) || 0);
+        const mult = CONFIG.gfl5r.xp.approachCostMultiplier;
+        return mult * (r * (r + 1)) / 2;
+    }
+
+    /**
      * Compute XP spent from all advancement and technique items
      */
     _prepareAdvancement(sheetData) {
@@ -339,6 +355,14 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
             sheetData.data.system.xp_spent +=
                 CharacterSheetGfl5r.cumulativeSkillXp(rank) -
                 CharacterSheetGfl5r.cumulativeSkillXp(free);
+        }
+
+        // Include cumulative XP cost of all approach ranks above the free baseline of 1
+        const approaches = sheetData.data.system.approaches || {};
+        for (const rank of Object.values(approaches)) {
+            sheetData.data.system.xp_spent +=
+                CharacterSheetGfl5r.cumulativeApproachXp(parseInt(rank) || 1) -
+                CharacterSheetGfl5r.cumulativeApproachXp(1);
         }
     }
 
@@ -470,6 +494,52 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
             system: {
                 heat: Math.max(0, this.actor.system.heat + mod),
             },
+        });
+    }
+
+    /**
+     * Increase or decrease an approach rank, spending or refunding XP.
+     * Cost per rank: newRank × approachCostMultiplier (3).
+     * Constraint: the highest approach value must not exceed the sum of the two lowest.
+     * @param {Event} event
+     * @private
+     */
+    async _modifyApproachRank(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const elmt = $(event.currentTarget);
+        const approachId = elmt.data("approach");
+        const mod = parseInt(elmt.data("mod"));
+        if (!approachId || !mod) return;
+
+        const currentRank = parseInt(this.actor.system.approaches?.[approachId]) || 1;
+        const newRank = currentRank + mod;
+
+        if (newRank < 1 || newRank > 9) return;
+
+        // XP check when incrementing
+        if (mod > 0) {
+            const cost = newRank * CONFIG.gfl5r.xp.approachCostMultiplier;
+            const xpAvailable = (this.actor.system.xp_total || 0) - (this.actor.system.xp_spent || 0);
+            if (xpAvailable < cost) {
+                ui.notifications.warn(game.i18n.localize("gfl5r.advancements.warning.total_less_then_spent"));
+                return;
+            }
+        }
+
+        // Validation: highest approach must not exceed sum of the two lowest
+        const allApproaches = { ...this.actor.system.approaches, [approachId]: newRank };
+        const values = Object.values(allApproaches).map(v => parseInt(v) || 1).sort((a, b) => a - b);
+        const highest = values[values.length - 1];
+        const twoLowestSum = values[0] + values[1];
+        if (highest > twoLowestSum) {
+            ui.notifications.warn(game.i18n.localize("gfl5r.approaches.warning.highest_exceeds_two_lowest"));
+            return;
+        }
+
+        await this.actor.update({
+            [`system.approaches.${approachId}`]: newRank,
         });
     }
 
