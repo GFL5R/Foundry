@@ -33,6 +33,25 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Bump patch version in system.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'EOF'
+          import json, pathlib
+          p = pathlib.Path("system.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          major, minor, patch = data["version"].split(".")
+          data["version"] = f"{major}.{minor}.{int(patch) + 1}"
+          p.write_text(json.dumps(data, indent=4, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(f"Bumped version to {data['version']}")
+          EOF
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add system.json
+          git commit -m "chore: bump patch version [skip ci]"
+          git push
+
       - name: Install system dependencies for plyvel
         run: |
           sudo apt-get update
@@ -73,8 +92,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
           git tag -f "${{ steps.version.outputs.tag }}"
           git push origin -f "refs/tags/${{ steps.version.outputs.tag }}"
 
