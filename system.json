@@ -4,8 +4,8 @@
     "description": "A Foundry VTT system for GFL5R, a near-future military sci-fi tabletop RPG. Forked from L5R5E by Vlyan, Mandar, Carter, and Litasa. Original L5R5E system licensed under CC BY-NC-SA 4.0 by Edge Studio.",
     "url": "https://github.com/GFL5R/Foundry",
     "manifest": "https://github.com/GFL5R/Foundry/releases/latest/download/system.json",
-    "download": "https://github.com/GFL5R/Foundry/releases/download/v0.1.2/gfl5r.zip",
-    "version": "0.1.2",
+    "download": "https://github.com/GFL5R/Foundry/releases/download/v0.1.3/gfl5r.zip",
+    "version": "0.1.3",
     "compatibility": {
         "minimum": "13",
         "verified": "14",
