@@ -3,7 +3,7 @@
     "title": "Girls' Frontline: Legend of the Five Rings (GFL5R)",
     "description": "A Foundry VTT system for GFL5R, a near-future military sci-fi tabletop RPG. Forked from L5R5E by Vlyan, Mandar, Carter, and Litasa. Original L5R5E system licensed under CC BY-NC-SA 4.0 by Edge Studio.",
     "url": "https://github.com/GFL5R/gfl5r-foundry",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "compatibility": {
         "minimum": "13",
         "verified": "14",
