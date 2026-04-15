@@ -1,19 +1,19 @@
 <li class="item weapon flexcol">
     <ul class="item-header item-control">
         <li class="item-img"><img src="{{weapon.img}}" title="{{weapon.name}}" width="32px" height="32px"/></li>
-        <li class="item-name dice-picker gfl5r-tooltip" data-item-id="{{weapon.id}}" data-weapon-id="{{weapon.id}}">{{weapon.name}}</li>
+        <li class="item-name dice-picker gfl5r-tooltip" data-item-id="{{weapon._id}}" data-weapon-id="{{weapon._id}}">{{weapon.name}}</li>
         <li class="icon-stat-container">
             <i class="fas fa-arrows-alt-h" title="{{localize 'gfl5r.weapons.range'}}"> {{weapon.system.ideal_range}}</i>
             <i class="fas fa-tint" title="{{localize 'gfl5r.weapons.damage'}}"> {{weapon.system.damage}}</i>
             <i class="fas fa-skull" title="{{localize 'gfl5r.weapons.deadliness'}}"> {{weapon.system.deadliness}}</i>
         </li>
         {{#if editable}}
-        <li data-item-id="{{weapon.id}}" class="item-edit" title="{{localize 'gfl5r.global.edit'}}"><i class="fas fa-edit"></i></li>
-        <li data-item-id="{{weapon.id}}" class="item-delete" title="{{localize 'Delete'}}"><i class="fas fa-trash"></i></li>
+        <li data-item-id="{{weapon._id}}" class="item-edit" title="{{localize 'gfl5r.global.edit'}}"><i class="fas fa-edit"></i></li>
+        <li data-item-id="{{weapon._id}}" class="item-delete" title="{{localize 'Delete'}}"><i class="fas fa-trash"></i></li>
         {{/if}}
     </ul>
     <ul class="item-properties">
-        <li class="equip-readied-control" data-item-id="{{weapon.id}}" data-type="readied">
+        <li class="equip-readied-control" data-item-id="{{weapon._id}}" data-type="readied">
             <i class="i_readied fa{{^if weapon.system.readied}}r{{/if}} fa-check-circle" title="{{#if weapon.system.readied}}{{localize 'gfl5r.weapons.readied'}}{{else}}{{localize 'gfl5r.weapons.sheathed'}}{{/if}}"></i>
         </li>
         {{#each weapon.system.qualities as |quality|}}

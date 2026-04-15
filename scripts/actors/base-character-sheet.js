@@ -323,33 +323,30 @@ export class BaseCharacterSheetGfl5r extends BaseSheetGfl5r {
             return;
         }
 
-        const created = await this.actor.createEmbeddedDocuments("Item", [
-            {
-                name: game.i18n.localize(`TYPES.Item.${type.toLowerCase()}`),
-                type: type,
-                img: `${CONFIG.gfl5r.paths.assets}icons/items/${type}.svg`,
-            },
-        ]);
+        const itemData = {
+            name: game.i18n.localize(`TYPES.Item.${type.toLowerCase()}`),
+            type: type,
+            img: `${CONFIG.gfl5r.paths.assets}icons/items/${type}.svg`,
+        };
+
+        if (["item", "armor", "weaponry"].includes(type)) {
+            itemData.system = { equipped: isEquipped };
+        }
+
+        const created = await this.actor.createEmbeddedDocuments("Item", [itemData]);
         if (created?.length < 1) {
             return;
         }
         const item = this.actor.items.get(created[0].id);
 
-        switch (item.type) {
-            case "item": // no break
-            case "armor": // no break
-            case "weaponry":
-                item.system.equipped = isEquipped;
-                break;
-
-            case "technique": {
-                // If technique, select the current sub-type
-                if (CONFIG.gfl5r.techniques.get(techniqueType)) {
-                    item.name = game.i18n.localize(`gfl5r.techniques.${techniqueType}`);
-                    item.img = `${CONFIG.gfl5r.paths.assets}icons/techs/${techniqueType}.svg`;
-                    item.system.technique_type = techniqueType;
-                }
-                break;
+        if (item.type === "technique") {
+            // If technique, select the current sub-type
+            if (CONFIG.gfl5r.techniques.get(techniqueType)) {
+                await item.update({
+                    name: game.i18n.localize(`gfl5r.techniques.${techniqueType}`),
+                    img: `${CONFIG.gfl5r.paths.assets}icons/techs/${techniqueType}.svg`,
+                    "system.technique_type": techniqueType,
+                });
             }
         }
 

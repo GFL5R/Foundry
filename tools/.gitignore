@@ -2,3 +2,4 @@ build/
 packs/
 __pycache__/
 *.pyc
+.venv/

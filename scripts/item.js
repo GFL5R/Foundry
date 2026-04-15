@@ -131,6 +131,7 @@ export class ItemGfl5r extends Item {
                 this.system.deadliness = this.system.deadliness || 0;
                 this.system.threat = this.system.threat || 0;
                 this.system.signature = this.system.signature || 0;
+                this.system.skill = this.system.skill || "firearms";
                 break;
         }
     }
