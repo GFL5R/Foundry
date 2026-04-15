@@ -255,6 +255,125 @@ def build_module_item(name: str, data: dict) -> dict:
     }
 
 
+def build_armor_item(name: str, data: dict) -> dict:
+    return {
+        "name": name,
+        "type": "armor",
+        "system": {
+            "source_reference": {"source": "GFL5R", "page": 0},
+            "flavor": data.get("flavor", ""),
+            "description": data.get("description", ""),
+            "weight": data.get("weight", 0),
+            "signature": data.get("signature", 0),
+            "protection": data.get("protection", 0),
+            "price": data.get("cost", 0),
+            "equipped": False,
+        },
+    }
+
+
+def _effects_html(effects: list) -> str:
+    if not effects:
+        return ""
+    items = "".join(f"<li>{e}</li>" for e in effects)
+    return f"<h3>Effects</h3><ul>{items}</ul>"
+
+
+def build_condition_page_content(data: dict) -> str:
+    condition_type = data.get("type", "standard")
+    parts = []
+
+    description = (data.get("description") or "").strip()
+    if description:
+        parts.append(description)
+
+    if condition_type == "staged":
+        shared_rules = data.get("shared_rules", [])
+        if shared_rules:
+            items = "".join(f"<li>{r}</li>" for r in shared_rules)
+            parts.append(f"<h3>Shared Rules</h3><ul>{items}</ul>")
+        stages = data.get("stages", {})
+        for stage_name, stage_data in stages.items():
+            parts.append(f"<h3>{stage_name}</h3>")
+            stage_desc = (stage_data.get("description") or "").strip()
+            if stage_desc:
+                parts.append(stage_desc)
+            parts.append(_effects_html(stage_data.get("effects", [])))
+    elif condition_type == "wounded":
+        parts.append(_effects_html(data.get("effects", [])))
+        recovery = data.get("recovery", [])
+        if recovery:
+            items = "".join(f"<li>{r}</li>" for r in recovery)
+            parts.append(f"<h3>Recovery</h3><ul>{items}</ul>")
+    else:
+        parts.append(_effects_html(data.get("effects", [])))
+        removal = data.get("removal")
+        if removal:
+            parts.append(f"<h3>Removal</h3><p>{removal}</p>")
+
+    return "".join(p for p in parts if p)
+
+
+def write_journal_pack(entries: list[dict], pack_path: Path):
+    """Write JournalEntry documents as a LevelDB compendium pack.
+
+    Each entry dict must have: name (str), content (str HTML).
+    """
+    import shutil
+    if pack_path.exists():
+        shutil.rmtree(pack_path)
+
+    now = int(time.time() * 1000)
+    db = LevelDBWriter(pack_path)
+
+    stats_base = {
+        "compendiumSource": None,
+        "duplicateSource": None,
+        "exportSource": None,
+        "coreVersion": "13.351",
+        "systemId": "gfl5r",
+        "systemVersion": "0.1.0",
+        "createdTime": now,
+        "modifiedTime": now,
+        "lastModifiedBy": None,
+    }
+
+    for entry in entries:
+        jid = _uid()
+        pid = _uid()
+
+        page_doc = {
+            "_id": pid,
+            "name": entry["name"],
+            "type": "text",
+            "title": {"show": False, "level": 1},
+            "text": {"content": entry["content"], "format": 1, "markdown": None},
+            "video": {"controls": True, "volume": 0.5},
+            "src": None,
+            "system": {},
+            "sort": 0,
+            "ownership": {"default": -1},
+            "flags": {},
+            "_stats": dict(stats_base),
+        }
+
+        journal_doc = {
+            "_id": jid,
+            "name": entry["name"],
+            "pages": [page_doc],
+            "folder": None,
+            "sort": 0,
+            "ownership": {"default": 0},
+            "flags": {},
+            "_stats": dict(stats_base),
+        }
+
+        db.put(f"!journal!{jid}", json.dumps(journal_doc, ensure_ascii=False))
+        db.put(f"!journal.pages!{jid}.{pid}", json.dumps(page_doc, ensure_ascii=False))
+
+    db.write()
+
+
 def build_item(name: str, data: dict) -> dict:
     return {
         "name": name,
@@ -413,10 +532,28 @@ def main():
         write_pack(items, packs_dir / "gfl5r-items")
         built.append(f"gfl5r-items: {len(items)} items")
 
+    # Armor
+    armor_path = data_dir / "armor.djson"
+    if armor_path.exists():
+        armor_data = load_djson(armor_path)
+        items = [build_armor_item(name, data) for name, data in armor_data.items()]
+        write_pack(items, packs_dir / "gfl5r-armor")
+        built.append(f"gfl5r-armor: {len(items)} items")
+
+    # Conditions (journal entries)
+    conditions_path = data_dir / "conditions.djson"
+    if conditions_path.exists():
+        conditions_data = load_djson(conditions_path)
+        entries = [
+            {"name": name, "content": build_condition_page_content(data)}
+            for name, data in conditions_data.items()
+        ]
+        write_journal_pack(entries, packs_dir / "gfl5r-journal-conditions")
+        built.append(f"gfl5r-journal-conditions: {len(entries)} entries")
+
     # Create empty packs for types without data yet
     for empty_pack in [
-        "gfl5r-armor", "gfl5r-vehicles", "gfl5r-npcs",
-        "gfl5r-journal-conditions", "gfl5r-macros",
+        "gfl5r-vehicles", "gfl5r-npcs", "gfl5r-macros",
     ]:
         pack_path = packs_dir / empty_pack
         if not pack_path.exists():
