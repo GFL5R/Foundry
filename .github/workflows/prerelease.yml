@@ -43,6 +43,7 @@ jobs:
           data = json.loads(p.read_text(encoding="utf-8"))
           major, minor, patch = data["version"].split(".")
           data["version"] = f"{major}.{minor}.{int(patch) + 1}"
+          data["download"] = f"https://github.com/GFL5R/Foundry/releases/download/v{data['version']}/gfl5r.zip"
           p.write_text(json.dumps(data, indent=4, ensure_ascii=False) + "\n", encoding="utf-8")
           print(f"Bumped version to {data['version']}")
           EOF
