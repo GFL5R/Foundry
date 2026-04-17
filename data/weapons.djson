@@ -18,7 +18,7 @@
      ============================================ */
   "Fairbairn-Sykes Commando Dagger": {
     category: "KNF",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 3,
     deadliness: 6,
@@ -36,7 +36,7 @@
   },
   "KA-BAR Combat Knife": {
     category: "KNF",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 4,
     deadliness: 4,
@@ -54,7 +54,7 @@
   },
   "Glock Feldmesser FM 78": {
     category: "KNF",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 4,
     deadliness: 3,
@@ -73,7 +73,7 @@
   },
   "Gerber Mark II": {
     category: "KNF",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 3,
     deadliness: 5,
@@ -94,7 +94,7 @@
      ============================================ */
   "Machete": {
     category: "BLD",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 4,
     deadliness: 4,
@@ -112,7 +112,7 @@
   },
   "Tactical Tomahawk": {
     category: "BLD",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 4,
     deadliness: 5,
@@ -130,7 +130,7 @@
   },
   "Combat Sword": {
     category: "BLD",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 4,
     deadliness: 5,
@@ -147,7 +147,7 @@
   },
   "Kukri": {
     category: "BLD",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 5,
     deadliness: 5,
@@ -165,7 +165,7 @@
   },
   "Katana": {
     category: "BLD",
-    skill: "Blades",
+    skill: "blades",
     range: 0,
     damage: 4,
     deadliness: 6,
@@ -182,7 +182,7 @@
   },
   "Tactical Compound Bow": {
     category: "BLD",
-    skill: "Archery",
+    skill: "exotic weapons",
     range: 3,
     damage: 2,
     deadliness: 6,
@@ -201,7 +201,7 @@
      ============================================ */
   "Glock 17": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 4,
     deadliness: 3,
@@ -219,7 +219,7 @@
   },
   "SIG P320 (M17)": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 4,
     deadliness: 3,
@@ -236,7 +236,7 @@
   },
   "M1911A1": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 3,
     deadliness: 5,
@@ -254,7 +254,7 @@
   },
   "Glock 19": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 4,
     deadliness: 3,
@@ -272,7 +272,7 @@
   },
   "Glock 26": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 3,
     deadliness: 3,
@@ -290,7 +290,7 @@
   },
   "HK MK 23": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 2,
     damage: 3,
     deadliness: 5,
@@ -308,7 +308,7 @@
   },
   "Beretta M9": {
     category: "HG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 4,
     deadliness: 3,
@@ -330,7 +330,7 @@
      ============================================ */
   "HK MP5": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 6,
     deadliness: 3,
@@ -347,7 +347,7 @@
   },
   "HK MP5K": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 6,
     deadliness: 3,
@@ -365,7 +365,7 @@
   },
   "HK MP7": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 2,
     damage: 7,
     deadliness: 4,
@@ -382,7 +382,7 @@
   },
   "FN P90": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 2,
     damage: 7,
     deadliness: 4,
@@ -399,7 +399,7 @@
   },
   "SIG MPX": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 6,
     deadliness: 3,
@@ -416,7 +416,7 @@
   },
   "Uzi": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 6,
     deadliness: 3,
@@ -434,7 +434,7 @@
   },
   "HK UMP9": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 6,
     deadliness: 3,
@@ -452,7 +452,7 @@
   },
   "HK UMP45": {
     category: "SMG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 5,
     deadliness: 4,
@@ -474,7 +474,7 @@
      ============================================ */
   "Remington 870": {
     category: "SG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 7,
     deadliness: 4,
@@ -492,7 +492,7 @@
   },
   "Mossberg 590": {
     category: "SG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 7,
     deadliness: 4,
@@ -510,7 +510,7 @@
   },
   "Benelli M4 (M1014)": {
     category: "SG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 8,
     deadliness: 4,
@@ -528,7 +528,7 @@
   },
   "Saiga-12": {
     category: "SG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 8,
     deadliness: 4,
@@ -545,7 +545,7 @@
   },
   "AA-12": {
     category: "SG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 1,
     damage: 9,
     deadliness: 4,
@@ -566,7 +566,7 @@
      ============================================ */
   "M4A1 Carbine": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 3,
     damage: 6,
     deadliness: 4,
@@ -581,7 +581,7 @@
   },
   "M16A4 Rifle": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 5,
     deadliness: 4,
@@ -596,7 +596,7 @@
   },
   "HK416": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 3,
     damage: 6,
     deadliness: 4,
@@ -613,7 +613,7 @@
   },
   "AK-74M": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 3,
     damage: 6,
     deadliness: 4,
@@ -630,7 +630,7 @@
   },
   "FN SCAR-L": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 3,
     damage: 6,
     deadliness: 4,
@@ -647,7 +647,7 @@
   },
   "SIG MCX Rattler": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 2,
     damage: 6,
     deadliness: 4,
@@ -664,7 +664,7 @@
   },
   "Mk 18 CQBR": {
     category: "AR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 2,
     damage: 7,
     deadliness: 4,
@@ -683,7 +683,7 @@
      ============================================ */
   "FN SCAR-H": {
     category: "BR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 5,
     deadliness: 6,
@@ -700,7 +700,7 @@
   },
   "HK417": {
     category: "BR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 5,
     deadliness: 6,
@@ -717,7 +717,7 @@
   },
   "M14 EBR": {
     category: "BR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 5,
     deadliness: 6,
@@ -734,7 +734,7 @@
   },
   "Mk 14 EBR": {
     category: "BR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 5,
     deadliness: 6,
@@ -751,7 +751,7 @@
   },
   "G3 Battle Rifle": {
     category: "BR",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 5,
     deadliness: 6,
@@ -772,7 +772,7 @@
      ============================================ */
   "M110 SASS": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 4,
     deadliness: 6,
@@ -787,7 +787,7 @@
   },
   "M24 SWS": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 3,
     deadliness: 7,
@@ -802,7 +802,7 @@
   },
   "M2010 ESR": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 6,
     damage: 3,
     deadliness: 8,
@@ -817,7 +817,7 @@
   },
   "Mk 13 Mod 7": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 6,
     damage: 3,
     deadliness: 8,
@@ -832,7 +832,7 @@
   },
   "M110A1 SDMR": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 4,
     deadliness: 6,
@@ -847,7 +847,7 @@
   },
   "M38 SDMR": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 4,
     deadliness: 5,
@@ -862,7 +862,7 @@
   },
   "Barrett M82": {
     category: "RF",
-    skill: "Firearms",
+    skill: "firearms",
     range: 6,
     damage: 5,
     deadliness: 9,
@@ -881,7 +881,7 @@
      ============================================ */
   "M249 SAW": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 4,
     damage: 8,
     deadliness: 4,
@@ -898,7 +898,7 @@
   },
   "M27 IAR": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 3,
     damage: 6,
     deadliness: 4,
@@ -913,7 +913,7 @@
   },
   "M240B": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 7,
     deadliness: 5,
@@ -931,7 +931,7 @@
   },
   "M240L": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 7,
     deadliness: 5,
@@ -948,7 +948,7 @@
   },
   "M2 Browning": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 6,
     damage: 8,
     deadliness: 7,
@@ -966,7 +966,7 @@
   },
   "Mk 48 Mod 1": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 7,
     deadliness: 5,
@@ -983,7 +983,7 @@
   },
   "MG5": {
     category: "MG",
-    skill: "Firearms",
+    skill: "firearms",
     range: 5,
     damage: 7,
     deadliness: 5,

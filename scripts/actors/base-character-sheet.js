@@ -586,9 +586,17 @@ export class BaseCharacterSheetGfl5r extends BaseSheetGfl5r {
         if (!item || item.type !== "weaponry") {
             return null;
         }
+
+        // Normalize skill: lowercase, and fall back to weapon category's default skill if not a valid skill id.
+        // Some compendium/imported weapons have stored the localized label (e.g. "Firearms") instead of the id.
+        let skill = (item.system.skill || "").toLowerCase().trim();
+        if (!skill || !CONFIG.gfl5r.skills.has(skill)) {
+            skill = CONFIG.gfl5r.weaponCategories.get(item.system.category)?.skill || "firearms";
+        }
+
         return {
             uuid: item.uuid,
-            skill: item.system.skill,
+            skill,
         };
     }
 
