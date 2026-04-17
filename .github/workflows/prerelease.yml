@@ -63,6 +63,15 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r tools/requirements.txt
 
+      - name: Compile SCSS to styles/gfl5r.css
+        run: |
+          python - <<'EOF'
+          import sass, pathlib
+          out = sass.compile(filename="styles/conf/gfl5r.scss", output_style="compressed")
+          pathlib.Path("styles/gfl5r.css").write_text(out, encoding="utf-8")
+          print(f"Compiled {len(out)} bytes to styles/gfl5r.css")
+          EOF
+
       - name: Build compendium packs from djson data
         run: |
           python tools/build-compendiums.py --webapp-data data --packs-dir packs
