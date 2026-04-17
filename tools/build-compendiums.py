@@ -395,6 +395,233 @@ def _uid(length=16):
     return "".join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
+def _npc_image_path(raw: str) -> str:
+    """Convert a webapp-relative NPC image path to a Foundry runtime path.
+
+    The djson stores paths like "assets/npcs/ELIDs/Foo.png" (served by the
+    webapp). Foundry clients resolve them as "systems/gfl5r/assets/npcs/...".
+    Falls back to a generic character icon when no image is supplied.
+    """
+    if not raw:
+        return "systems/gfl5r/assets/icons/actors/character.svg"
+    raw = raw.lstrip("/")
+    if raw.startswith("assets/"):
+        raw = raw[len("assets/"):]
+    return f"systems/gfl5r/assets/{raw}"
+
+
+def _build_embedded_narrative(name: str, narrative_type: str, source: dict) -> dict:
+    """Build an embedded narrative Item document referencing a named entry
+    from the matching narrative djson (advantages/disadvantages/passions/anxieties).
+    Missing entries still produce a valid item with empty flavor/description.
+    """
+    entry = source.get(name, {}) if source else {}
+    tags = entry.get("type", []) or entry.get("tags", [])
+    if isinstance(tags, str):
+        tags = [tags]
+    return build_narrative_item(name, {
+        "flavor": entry.get("flavor", ""),
+        "description": entry.get("description", ""),
+        "ring_bonus": entry.get("ring_bonus", ""),
+        "tags": tags,
+    }, narrative_type)
+
+
+_SKILL_GROUPS = ("combat", "fieldcraft", "technical", "social")
+
+
+def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
+    """Build an NPC actor document (with embedded narrative items) from djson.
+
+    `narrative_sources` maps narrative_type -> {entry_name: entry_data} loaded
+    from advantages.djson/disadvantages.djson/passions.djson/anxieties.djson,
+    used to hydrate embedded item flavor/description text.
+    """
+    npc_type = data.get("type", "")
+    character_type = "t-doll" if npc_type == "T-Doll" else "human"
+
+    approaches = data.get("approaches", {}) or {}
+    power = int(approaches.get("power", 1))
+    precision = int(approaches.get("precision", 1))
+    swiftness = int(approaches.get("swiftness", 1))
+    resilience = int(approaches.get("resilience", 1))
+    fortune = int(approaches.get("fortune", 1))
+
+    endurance_mult = 3 if character_type == "t-doll" else 2
+    endurance = (power + resilience) * endurance_mult
+    composure = (resilience + swiftness) * 2
+    focus = power + precision
+    vigilance = (precision + swiftness + 1) // 2
+
+    raw_skills = data.get("skills", {}) or {}
+    skills = {group: int(raw_skills.get(group, 0)) for group in _SKILL_GROUPS}
+
+    # Compose a narrative description from flavor + description (+ armor note).
+    narrative_parts = []
+    flavor_html = data.get("flavor", "") or ""
+    description_html = data.get("description", "") or ""
+    if flavor_html.strip():
+        narrative_parts.append(flavor_html.strip())
+    if description_html.strip():
+        narrative_parts.append(description_html.strip())
+    armor_val = data.get("armor")
+    if armor_val:
+        narrative_parts.append(f"<p><strong>Armor:</strong> {armor_val}</p>")
+    narrative_description = "\n".join(narrative_parts)
+
+    # Embedded narrative items
+    embedded_items = []
+    for adv in data.get("advantages", []) or []:
+        embedded_items.append(_build_embedded_narrative(adv, "advantage", narrative_sources.get("advantage", {})))
+    for dis in data.get("disadvantages", []) or []:
+        embedded_items.append(_build_embedded_narrative(dis, "disadvantage", narrative_sources.get("disadvantage", {})))
+    passion = data.get("passion")
+    if passion:
+        embedded_items.append(_build_embedded_narrative(passion, "passion", narrative_sources.get("passion", {})))
+    anxiety = data.get("anxiety")
+    if anxiety:
+        embedded_items.append(_build_embedded_narrative(anxiety, "anxiety", narrative_sources.get("anxiety", {})))
+
+    return {
+        "name": name,
+        "type": "npc",
+        "img": _npc_image_path(data.get("image", "")),
+        "system": {
+            "identity": {
+                "characterType": character_type,
+                "age": "",
+                "nationality": "",
+                "background": "",
+                "frame": "",
+                "manufacturer": "",
+                "model": npc_type,
+                "name_origin": "",
+            },
+            "approaches": {
+                "power": power,
+                "precision": precision,
+                "swiftness": swiftness,
+                "resilience": resilience,
+                "fortune": fortune,
+            },
+            "social": {
+                "humanity": 50,
+                "fame": 40,
+                "status": 30,
+                "stress_tell": "",
+                "view_of_dolls": "",
+            },
+            "skills": skills,
+            "threat_level": "standard",
+            "behaviors": data.get("behaviors", "") or "",
+            "endurance": endurance,
+            "composure": composure,
+            "focus": focus,
+            "vigilance": vigilance,
+            "fortune_points": {"max": fortune, "value": fortune},
+            "fatigue": {"max": endurance, "value": 0},
+            "strife": {"max": composure, "value": 0},
+            "heat": 0,
+            "stance": "power",
+            "prepared": True,
+            "harm": {
+                "wounded": {
+                    "power": None, "precision": None, "swiftness": None,
+                    "resilience": None, "fortune": None,
+                },
+                "elid_stage": 0,
+                "parapluie_stage": 0,
+                "collapse": {"max": 0, "value": 0},
+            },
+            "narrative": {
+                "notes": "",
+                "description": narrative_description,
+                "personal_goal": "",
+                "name_meaning": "",
+                "story_end": "",
+                "met_commander": "",
+            },
+        },
+        "items": embedded_items,
+    }
+
+
+def write_actor_pack(actors: list[dict], pack_path: Path):
+    """Write Actor documents (with embedded Items) as a LevelDB compendium pack."""
+    import shutil
+    if pack_path.exists():
+        shutil.rmtree(pack_path)
+
+    now = int(time.time() * 1000)
+    db = LevelDBWriter(pack_path)
+
+    stats_base = {
+        "compendiumSource": None,
+        "duplicateSource": None,
+        "exportSource": None,
+        "coreVersion": "13.351",
+        "systemId": "gfl5r",
+        "systemVersion": "0.1.0",
+        "createdTime": now,
+        "modifiedTime": now,
+        "lastModifiedBy": None,
+    }
+
+    for actor in actors:
+        aid = _uid()
+        embedded = actor.get("items", []) or []
+        item_docs = []
+        for item in embedded:
+            iid = _uid()
+            item_doc = {
+                "_id": iid,
+                "name": item["name"],
+                "type": item["type"],
+                "img": item.get("img", "icons/svg/item-bag.svg"),
+                "system": item.get("system", {}),
+                "effects": [],
+                "folder": None,
+                "sort": 0,
+                "ownership": {"default": 0},
+                "flags": {},
+                "_stats": dict(stats_base),
+            }
+            item_docs.append(item_doc)
+
+        actor_doc = {
+            "_id": aid,
+            "name": actor["name"],
+            "type": actor["type"],
+            "img": actor.get("img", "icons/svg/mystery-man.svg"),
+            "system": actor.get("system", {}),
+            "prototypeToken": {
+                "name": actor["name"],
+                "displayName": 0,
+                "actorLink": False,
+                "disposition": 0,
+                "texture": {"src": actor.get("img", "icons/svg/mystery-man.svg")},
+                "bar1": {"attribute": "fatigue"},
+                "bar2": {"attribute": "strife"},
+            },
+            "items": item_docs,
+            "effects": [],
+            "folder": None,
+            "sort": 0,
+            "ownership": {"default": 0},
+            "flags": {},
+            "_stats": dict(stats_base),
+        }
+
+        db.put(f"!actors!{aid}", json.dumps(actor_doc, ensure_ascii=False))
+        for item_doc in item_docs:
+            db.put(
+                f"!actors.items!{aid}.{item_doc['_id']}",
+                json.dumps(item_doc, ensure_ascii=False),
+            )
+
+    db.write()
+
+
 def write_pack(items: list[dict], pack_path: Path):
     """Write items directly as a LevelDB compendium pack."""
     import shutil
@@ -540,6 +767,24 @@ def main():
         write_pack(items, packs_dir / "gfl5r-armor")
         built.append(f"gfl5r-armor: {len(items)} items")
 
+    # NPCs
+    npcs_path = data_dir / "npcs.djson"
+    if npcs_path.exists():
+        npcs_data = load_djson(npcs_path)
+        narrative_sources = {}
+        for narrative_type, fname in [
+            ("advantage", "advantages.djson"),
+            ("disadvantage", "disadvantages.djson"),
+            ("passion", "passions.djson"),
+            ("anxiety", "anxieties.djson"),
+        ]:
+            path = data_dir / fname
+            if path.exists():
+                narrative_sources[narrative_type] = load_djson(path)
+        actors = [build_npc_actor(name, data, narrative_sources) for name, data in npcs_data.items()]
+        write_actor_pack(actors, packs_dir / "gfl5r-npcs")
+        built.append(f"gfl5r-npcs: {len(actors)} actors")
+
     # Conditions (journal entries)
     conditions_path = data_dir / "conditions.djson"
     if conditions_path.exists():
@@ -553,7 +798,7 @@ def main():
 
     # Create empty packs for types without data yet
     for empty_pack in [
-        "gfl5r-vehicles", "gfl5r-npcs", "gfl5r-macros",
+        "gfl5r-vehicles", "gfl5r-macros",
     ]:
         pack_path = packs_dir / empty_pack
         if not pack_path.exists():

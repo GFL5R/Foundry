@@ -1,37 +1,47 @@
 <ul class="approaches">
-    <li id="power" class="approach-row">
-        <i class="i_power dice-picker rollable" data-approach="earth"></i>
-        <label class="power {{#ifCond 'earth' '==' data.system.stance}}stance-active{{/ifCond}}">
-            <strong>{{localizeApproach 'earth'}}</strong>
-            <input class="centered-input select-on-focus" type="number" name="system.approaches.earth" value="{{data.system.approaches.earth}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-        </label>
+    <li id="power" class="approach-card">
+        <div class="approach-card__header">
+            <i class="i_power dice-picker rollable" data-approach="power"></i>
+            <span class="approach-card__title {{#ifCond 'power' '==' data.system.stance}}stance-active{{/ifCond}}">{{localize 'gfl5r.approaches.power'}}</span>
+        </div>
+        <div class="approach-card__body">
+            <input class="approach-card__value centered-input select-on-focus" type="number" name="system.approaches.power" value="{{data.system.approaches.power}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </div>
     </li>
-    <li id="fortune" class="approach-row">
-        <i class="i_fortune dice-picker rollable" data-approach="air"></i>
-        <label class="fortune {{#ifCond 'air' '==' data.system.stance}}stance-active{{/ifCond}}">
-            <strong>{{localizeApproach 'air'}}</strong>
-            <input class="centered-input select-on-focus" type="number" name="system.approaches.air" value="{{data.system.approaches.air}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-        </label>
+    <li id="precision" class="approach-card">
+        <div class="approach-card__header">
+            <i class="i_precision dice-picker rollable" data-approach="precision"></i>
+            <span class="approach-card__title {{#ifCond 'precision' '==' data.system.stance}}stance-active{{/ifCond}}">{{localize 'gfl5r.approaches.precision'}}</span>
+        </div>
+        <div class="approach-card__body">
+            <input class="approach-card__value centered-input select-on-focus" type="number" name="system.approaches.precision" value="{{data.system.approaches.precision}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </div>
     </li>
-    <li id="swiftness" class="approach-row">
-        <i class="i_swiftness dice-picker rollable" data-approach="water"></i>
-        <label class="swiftness {{#ifCond 'water' '==' data.system.stance}}stance-active{{/ifCond}}">
-            <strong>{{localizeApproach 'water'}}</strong>
-            <input class="centered-input select-on-focus" type="number" name="system.approaches.water" value="{{data.system.approaches.water}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-        </label>
+    <li id="swiftness" class="approach-card">
+        <div class="approach-card__header">
+            <i class="i_swiftness dice-picker rollable" data-approach="swiftness"></i>
+            <span class="approach-card__title {{#ifCond 'swiftness' '==' data.system.stance}}stance-active{{/ifCond}}">{{localize 'gfl5r.approaches.swiftness'}}</span>
+        </div>
+        <div class="approach-card__body">
+            <input class="approach-card__value centered-input select-on-focus" type="number" name="system.approaches.swiftness" value="{{data.system.approaches.swiftness}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </div>
     </li>
-    <li id="precision" class="approach-row">
-        <i class="i_precision dice-picker rollable" data-approach="fire"></i>
-        <label class="precision {{#ifCond 'fire' '==' data.system.stance}}stance-active{{/ifCond}}">
-            <strong>{{localizeApproach 'fire'}}</strong>
-            <input class="centered-input select-on-focus" type="number" name="system.approaches.fire" value="{{data.system.approaches.fire}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-        </label>
+    <li id="resilience" class="approach-card">
+        <div class="approach-card__header">
+            <i class="i_resilience dice-picker rollable" data-approach="resilience"></i>
+            <span class="approach-card__title {{#ifCond 'resilience' '==' data.system.stance}}stance-active{{/ifCond}}">{{localize 'gfl5r.approaches.resilience'}}</span>
+        </div>
+        <div class="approach-card__body">
+            <input class="approach-card__value centered-input select-on-focus" type="number" name="system.approaches.resilience" value="{{data.system.approaches.resilience}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </div>
     </li>
-    <li id="resilience" class="approach-row">
-        <i class="i_resilience dice-picker rollable" data-approach="void"></i>
-        <label class="resilience {{#ifCond 'void' '==' data.system.stance}}stance-active{{/ifCond}}">
-            <strong>{{localizeApproach 'void'}}</strong>
-            <input class="centered-input select-on-focus" type="number" name="system.approaches.void" value="{{data.system.approaches.void}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-        </label>
+    <li id="fortune" class="approach-card">
+        <div class="approach-card__header">
+            <i class="i_fortune dice-picker rollable" data-approach="fortune"></i>
+            <span class="approach-card__title {{#ifCond 'fortune' '==' data.system.stance}}stance-active{{/ifCond}}">{{localize 'gfl5r.approaches.fortune'}}</span>
+        </div>
+        <div class="approach-card__body">
+            <input class="approach-card__value centered-input select-on-focus" type="number" name="system.approaches.fortune" value="{{data.system.approaches.fortune}}" data-dtype="Number" min="1" max="9" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
+        </div>
     </li>
 </ul>

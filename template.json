@@ -218,16 +218,14 @@
                 "harm",
                 "narrative"
             ],
-            "type": "human",
             "threat_level": "standard",
-            "skill_groups": {
+            "skills": {
                 "combat": 0,
                 "fieldcraft": 0,
                 "technical": 0,
                 "social": 0
             },
-            "behaviors": "",
-            "perk": ""
+            "behaviors": ""
         }
     },
     "Item": {

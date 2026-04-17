@@ -8,7 +8,8 @@ export class ActorGfl5r extends Actor {
     static async create(docData, options = {}) {
         // Replace default image
         if (docData.img === undefined) {
-            docData.img = `${CONFIG.gfl5r.paths.assets}icons/actors/${docData.type}.svg`;
+            const iconName = docData.type === "npc" ? "character" : docData.type;
+            docData.img = `${CONFIG.gfl5r.paths.assets}icons/actors/${iconName}.svg`;
         }
 
         // Token defaults
@@ -207,6 +208,14 @@ export class ActorGfl5r extends Actor {
         return this.type === "character";
     }
 
+    get isNpc() {
+        return this.type === "npc";
+    }
+
+    get isMinion() {
+        return this.isNpc && this.system.threat_level === "minion";
+    }
+
     get isHuman() {
         return this.isCharacterType && this.system.identity?.characterType === "human";
     }
@@ -242,7 +251,7 @@ export class ActorGfl5r extends Actor {
             return false;
         }
 
-        const npcPreparedSetting = this.system.type === "minion"
+        const npcPreparedSetting = this.system.threat_level === "minion"
             ? "initiative-prepared-minion"
             : "initiative-prepared-adversary";
 

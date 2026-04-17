@@ -21,14 +21,11 @@ export const PreloadTemplates = async function () {
         // *** Actors : NPC ***
         `${tpl}actors/npc/approaches.html`,
         `${tpl}actors/npc/attributes.html`,
-        `${tpl}actors/npc/conflict.html`,
+        `${tpl}actors/npc/behaviors.html`,
         `${tpl}actors/npc/identity.html`,
-        `${tpl}actors/npc/inventory.html`,
-        `${tpl}actors/npc/narrative.html`,
-        `${tpl}actors/npc/effects.html`,
         `${tpl}actors/npc/social.html`,
         `${tpl}actors/npc/skill.html`,
-        `${tpl}actors/npc/techniques.html`,
+        `${tpl}actors/npc/summary.html`,
         // *** Items ***
         `${tpl}items/armor/armors.html`,
         `${tpl}items/armor/armor-entry.html`,

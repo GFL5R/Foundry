@@ -199,6 +199,6 @@ export class CombatGfl5r extends Combat {
      * @private
      */
     static _getWeightByActorType(actor) {
-        return actor.type === "npc" ? (actor.type === "minion" ? 3 : 2) : 1;
+        return actor.isNpc ? (actor.isMinion ? 3 : 2) : 1;
     }
 }

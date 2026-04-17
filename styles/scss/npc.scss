@@ -174,6 +174,116 @@
     .narrative-note {
         flex: 0 0 calc(50% - 0.25rem);
     }
+    .npc-skills-panel {
+        margin: 0.5rem;
+        .gfl-panel__body {
+            padding: 0.5rem;
+        }
+    }
+    .npc-skills-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .npc-skill-card {
+            display: flex;
+            flex-direction: column;
+            background: $bg-panel-alt;
+            border: 1px solid $border-color;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+            &:hover {
+                border-color: $border-glow;
+                box-shadow: 0 0 4px $yellow-glow;
+            }
+
+            .npc-skill-card__header {
+                padding: 4px 6px 2px;
+                border-bottom: 1px solid $border-color;
+                background: rgba(0, 0, 0, 0.25);
+                text-align: center;
+                min-height: 1.6rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .npc-skill-card__title {
+                width: 100%;
+                font-size: 0.75rem;
+                line-height: 1.1;
+                color: $white-dim;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+                text-align: center;
+
+                &:hover {
+                    color: $yellow;
+                    text-shadow: 0 0 3px $yellow-glow-strong;
+                }
+            }
+
+            .npc-skill-card__body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 4px 6px;
+            }
+
+            .npc-skill-card__value {
+                flex: 1 1 auto;
+                width: auto;
+                min-width: 0;
+                height: 2rem;
+                background: transparent;
+                border: none;
+                color: $white;
+                text-align: center;
+                font-family: "Share Tech Mono", monospace;
+                font-size: 1.4rem;
+                font-weight: 600;
+                padding: 0;
+
+                &:focus { outline: 1px solid $border-glow; }
+            }
+        }
+    }
+    .tab.summary {
+        display: block;
+    }
+    .npc-summary {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        width: 100%;
+        .npc-summary__section {
+            width: 100%;
+            > summary {
+                cursor: pointer;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                &::-webkit-details-marker {
+                    display: none;
+                }
+                &::after {
+                    content: "\f0d7";
+                    font-family: "Font Awesome 6 Free";
+                    font-weight: 900;
+                    transition: transform 0.15s ease;
+                }
+            }
+            &[open] > summary::after {
+                transform: rotate(180deg);
+            }
+        }
+    }
 }
 &.character-generator-dialog {
     form .body {

@@ -1,18 +1,10 @@
-<ul class="identity-list">
-    {{!-- Npc Type (minion / adversary) --}}
-    <li>
-        <select class="attribute-dtype" name="system.type" {{^if data.editable}}disabled{{/if}}>
-            {{selectOptions data.types selected=data.system.type valueAttr='id' labelAttr='label'}}
+<div class="identity-fields">
+    <div class="identity-field">
+        <span class="identity-field__label">{{localize 'gfl5r.npc.title'}}</span>
+        <select name="system.threat_level" {{^if data.editable}}disabled{{/if}}>
+            {{#each data.threatLevels as |entry|}}
+            <option value="{{entry.id}}" {{#ifCond ../data.system.threat_level '==' entry.id}}selected{{/ifCond}}>{{entry.label}}</option>
+            {{/each}}
         </select>
-    </li>
-    {{!-- Martial --}}
-    <li>
-        <i class="i_bushi" title="{{localize 'gfl5r.social.npc.combat'}}"></i>
-        <input class="centered-input select-on-focus" type="number" name="system.threat_level" value="{{data.system.threat_level}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-    </li>
-    {{!-- Social --}}
-    <li>
-        <i class="i_courtier" title="{{localize 'gfl5r.social.npc.intrigue'}}"></i>
-        <input class="centered-input select-on-focus" type="number" name="system.threat_level" value="{{data.system.threat_level}}" data-dtype="Number" min="0" placeholder="0" {{^if data.editable}}disabled{{/if}}/>
-    </li>
-</ul>
+    </div>
+</div>
