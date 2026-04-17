@@ -119,6 +119,45 @@ button {
     }
 }
 
+// Theme the whole chat message when it wraps one of our cards — keeps the
+// system's dark panel aesthetic instead of Foundry's default light parchment.
+.chat-message:has(> .message-content > .gfl5r),
+.chat-message:has(> .message-content .gfl5r.chat.dice-roll) {
+    background: $bg-primary;
+    border: 1px solid $border-color;
+    color: $white;
+
+    .message-header {
+        color: $white;
+        border-bottom: 1px solid $border-color;
+    }
+    .message-sender,
+    .flavor-text,
+    h4 {
+        color: $yellow;
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+    }
+    .message-metadata,
+    .message-timestamp,
+    time {
+        color: $white-dim;
+    }
+    a,
+    .message-delete,
+    [data-action] {
+        color: $white-dim;
+        &:hover { color: $yellow; }
+    }
+
+    &.whisper {
+        border-color: rgba($purple, 0.4);
+        background: linear-gradient(180deg, rgba($purple, 0.08), $bg-primary);
+    }
+    &.blind {
+        border-color: rgba($white-dim, 0.4);
+    }
+}
+
 #logo {
     content: url("");
     height: 80px;
