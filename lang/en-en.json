@@ -78,7 +78,9 @@
             "focus": "Focus",
             "vigilance": "Vigilance",
             "fortification": "Fortification",
-            "approach_limit": "Approach Limit"
+            "approach_limit": "Approach Limit",
+            "fatigue": "Fatigue",
+            "strife": "Strife"
         },
         "skills": {
             "title": "Skills",
@@ -120,7 +122,13 @@
             "fame": "Fame",
             "status": "Status",
             "stress_tell": "Stress Tell",
-            "view_of_dolls": "View of Dolls"
+            "view_of_dolls": "View of Dolls",
+            "npc": {
+                "advantages": "Advantages",
+                "disadvantages": "Disadvantages",
+                "combat": "Combat",
+                "intrigue": "Intrigue"
+            }
         },
         "conflict": {
             "title": "Conflict",
@@ -265,6 +273,14 @@
             "parapluie_stage_2": "Parapluie Stage 2",
             "parapluie_stage_3": "Parapluie Stage 3"
         },
+        "compendium": {
+            "not_for_players": "Not available for players.",
+            "filter": {
+                "clear": "Clear",
+                "rank": "Rank",
+                "rarity": "Rarity"
+            }
+        },
         "weapons": {
             "title": "Weapons",
             "stats": "Stats",
@@ -327,6 +343,14 @@
                 "remolding": "Remolding"
             }
         },
+        "peculiarities": {
+            "types": {
+                "advantage": "Advantage",
+                "passion": "Passion",
+                "disadvantage": "Disadvantage",
+                "anxiety": "Anxiety"
+            }
+        },
         "narrative": {
             "title": "Narrative Traits",
             "advantage": "Advantage",
@@ -357,6 +381,14 @@
             "combat_rating": "Combat Rating",
             "social_rating": "Social Rating"
         },
+        "multiselect": {
+            "no_results": "No matches",
+            "placeholder": "Search...",
+            "clear_all": "Clear all",
+            "already_in_filter": "Already in filter",
+            "player_filter_label": "Filter by player",
+            "player_filter_tooltip": "Filter by player"
+        },
         "sheets": {
             "narrative": "Narrative",
             "inventory": "Inventory",
@@ -364,8 +396,12 @@
             "description": "Description",
             "notes": "Notes",
             "flavor": "Flavor",
-            "source_reference": "Source",
-            "page": "Page",
+            "name": "Name",
+            "types": "Types",
+            "source_reference": {
+                "reference": "Reference",
+                "page_abbreviation": "p. "
+            },
             "properties": "Properties",
             "quantity": "Quantity",
             "weight": "Weight",
@@ -375,6 +411,7 @@
         "advancements": {
             "title": "Advancement",
             "cost": "XP Required",
+            "spent": "XP Spent",
             "xp_total": "Total XP",
             "xp_spent": "Spent XP",
             "xp_saved": "Available XP",
@@ -407,7 +444,8 @@
                 "initiative_roll": "Initiative Roll",
                 "success_text": "Success!",
                 "bonus_text": "Bonus Successes.",
-                "fail_text": "Failure!"
+                "fail_text": "Failure!",
+                "unknown_target": "Unknown"
             },
             "dicepicker": {
                 "title": "Dice Picker",
@@ -453,6 +491,7 @@
         },
         "global": {
             "send_to_chat": "Send to Chat",
+            "edge_translation_disclaimer": "",
             "delete_confirm": "Delete {name}?",
             "add": "Add",
             "edit": "Edit",
@@ -464,6 +503,23 @@
             "none": "None",
             "yes": "Yes",
             "no": "No"
+        },
+        "gm": {
+            "monitor": {
+                "title": "GM Monitor",
+                "add_selected_tokens": "Add Selected Tokens",
+                "switch_view": "Switch View",
+                "focus_vigilance": "Focus / Vigilance",
+                "mouse_control": "Click to modify"
+            },
+            "toolbox": {
+                "title": "GM Toolbox",
+                "difficulty": "Difficulty",
+                "difficulty_hidden": "Hide Difficulty",
+                "reset_fortune": "Reset Fortune Points",
+                "sleep": "Sleep",
+                "scene_end": "End Scene"
+            }
         },
         "twelve_questions": {
             "title": "Character Creation — 12 Questions",
@@ -612,6 +668,8 @@
                 "label": "Configure",
                 "hint": "Configure range band display on the tactical grid"
             },
+            "range_abbreviation": "R{range}",
+            "range_band": "Range {band}",
             "range_bands": {
                 "0": "Range 0 (Melee)",
                 "1": "Range 1 (Close)",
@@ -620,6 +678,40 @@
                 "4": "Range 4 (Long)",
                 "5": "Range 5 (Extreme)",
                 "6": "Range 6 (Maximum)"
+            }
+        },
+        "logo": {
+            "content": "Help & Resources",
+            "notes": {
+                "title": "Release Notes",
+                "link": "https://gfl5r.org"
+            },
+            "issues": {
+                "title": "Report an Issue",
+                "link": "https://github.com/GFL5R/Foundry/issues"
+            },
+            "wiki": {
+                "title": "Wiki",
+                "link": "https://github.com/GFL5R/Foundry/wiki"
+            },
+            "custom-compendiums": {
+                "title": "Custom Compendiums",
+                "link": "https://gfl5r.org"
+            },
+            "discord": {
+                "title": "Discord",
+                "info": "Join our Discord",
+                "link": "https://discord.gg/gfl5r"
+            },
+            "drivethrurpg": {
+                "title": "DriveThruRPG",
+                "info": "Get the PDF",
+                "link": ""
+            },
+            "edge": {
+                "title": "Edge Studio",
+                "info": "Visit Edge Studio",
+                "link": ""
             }
         }
     }
