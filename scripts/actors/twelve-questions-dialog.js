@@ -204,7 +204,23 @@ export class TwelveQuestionsDialog extends FormApplication {
     _validateDropType(stepKey, item) {
         // Discipline drop zones
         if (stepKey === "step3.discipline" || stepKey === "step2.discipline") {
-            return { allowed: item.type === "discipline" };
+            if (item.type !== "discipline") return { allowed: false };
+
+            // T-Doll weapon discipline validation: only weapon-named disciplines
+            if (stepKey === "step2.discipline") {
+                const weaponNames = [
+                    "Knives", "Swords", "Pistols", "Submachine Guns",
+                    "Shotguns", "Assault Rifles", "Battle Rifles", "Snipers", "Machine Guns",
+                ];
+                if (!weaponNames.includes(item.name)) {
+                    return {
+                        allowed: false,
+                        message: game.i18n.localize("gfl5r.twelve_questions.errors.weapon_discipline_only"),
+                    };
+                }
+            }
+
+            return { allowed: true };
         }
 
         // Human starting technique drop zone (requires selected discipline)
