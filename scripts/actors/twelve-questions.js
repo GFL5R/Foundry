@@ -21,6 +21,9 @@ export class TwelveQuestions {
         ],
     };
 
+    /** No approach may exceed this value at character creation. */
+    static MAX_APPROACH_AT_CREATION = 3;
+
     /**
      * Lists of form field paths that hold skill selections.
      */
@@ -262,6 +265,15 @@ export class TwelveQuestions {
             const frame = TDOLL_FRAMES.find(f => f.key === this.data.step1.selection);
             if (frame) {
                 Object.entries(frame.approaches).forEach(([k, v]) => { summary[k] = v; });
+            }
+        }
+
+        // Validate approach limit at character creation (no single approach > 3)
+        for (const [approach, value] of Object.entries(summary)) {
+            if (value > TwelveQuestions.MAX_APPROACH_AT_CREATION) {
+                errors.push(
+                    `${approach.charAt(0).toUpperCase() + approach.slice(1)} (${value}) exceeds the character creation limit of ${TwelveQuestions.MAX_APPROACH_AT_CREATION}`
+                );
             }
         }
 
