@@ -1,0 +1,588 @@
+{
+  "Ghost": {
+    "skills": [
+      "Stealth",
+      "Subterfuge",
+      "Conditioning"
+    ],
+    "flavor": "Ghosts don't exist. They're just a tale people assign to unexplained phenomena. No one can prove that you exist either, just the effects you've left behind, usually in the form of a corpse, if anything at all. Unseen operators like you are the stuff of nightmares for any security detail, and the stuff of legends for everyone else.",
+    "perk": "Disappearing Act",
+    "capstone": "Absolute Stealth",
+    "techniques": [
+      "Phantom Step",
+      "Scrub",
+      "Field Recon",
+      "Ghost Step",
+      "Alibi",
+      "Prepared Ambush",
+      "Dead Air",
+      "Silent Strike",
+      "Vanishing Act",
+      "Silent Assassin",
+      "Hunter's Patience",
+      "Dead Angle"
+    ]
+  },
+  "Sicario": {
+    "skills": [
+      "Stealth",
+      "Blades",
+      "Firearms"
+    ],
+    "flavor": "A Sicario, spanish for 'hitman', is a professional assassin, specializing in eliminating high-profile targets. They are often hired by powerful individuals or organizations to carry out their dirty work, and are known for their efficiency and discretion.",
+    "perk": "Killshot",
+    "capstone": "Professional Cleanup",
+    "techniques": [
+      "Phantom Step",
+      "Poison Blade",
+      "Throwing Knife",
+      "Sighting-in",
+      "Shoot to Maim",
+      "Dead Air",
+      "Silent Strike",
+      "Gap in the Armor",
+      "Closing Strike",
+      "Momentous Strike",
+      "Silent Assassin",
+      "Sniper's Advantage",
+      "Hand of God"
+    ]
+  },
+  "Street Kid": {
+    "skills": [
+      "Deception",
+      "Crafting",
+      "Survival"
+    ],
+    "flavor": "No one taught the street kid how to survive. They had to learn on their own, and they had to learn fast. The streets are a harsh place, and only the strong survive. Street kids are resourceful and cunning, able to navigate the urban jungle with ease.",
+    "perk": "Urban Scavenger",
+    "capstone": "Born To Survive",
+    "techniques": [
+      "Clean Hands",
+      "Improvised Hazard",
+      "Friends in Low Places",
+      "Beware the Smallest Mouse",
+      "What's Yours Is Mine",
+      "Volatile Dispersal",
+      "Improvise Weapon",
+      "Alibi",
+      "Call the Wild",
+      "Bend with the Storm"
+    ]
+  },
+  "Heartbreaker": {
+    "skills": [
+      "Performance",
+      "Deception",
+      "Insight"
+    ],
+    "flavor": "A Heartbreaker knows that the right word at the right time can accomplish what a bullet never could. They navigate social situations with effortless grace, turning obstacles into opportunities with nothing but wit.",
+    "perk": "Silver Tongue",
+    "capstone": "Irresistible Charisma",
+    "techniques": [
+      "Appreciate the Scenery",
+      "Artisan's Appraisal",
+      "Cadence",
+      "Feigned Opening",
+      "Friends in Low Places",
+      "Just a Joke",
+      "Keep Your Cool",
+      "Read the Room",
+      "Roast",
+      "Show Off",
+      "Bravado",
+      "Dramatic Entrance",
+      "Everyone Has a Price",
+      "Get Under Their Skin",
+      "Lighten the Mood",
+      "Manners maketh the Man",
+      "Misdirection",
+      "Slip of the Tongue",
+      "Social Manipulation",
+      "Bend with the Storm"
+    ]
+  },
+  "Smooth Talker": {
+    "skills": [
+      "Negotiation",
+      "Culture",
+      "Insight"
+    ],
+    "flavor": "A Smooth Talker can walk into a room full of people who want them dead and walk out with a contract and a dinner invitation. Whether defusing a standoff or negotiating terms that somehow favor everyone at the table, they always find the angle.",
+    "perk": "Diplomatic Immunity",
+    "capstone": "Master Diplomat",
+    "techniques": [
+      "Keep Your Cool",
+      "Read the Room",
+      "Concession",
+      "Everyone Has a Price",
+      "Manners maketh the Man",
+      "Negotiation Tactics",
+      "Operational Insight",
+      "Perception is Reality",
+      "Strategic Insight",
+      "Tactical Assessment",
+      "Two Heads are Better than One",
+      "Bond of Heroes",
+      "Flexible Positioning"
+    ]
+  },
+  "Commander": {
+    "skills": [
+      "Command",
+      "Tactics",
+      "Resolve"
+    ],
+    "flavor": "A Commander creates certainty in chaos. When bullets fly and systems fail, they are the calm voice that guides the team through hell and back.",
+    "perk": "Natural Leader",
+    "capstone": "Battlefield Genius",
+    "techniques": [
+      "Borrowed Courage",
+      "Intimidation",
+      "Let It Ride",
+      "Marching Orders",
+      "War Cry",
+      "Commanding Authority",
+      "Commanding Presence",
+      "Field Fortifications",
+      "Look Out!",
+      "Mentorship",
+      "Prepared for Anything",
+      "Provocative Challenge",
+      "No Retreat",
+      "Plant a Seed",
+      "Sacrifice Play",
+      "Scorched Earth",
+      "Shock and Awe"
+    ]
+  },
+  "Black Hat": {
+    "skills": [
+      "Computers",
+      "Subterfuge",
+      "Tactics"
+    ],
+    "flavor": "Networks are doors, and a Black Hat doesn't wait for an invitation. They find the service entrance, the loading dock, the ventilation shaft, and if none of those work, they make a new opening.",
+    "perk": "Zero Day",
+    "capstone": "Proxy",
+    "techniques": [
+      "Blackout",
+      "Cleanup Detail",
+      "Cloak",
+      "Dead Drop",
+      "Exfiltrate",
+      "Falsify Data",
+      "Hijack",
+      "ICE Breaker",
+      "Overclock",
+      "Payload Injection",
+      "Privilege Escalation",
+      "Puppet String",
+      "Siege Engine",
+      "Spoof",
+      "Spike",
+      "Total Eclipse",
+      "Trace"
+    ]
+  },
+  "Spider": {
+    "skills": [
+      "Computers",
+      "Insight",
+      "Science"
+    ],
+    "flavor": "Every network someone is paid to protect has someone else trying to get through it. The Spider's job is to make sure that person fails, and to make sure everyone knows why.",
+    "perk": "Watchdog",
+    "capstone": "Emergency Shutdown",
+    "techniques": [
+      "Cloak",
+      "Forensics",
+      "Honeypot",
+      "Neural Fortification",
+      "Overclock",
+      "Patch",
+      "Quarantine",
+      "Rootkit",
+      "Spike",
+      "Sweep",
+      "System Rollback",
+      "Trace"
+    ]
+  },
+  "Knuckle Dragger": {
+    "skills": [
+      "Hand-To-Hand",
+      "Conditioning",
+      "Tactics"
+    ],
+    "flavor": "When the guns run dry and the knives break, there is only what you were born with. A Knuckle Dragger has made peace with this fact and, honestly, prefers it that way.",
+    "perk": "Iron Fist",
+    "capstone": "Unstoppable Force",
+    "techniques": [
+      "Defensive Maneuver",
+      "Pistol Whip",
+      "Splat!",
+      "Whirling Strike",
+      "Grappler",
+      "Judo Throw",
+      "Last Stand",
+      "Murderous Intent",
+      "Rolling With the Punches",
+      "Wrest Control",
+      "Cleaving Strike",
+      "Counterattack",
+      "Crushing Blow"
+    ]
+  },
+  "Analyst": {
+    "skills": [
+      "Science",
+      "Insight",
+      "Computers"
+    ],
+    "flavor": "Information is power, and an Analyst is a master of both. They can take a pile of data and turn it into actionable intelligence that can change the course of a mission.",
+    "perk": "Analytical Mind",
+    "capstone": "Elementary",
+    "techniques": [
+      "Ballistic Analysis",
+      "Chemical Analysis",
+      "Chemical Synthesis",
+      "Examine for ELID",
+      "Forensic Analysis",
+      "Jack of All Trades",
+      "Operational Insight",
+      "Slip of the Tongue",
+      "Strategic Insight",
+      "Tactical Assessment",
+      "Um, Actually"
+    ]
+  },
+  "Field Medic": {
+    "skills": [
+      "Medicine",
+      "Conditioning",
+      "Science"
+    ],
+    "flavor": "When a teammate goes down, the clock starts. The Field Medic is the person who knows how to stop it.",
+    "perk": "Triage",
+    "capstone": "Miracle Worker",
+    "techniques": [
+      "Emergency Aid",
+      "Combat Stimulant",
+      "Emergency Triage",
+      "Field Dressing",
+      "Field Surgery",
+      "Hazard Detection",
+      "Pain Management",
+      "Group Treatment",
+      "Resuscitation",
+      "Stabilize the Dying",
+      "Stop the Bleeding"
+    ]
+  },
+  "Grease Monkey": {
+    "skills": [
+      "Crafting",
+      "Mechanics",
+      "Explosives"
+    ],
+    "flavor": "A Grease Monkey looks at a battlefield and sees infrastructure. Defensible positions, structural weaknesses, killzones waiting to be established. The terrain isn't fixed; it's a starting condition.",
+    "perk": "Field Kit",
+    "capstone": "On the Fly",
+    "techniques": [
+      "Breach Charge",
+      "Device Modification",
+      "Emergency Frame Stabilization",
+      "Emergency Patch",
+      "Emergency Repair",
+      "Field Repair",
+      "Grease The Joints",
+      "Improvised Fortification",
+      "Jury-Rig",
+      "Remote Detonator",
+      "Reserve Power",
+      "Sensor Array",
+      "Structural Analysis",
+      "Trip Wire"
+    ]
+  },
+  "Knives": {
+    "skills": [
+      "Blades",
+      "Stealth",
+      "Subterfuge"
+    ],
+    "flavor": "Knives are a weapon as old as humanity itself. A utilitarian tool for the masses that unlocked humanity's potential, making it possible to hunt, build, and defend ourselves.",
+    "perk": "Sleight of Hand",
+    "capstone": "Death's Whisper",
+    "techniques": [
+      "Throwing Knife",
+      "Gap in the Armor",
+      "Closing Strike",
+      "Momentous Strike",
+      "Wrest Control",
+      "Evasive Footwork",
+      "Weapon Lock",
+      "Hunter's Patience",
+      "Dead Air",
+      "Sever the Artery"
+    ]
+  },
+  "Swords": {
+    "skills": [
+      "Blades",
+      "Conditioning",
+      "Resolve"
+    ],
+    "flavor": "Using a sword in 2072 is a statement. Heroes of myth and legend wielded swords, and so now do you as well, perhaps as a nod to the past, or perhaps as a symbol of your own code of honor.",
+    "perk": "Razor Edged",
+    "capstone": "Living Blade",
+    "techniques": [
+      "Acrobatic Recovery",
+      "Deflective Defense",
+      "Cleaving Strike",
+      "Counterattack",
+      "Gap in the Armor",
+      "Closing Strike",
+      "Momentous Strike",
+      "Judo Throw",
+      "Murderous Intent",
+      "Wrest Control",
+      "Evasive Footwork",
+      "Weapon Lock",
+      "Forced Hand",
+      "Takedown",
+      "Hunter's Patience"
+    ]
+  },
+  "Pistols": {
+    "skills": [
+      "Firearms",
+      "Subterfuge",
+      "Tactics"
+    ],
+    "flavor": "Pistols are the most common firearm in 2072, and for good reason. They're compact, easy to use, and effective at close to medium range. A pistol is a reliable sidearm that can be used in a variety of situations, making it a staple for any operator.",
+    "perk": "Quick Draw",
+    "capstone": "Deadeye",
+    "techniques": [
+      "Sighting-in",
+      "Shoot to Maim",
+      "Guns Akimbo",
+      "Disarming Shot",
+      "Suppressive Fire",
+      "Ricochet",
+      "Forced Hand",
+      "AP Round",
+      "Dead Angle",
+      "Murderous Intent",
+      "Evasive Footwork"
+    ]
+  },
+  "Submachine Guns": {
+    "skills": [
+      "Firearms",
+      "Stealth",
+      "Tactics"
+    ],
+    "flavor": "Submachine guns are the weapon of choice for close-quarters combat, offering a high rate of fire and excellent maneuverability. They are ideal for operators who need to move quickly and engage targets at close range.",
+    "perk": "Room Presence",
+    "capstone": "Bullet Storm",
+    "techniques": [
+      "Aggressive Escort",
+      "Acrobatic Recovery",
+      "Distraction Tactics",
+      "Shoot to Maim",
+      "Suppressive Fire",
+      "Ricochet",
+      "Evasive Footwork",
+      "Airborne Assault",
+      "Pistol Whip",
+      "Shoot and Scoot"
+    ]
+  },
+  "Shotguns": {
+    "skills": [
+      "Firearms",
+      "Conditioning",
+      "Survival"
+    ],
+    "flavor": "Shotguns have been around for centuries, and they continue to be a powerful weapon in 2072. They are devastating at close range, capable of taking down multiple targets with a single blast.",
+    "perk": "Point Blank",
+    "capstone": "Thunderclap",
+    "techniques": [
+      "Pistol Whip",
+      "Crushing Blow",
+      "Trench Sweeper",
+      "Swiss Cheese",
+      "Quick Draw: Keep One In the Chamber",
+      "Aggressive Escort",
+      "Suppressive Fire",
+      "Ricochet",
+      "Takedown",
+      "Last Stand"
+    ]
+  },
+  "Assault Rifles": {
+    "skills": [
+      "Firearms",
+      "Tactics",
+      "Conditioning"
+    ],
+    "flavor": "The rifleman is the backbone of any combat unit, and the assault rifle is their weapon of choice. It offers a balance of range, accuracy, and firepower that makes it effective in a wide variety of combat situations.",
+    "perk": "Versatile",
+    "capstone": "Lead Rain",
+    "techniques": [
+      "Airborne Assault",
+      "Sighting-in",
+      "Anchor Point",
+      "Eyes on the Prize",
+      "Shoot to Maim",
+      "Suppressive Fire",
+      "Hunter's Patience",
+      "Dead Angle",
+      "AP Round",
+      "Distraction Tactics"
+    ]
+  },
+  "Battle Rifles": {
+    "skills": [
+      "Firearms",
+      "Resolve",
+      "Tactics"
+    ],
+    "flavor": "Battle Rifles are Assault Rifles' older, more powerful sibling. Unlike Assault Rifles which fire an intermediate cartridge, Battle Rifles retained the full power cartridges of their bolt-action ancestors, giving them superior range and stopping power at the cost of increased recoil and reduced magazine capacity.",
+    "perk": "Heavy Hitter",
+    "capstone": "Stopping Power",
+    "techniques": [
+      "Airborne Assault",
+      "Eyes Up!",
+      "Sighting-in",
+      "Hand of God",
+      "Shoot to Maim",
+      "Hunter's Patience",
+      "Dug In",
+      "AP Round",
+      "Dead Angle",
+      "Eyes on the Prize"
+    ]
+  },
+  "Snipers": {
+    "skills": [
+      "Firearms",
+      "Stealth",
+      "Survival"
+    ],
+    "flavor": "Sniper Rifles encompass everything from your great grandpa's hunting rifle to the most advanced anti-materiel rifles of 2072. They are designed for precision shooting at long ranges, allowing snipers to take out targets from a distance with deadly accuracy.",
+    "perk": "Patience",
+    "capstone": "One Shot",
+    "techniques": [
+      "Sighting-in",
+      "Battle in the Mind",
+      "Sniper's Advantage",
+      "Hand of God",
+      "Hunter's Patience",
+      "Dead Angle",
+      "Dug In",
+      "Glass Case",
+      "Shoot to Maim",
+      "Eyes on the Prize"
+    ]
+  },
+  "Machine Guns": {
+    "skills": [
+      "Firearms",
+      "Conditioning",
+      "Resolve"
+    ],
+    "flavor": "Machine Guns changed warfare forever, and they continue to be a dominant force on the battlefield in 2072. They are designed for sustained automatic fire, providing suppressive firepower that can pin down enemies and control the flow of battle.",
+    "perk": "Suppressive Instinct",
+    "capstone": "Wall of Lead",
+    "techniques": [
+      "Anchor Point",
+      "Landmine",
+      "Last Stand",
+      "Suppressive Fire",
+      "Dug In",
+      "Glass Case",
+      "AP Round",
+      "Distraction Tactics",
+      "Aggressive Escort",
+      "Shoot to Maim"
+    ]
+  },
+  "Frontliner": {
+    "skills": [
+      "Exotic Weapons",
+      "Tactics",
+      "Conditioning"
+    ],
+    "flavor": "Someone has to go first. The Frontliner is the operator who volunteers for that role, armed with a shield and the training to use it. They are the wall between their team and the enemy, absorbing damage that would devastate anyone else.",
+    "perk": "Shield Wall",
+    "capstone": "Unbreakable",
+    "techniques": [
+      "Shield Bash",
+      "Intercept",
+      "Breach and Clear",
+      "Bulwark",
+      "Judo Throw",
+      "Grappler",
+      "Wrest Control",
+      "Rolling With the Punches",
+      "Weapon Lock",
+      "Dug In",
+      "Takedown"
+    ]
+  },
+  "Baby Driver": {
+    "skills": [
+      "Piloting",
+      "Firearms",
+      "Resolve"
+    ],
+    "flavor": "A Baby Driver slots into the driver's seat the way a magazine locks into a receiver. The wheel turns before conscious thought. The throttle answers questions the driver has not finished asking.",
+    "perk": "Redline",
+    "capstone": "One Last Run",
+    "techniques": [
+      "J-Turn",
+      "Bumper Tag",
+      "Lead Foot",
+      "Drive-By Directive",
+      "Dirty Windshield",
+      "Shoot and Scoot",
+      "Suppressive Fire",
+      "Evasive Footwork",
+      "Ricochet",
+      "Chicken",
+      "Ride the Line",
+      "Totaled",
+      "Push It to the Limit",
+      "Ghost Ride"
+    ]
+  },
+  "Chauffeur": {
+    "skills": [
+      "Piloting",
+      "Tactics",
+      "Insight"
+    ],
+    "flavor": "A Chauffeur treats the vehicle like a mobile safe room. Every input is measured. Every shift is invisible. Passengers arrive without remembering the drive.",
+    "perk": "Smooth Operator",
+    "capstone": "The Professional",
+    "techniques": [
+      "Rapid Transit",
+      "Read the Room",
+      "Keep Your Cool",
+      "Defensive Maneuver",
+      "Evasive Footwork",
+      "PIT Maneuver",
+      "Thread the Needle",
+      "Rolling Fortress",
+      "Tactical Assessment",
+      "Look Out!",
+      "Flexible Positioning",
+      "Dug In",
+      "Ride the Line",
+      "Smoke and Mirrors"
+    ]
+  }
+}

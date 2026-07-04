@@ -71,9 +71,8 @@
                     "packs": [
                         "gfl5r-techniques-combat",
                         "gfl5r-techniques-command",
-                        "gfl5r-techniques-conditioning",
                         "gfl5r-techniques-electronic-warfare",
-                        "gfl5r-techniques-remolding",
+                        "gfl5r-techniques-remoulding",
                         "gfl5r-techniques-science",
                         "gfl5r-techniques-social",
                         "gfl5r-techniques-street",
@@ -183,13 +182,7 @@
             "type": "Item",
             "system": "gfl5r"
         },
-        {
-            "name": "gfl5r-techniques-conditioning",
-            "label": "Conditioning Techniques",
-            "path": "packs/gfl5r-techniques-conditioning",
-            "type": "Item",
-            "system": "gfl5r"
-        },
+
         {
             "name": "gfl5r-techniques-electronic-warfare",
             "label": "Electronic Warfare Techniques",
@@ -198,9 +191,9 @@
             "system": "gfl5r"
         },
         {
-            "name": "gfl5r-techniques-remolding",
-            "label": "Remolding Techniques",
-            "path": "packs/gfl5r-techniques-remolding",
+            "name": "gfl5r-techniques-remoulding",
+            "label": "Remoulding Techniques",
+            "path": "packs/gfl5r-techniques-remoulding",
             "type": "Item",
             "system": "gfl5r"
         },

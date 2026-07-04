@@ -2,11 +2,18 @@
 """
 GFL5R Compendium Builder
 
-Reads .djson files from the webapp data directory and converts them into
-Foundry VTT Item/Actor documents, then builds LevelDB compendium packs.
+Reads standard .json files from the GFL5R webapp data directory and converts
+them into Foundry VTT Item/Actor documents, then builds LevelDB compendium packs.
 
 Usage:
-    python build-compendiums.py --webapp-data ../webapp/data --output ../packs
+    python build-compendiums.py \
+        --webapp-src ../webapp/src/data \
+        --data-dir data \
+        --packs-dir packs
+
+The --webapp-src path points to the canonical webapp data (gfl5r.org).
+The --data-dir path is for local Foundry-only files (conditions, disciplines)
+that don't have a webapp JSON equivalent yet.
 
 Requires: docstring-json, plyvel
 """
@@ -14,17 +21,27 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import re
+import shutil
 import string
 import time
 from pathlib import Path
 
-import docstring_json
+# LevelDB is optional — falls back to JSON dump when plyvel is unavailable
+_LEVELDB_AVAILABLE = False
+try:
+    from leveldb_writer import LevelDBWriter
+    _LEVELDB_AVAILABLE = True
+except ImportError:
+    LevelDBWriter = None
+    
+_OUTPUT_FORMATS = ("leveldb", "json")
 
-from leveldb_writer import LevelDBWriter
-
-# Icon shortcodes -> Foundry-compatible HTML
+# ---------------------------------------------------------------------------
+# Icon shortcodes
+# ---------------------------------------------------------------------------
 ICON_SHORTCODES = {
     "(op)": '<i class="i_opportunity"></i>',
     "(su)": '<i class="i_success"></i>',
@@ -48,47 +65,56 @@ def apply_shortcodes(obj):
     return obj
 
 
-def load_djson(path: Path) -> dict:
-    parsed = docstring_json.load(str(path))
-    return apply_shortcodes(parsed)
+# ---------------------------------------------------------------------------
+# JSON loaders
+# ---------------------------------------------------------------------------
+def load_json(path: Path) -> dict | list:
+    """Load a standard JSON file and apply shortcode replacement."""
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return apply_shortcodes(data)
 
 
-def build_weapon_item(name: str, data: dict) -> dict:
-    return {
-        "name": name,
-        "type": "weaponry",
-        "system": {
-            "source_reference": {"source": "GFL5R", "page": 0},
-            "flavor": data.get("flavor", ""),
-            "description": data.get("description", ""),
-            "category": data.get("category", "HG"),
-            "skill": data.get("skill", "firearms"),
-            "ideal_range": data.get("range", 0),
-            "damage": data.get("damage", 0),
-            "deadliness": data.get("deadliness", 0),
-            "grip": data.get("grip", "1-Handed"),
-            "threat": data.get("threat", 0),
-            "signature": data.get("signature", 0),
-            "qualities": data.get("qualities", []),
-            "price": data.get("price", 0),
-            "equipped": False,
-            "readied": False,
-        },
-    }
+def array_to_dict(arr: list, key_field: str = "name") -> dict:
+    """Convert an array of objects into a dict keyed by *key_field*.
+
+    Used for webapp formats where data is an array (advantages, NPCs, etc.)
+    but the builder functions expect dicts keyed by entry name.
+    """
+    result = {}
+    for entry in arr:
+        k = entry.get(key_field)
+        if k:
+            result[k] = entry
+    return result
 
 
+# ---------------------------------------------------------------------------
+# Field normalizers
+# ---------------------------------------------------------------------------
 def _normalize_approach(value) -> str:
     """Normalize an approach value to a lowercase id matching CONFIG.gfl5r.stances.
 
-    Source djson uses title case ("Fortune"); some entries are a list of approaches
-    (we keep the first since the sheet's approach picker is single-select); some are
-    None. The Foundry technique sheet's <select> matches against lowercase option ids.
+    Source JSON uses title case ("Fortune"); some entries are a list of
+    approaches (keep the first); some are None/null.
     """
     if not value:
         return ""
     if isinstance(value, list):
         value = value[0] if value else ""
     return str(value).strip().lower()
+
+
+def _normalize_skill(value) -> str:
+    """Normalize a skill value to a lowercase snake_case id matching
+    CONFIG.gfl5r.skills.
+
+    Webapp JSON uses display labels ("Hand-to-Hand", "Exotic Weapons").
+    The Foundry skills map keys on snake_case lowercase ("hand_to_hand").
+    """
+    if not value:
+        return ""
+    return str(value).strip().lower().replace("-", "_").replace(" ", "_")
 
 
 _TN_RE = re.compile(r"TN\s+(\d+)\b")
@@ -110,17 +136,203 @@ def _extract_difficulty(data: dict) -> int:
     return int(m.group(1)) if m else 0
 
 
-def _normalize_skill(value) -> str:
-    """Normalize a skill value to a lowercase id matching CONFIG.gfl5r.skills.
+def _normalize_keys(obj: dict, key_map: dict[str, str] | None = None) -> dict:
+    """Return a new dict with all keys lowered and optionally remapped.
 
-    Source djson uses display labels ("Command", "Hand-to-Hand", "Exotic Weapons");
-    the Foundry skills map keys on snake_case lowercase ids ("command",
-    "hand_to_hand", "exotic_weapons"). technique-sheet.js's formatSkillList drops
-    any value that isn't a known id, which is why mismatched casing renders blank.
+    Useful for normalising approach keys like {"Power": 1} → {"power": 1}
+    and skill group keys like {"Combat": 2} → {"combat": 2}.
     """
-    if not value:
-        return ""
-    return str(value).strip().lower().replace("-", "_").replace(" ", "_")
+    result = {}
+    for k, v in obj.items():
+        lowered = k.strip().lower()
+        result[lowered] = v
+    if key_map:
+        for old_k, new_k in key_map.items():
+            if old_k in result:
+                result[new_k] = result.pop(old_k)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Adapters: webapp JSON format → builder-ready dicts
+# ---------------------------------------------------------------------------
+def adapt_weapons(webapp_data: dict) -> dict:
+    """Weapons: webapp format is already dict-keyed by name.
+
+    Keys are already correct. The builders will normalize skill via
+    _normalize_skill() at build time.
+    """
+    return webapp_data
+
+
+def adapt_techniques(webapp_data: dict) -> dict[str, dict]:
+    """Techniques: webapp has a single JSON keyed by type → array of entries.
+
+    Returns a dict mapping type-slug → {name: entry_data, …}.
+
+    Pseudo-entries with name "Activation:" are skipped.
+    Webapp entries have no `description` field; we use `activation` as a
+    plain-text substitute (the Foundry sheet can render it).
+    """
+    result = {}
+    for type_slug, entries in webapp_data.items():
+        by_name = {}
+        for entry in entries:
+            if entry.get("name") == "Activation:":
+                continue  # pseudo-entry for opportunity lists
+            name = entry.get("name", "")
+            if not name:
+                continue
+            # Compose a minimal description from the activation text
+            activation_text = (entry.get("activation") or "").strip()
+            desc = f"<p>{activation_text}</p>" if activation_text else ""
+
+            # Extract TN from activation text for difficulty
+            m = _TN_RE.search(activation_text)
+            difficulty = int(m.group(1)) if m else 0
+
+            by_name[name] = {
+                "rank": entry.get("rank", 1),
+                "approach": entry.get("approach", ""),
+                "skill": entry.get("skill", ""),
+                "flavor": entry.get("flavor", ""),
+                "description": desc,
+                "activation": entry.get("activation", "passive"),
+                "difficulty": difficulty,
+            }
+        if by_name:
+            result[type_slug] = by_name
+    return result
+
+
+def adapt_narrative(webapp_data: list, effects_to_desc: bool = True) -> dict:
+    """Narrative items (advantages/disadvantages/passions/anxieties).
+
+    Webapp format: array of {id, name, types[], flavor, effects[], ...}.
+    Returns dict keyed by entry name with fields expected by the builder:
+    {flavor, description, type[], tags[], ring_bonus}.
+    """
+    by_name = {}
+    for entry in webapp_data:
+        name = entry.get("name", "")
+        if not name:
+            continue
+
+        # Build a description from the effects array
+        if effects_to_desc and entry.get("effects"):
+            items = "".join(f"<li>{e}</li>" for e in entry["effects"])
+            desc = f"<h3>Effects</h3><ul>{items}</ul>"
+        else:
+            desc = entry.get("description", "")
+
+        by_name[name] = {
+            "flavor": entry.get("flavor", ""),
+            "description": desc,
+            "type": entry.get("types", entry.get("type", [])),
+            "tags": entry.get("types", entry.get("tags", [])),
+            "ring_bonus": entry.get("ring_bonus", ""),
+        }
+    return by_name
+
+
+def adapt_npcs(webapp_data: list, narrative_sources: dict | None = None) -> dict:
+    """NPCs: webapp format is an array of objects.
+
+    Returns dict keyed by name with:
+    - approaches keys lowered (e.g., "Power" → "power")
+    - skills keys lowered (e.g., "Combat" → "combat")
+    - description composed from attacks + specialRules
+    - advantages/disadvantages/passion/anxiety as lists of name strings
+    """
+    by_name = {}
+    for entry in webapp_data:
+        name = entry.get("name", "")
+        if not name:
+            continue
+
+        # Normalize approach keys
+        raw_approaches = entry.get("approaches", {}) or {}
+        approaches = _normalize_keys(raw_approaches) if raw_approaches else {}
+
+        # Normalize skill group keys
+        raw_skills = entry.get("skills", {}) or {}
+        skills = _normalize_keys(raw_skills) if raw_skills else {}
+
+        # Compose description (flavor + attacks + special rules)
+        desc_parts = []
+        if entry.get("flavor"):
+            desc_parts.append(entry["flavor"])
+        attacks = entry.get("attacks", [])
+        if attacks:
+            items = "".join(
+                f"<li><strong>{a.get('name', '')}:</strong> {a.get('description', '')}</li>"
+                for a in attacks
+            )
+            desc_parts.append(f"<h3>Attacks</h3><ul>{items}</ul>")
+        special_rules = entry.get("specialRules", [])
+        if special_rules:
+            items = "".join(f"<li>{r}</li>" for r in special_rules)
+            desc_parts.append(f"<h3>Special Rules</h3><ul>{items}</ul>")
+
+        # Handle advantages/disadvantages (can be string or array of strings)
+        advantages = entry.get("advantages")
+        if isinstance(advantages, str):
+            advantages_list = [advantages] if advantages else []
+        else:
+            advantages_list = list(advantages or [])
+
+        disadvantages = entry.get("disadvantages")
+        if isinstance(disadvantages, str):
+            disadvantages_list = [disadvantages] if disadvantages else []
+        else:
+            disadvantages_list = list(disadvantages or [])
+
+        passion = entry.get("passion", "")
+        anxiety = entry.get("anxiety", "")
+
+        by_name[name] = {
+            "type": entry.get("type", ""),
+            "threat_level": entry.get("threat_level", "standard"),
+            "approaches": approaches,
+            "skills": skills,
+            "flavor": entry.get("flavor", ""),
+            "description": "\n".join(desc_parts),
+            "image": entry.get("image", ""),
+            "behaviors": entry.get("behaviors", ""),
+            "armor": entry.get("armor", 0),
+            "advantages": advantages_list,
+            "disadvantages": disadvantages_list,
+            "passion": passion,
+            "anxiety": anxiety,
+        }
+    return by_name
+
+
+# ---------------------------------------------------------------------------
+# Builders (unchanged logic — produce Foundry document dicts)
+# ---------------------------------------------------------------------------
+def build_weapon_item(name: str, data: dict) -> dict:
+    return {
+        "name": name,
+        "type": "weaponry",
+        "system": {
+            "source_reference": {"source": "GFL5R", "page": 0},
+            "flavor": data.get("flavor", ""),
+            "description": data.get("description", ""),
+            "category": data.get("category", "HG"),
+            "skill": _normalize_skill(data.get("skill", "firearms")),
+            "ideal_range": data.get("range", 0),
+            "damage": data.get("damage", 0),
+            "deadliness": data.get("deadliness", 0),
+            "grip": data.get("grip", "1-Handed"),
+            "threat": data.get("threat", 0),
+            "signature": data.get("signature", 0),
+            "qualities": data.get("qualities", []),
+            "price": data.get("price", 0),
+            "equipped": False,
+            "readied": False,
+        },
+    }
 
 
 def build_technique_item(name: str, data: dict, technique_type: str) -> dict:
@@ -135,9 +347,9 @@ def build_technique_item(name: str, data: dict, technique_type: str) -> dict:
             "rank_required": data.get("rank", 1),
             "technique_type": technique_type,
             "approach": _normalize_approach(data.get("approach")),
-            "skill": _normalize_skill(data.get("skill")),
+            "skill": _normalize_skill(data.get("skill", "")),
             "activation": data.get("activation", "passive"),
-            "difficulty": _extract_difficulty(data),
+            "difficulty": data.get("difficulty", _extract_difficulty(data)),
         },
     }
 
@@ -192,7 +404,7 @@ def build_narrative_item(name: str, data: dict, narrative_type: str) -> dict:
             "description": data.get("description", ""),
             "narrative_type": narrative_type,
             "ring_bonus": data.get("ring_bonus") or "",
-            "tags": data.get("tags", []),
+            "tags": data.get("type", data.get("tags", [])),
         },
     }
 
@@ -203,7 +415,6 @@ def build_discipline_item(name: str, data: dict, perks: dict, capstones: dict, a
     capstone_name = data.get("capstone", "")
     capstone_data = capstones.get(capstone_name, {})
 
-    # Build technique list with rank/type from cross-referenced technique data
     techniques = []
     for tech_name in data.get("techniques", []):
         tech_info = all_techniques.get(tech_name, {})
@@ -212,7 +423,6 @@ def build_discipline_item(name: str, data: dict, perks: dict, capstones: dict, a
             "rank": tech_info.get("rank", 1),
             "type": tech_info.get("type", ""),
         })
-    # Sort by rank then name
     techniques.sort(key=lambda t: (t["rank"], t["name"]))
 
     return {
@@ -248,8 +458,8 @@ def build_module_item(name: str, data: dict) -> dict:
             "description": data.get("description", ""),
             "module_type": data.get("type", "Frame Augmentation"),
             "cost": data.get("cost", 0),
-            "approach": data.get("approach") or "",
-            "skill": data.get("skill") or "",
+            "approach": _normalize_approach(data.get("approach") or ""),
+            "skill": _normalize_skill(data.get("skill") or ""),
             "modifies": data.get("modifies", {}),
         },
     }
@@ -266,12 +476,32 @@ def build_armor_item(name: str, data: dict) -> dict:
             "weight": data.get("weight", 0),
             "signature": data.get("signature", 0),
             "protection": data.get("protection", 0),
-            "price": data.get("cost", 0),
+            "price": data.get("price", data.get("cost", 0)),
             "equipped": False,
         },
     }
 
 
+def build_item(name: str, data: dict) -> dict:
+    return {
+        "name": name,
+        "type": "item",
+        "system": {
+            "source_reference": {"source": "GFL5R", "page": 0},
+            "flavor": data.get("flavor", ""),
+            "description": data.get("description", ""),
+            "quantity": 1,
+            "weight": data.get("weight", 0),
+            "price": data.get("price", 0),
+            "rarity": data.get("rarity", "common"),
+            "equipped": False,
+        },
+    }
+
+
+# ---------------------------------------------------------------------------
+# Conditions (journal entry builder)
+# ---------------------------------------------------------------------------
 def _effects_html(effects: list) -> str:
     if not effects:
         return ""
@@ -314,17 +544,65 @@ def build_condition_page_content(data: dict) -> str:
     return "".join(p for p in parts if p)
 
 
-def write_journal_pack(entries: list[dict], pack_path: Path):
-    """Write JournalEntry documents as a LevelDB compendium pack.
+# ---------------------------------------------------------------------------
+# Writer functions
+# ---------------------------------------------------------------------------
+def _uid(length=16):
+    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
 
-    Each entry dict must have: name (str), content (str HTML).
+
+def _get_writer(pack_path: Path):
+    """Return a (writer, write_method, close_method) tuple.
+
+    If LevelDB is available, returns a LevelDBWriter instance.
+    Otherwise, creates the pack directory and returns a JSON-file-based writer.
     """
-    import shutil
+    if _LEVELDB_AVAILABLE:
+        if pack_path.exists():
+            shutil.rmtree(pack_path)
+        return LevelDBWriter(pack_path), "put", "write"
+    else:
+        pack_path.mkdir(parents=True, exist_ok=True)
+        return pack_path, "json_put", None  # handled specially
+
+
+JSON_PACK_DOCS: dict[str, list[dict]] = {}
+
+
+def _json_put(pack_path: Path, key: str, value: str):
+    """JSON-fallback: collect documents in memory per pack_path."""
+    key_str = str(pack_path)
+    if key_str not in JSON_PACK_DOCS:
+        JSON_PACK_DOCS[key_str] = []
+    JSON_PACK_DOCS[key_str].append({"key": key, "value": json.loads(value)})
+
+
+def _json_write(pack_path: Path):
+    """Write collected documents as a JSON array with a _meta header."""
+    key_str = str(pack_path)
+    docs = JSON_PACK_DOCS.pop(key_str, [])
+    out = {
+        "_meta": {
+            "packName": pack_path.name,
+            "format": "gfl5r-json-pack",
+            "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "documentCount": len(docs),
+        },
+        "documents": [d["value"] for d in docs],
+    }
+    out_path = pack_path / "pack.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(out, f, indent=2, ensure_ascii=False)
+
+
+def write_journal_pack(entries: list[dict], pack_path: Path):
+    """Write JournalEntry documents as a compendium pack."""
     if pack_path.exists():
         shutil.rmtree(pack_path)
 
     now = int(time.time() * 1000)
-    db = LevelDBWriter(pack_path)
+    writer, write_mode, close_mode = _get_writer(pack_path)
 
     stats_base = {
         "compendiumSource": None,
@@ -368,40 +646,150 @@ def write_journal_pack(entries: list[dict], pack_path: Path):
             "_stats": dict(stats_base),
         }
 
-        db.put(f"!journal!{jid}", json.dumps(journal_doc, ensure_ascii=False))
-        db.put(f"!journal.pages!{jid}.{pid}", json.dumps(page_doc, ensure_ascii=False))
+        if write_mode == "put":
+            writer.put(f"!journal!{jid}", json.dumps(journal_doc, ensure_ascii=False))
+            writer.put(f"!journal.pages!{jid}.{pid}", json.dumps(page_doc, ensure_ascii=False))
+        else:
+            _json_put(pack_path, f"!journal!{jid}", json.dumps(journal_doc, ensure_ascii=False))
+            _json_put(pack_path, f"!journal.pages!{jid}.{pid}", json.dumps(page_doc, ensure_ascii=False))
 
-    db.write()
+    if write_mode == "put":
+        writer.write()
+    else:
+        _json_write(pack_path)
 
 
-def build_item(name: str, data: dict) -> dict:
-    return {
-        "name": name,
-        "type": "item",
-        "system": {
-            "source_reference": {"source": "GFL5R", "page": 0},
-            "flavor": data.get("flavor", ""),
-            "description": data.get("description", ""),
-            "quantity": 1,
-            "weight": data.get("weight", 0),
-            "price": data.get("price", 0),
-            "rarity": data.get("rarity", "common"),
-            "equipped": False,
-        },
+def write_actor_pack(actors: list[dict], pack_path: Path):
+    """Write Actor documents (with embedded Items) as a compendium pack."""
+    if pack_path.exists():
+        shutil.rmtree(pack_path)
+
+    now = int(time.time() * 1000)
+    writer, write_mode, close_mode = _get_writer(pack_path)
+
+    stats_base = {
+        "compendiumSource": None,
+        "duplicateSource": None,
+        "exportSource": None,
+        "coreVersion": "13.351",
+        "systemId": "gfl5r",
+        "systemVersion": "0.1.0",
+        "createdTime": now,
+        "modifiedTime": now,
+        "lastModifiedBy": None,
     }
 
+    for actor in actors:
+        aid = _uid()
+        embedded = actor.get("items", []) or []
+        item_docs = []
+        for item in embedded:
+            iid = _uid()
+            item_doc = {
+                "_id": iid,
+                "name": item["name"],
+                "type": item["type"],
+                "img": item.get("img", "icons/svg/item-bag.svg"),
+                "system": item.get("system", {}),
+                "effects": [],
+                "folder": None,
+                "sort": 0,
+                "ownership": {"default": 0},
+                "flags": {},
+                "_stats": dict(stats_base),
+            }
+            item_docs.append(item_doc)
 
-def _uid(length=16):
-    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
+        actor_doc = {
+            "_id": aid,
+            "name": actor["name"],
+            "type": actor["type"],
+            "img": actor.get("img", "icons/svg/mystery-man.svg"),
+            "system": actor.get("system", {}),
+            "prototypeToken": {
+                "name": actor["name"],
+                "displayName": 0,
+                "actorLink": False,
+                "disposition": 0,
+                "texture": {"src": actor.get("img", "icons/svg/mystery-man.svg")},
+                "bar1": {"attribute": "fatigue"},
+                "bar2": {"attribute": "strife"},
+            },
+            "items": item_docs,
+            "effects": [],
+            "folder": None,
+            "sort": 0,
+            "ownership": {"default": 0},
+            "flags": {},
+            "_stats": dict(stats_base),
+        }
+
+        if write_mode == "put":
+            writer.put(f"!actors!{aid}", json.dumps(actor_doc, ensure_ascii=False))
+            for item_doc in item_docs:
+                writer.put(
+                    f"!actors.items!{aid}.{item_doc['_id']}",
+                    json.dumps(item_doc, ensure_ascii=False),
+                )
+        else:
+            _json_put(pack_path, f"!actors!{aid}", json.dumps(actor_doc, ensure_ascii=False))
+            for item_doc in item_docs:
+                _json_put(pack_path, f"!actors.items!{aid}.{item_doc['_id']}", json.dumps(item_doc, ensure_ascii=False))
+
+    if write_mode == "put":
+        writer.write()
+    else:
+        _json_write(pack_path)
 
 
+def write_pack(items: list[dict], pack_path: Path):
+    """Write items directly as a compendium pack."""
+    if pack_path.exists():
+        shutil.rmtree(pack_path)
+
+    now = int(time.time() * 1000)
+    writer, write_mode, close_mode = _get_writer(pack_path)
+
+    for item in items:
+        uid = _uid()
+        doc = {
+            "name": item["name"],
+            "type": item["type"],
+            "_id": uid,
+            "img": item.get("img", "icons/svg/item-bag.svg"),
+            "system": item.get("system", {}),
+            "effects": [],
+            "folder": None,
+            "sort": 0,
+            "ownership": {"default": 0},
+            "flags": {},
+            "_stats": {
+                "compendiumSource": None,
+                "duplicateSource": None,
+                "exportSource": None,
+                "coreVersion": "13.351",
+                "systemId": "gfl5r",
+                "systemVersion": "0.1.0",
+                "createdTime": now,
+                "modifiedTime": now,
+                "lastModifiedBy": None,
+            },
+        }
+        if write_mode == "put":
+            writer.put(f"!items!{uid}", json.dumps(doc, ensure_ascii=False))
+        else:
+            _json_put(pack_path, f"!items!{uid}", json.dumps(doc, ensure_ascii=False))
+
+    if write_mode == "put":
+        writer.write()
+    else:
+        _json_write(pack_path)
+
+
+# ---------------------------------------------------------------------------
+# NPC embedded narrative helpers
+# ---------------------------------------------------------------------------
 def _npc_image_path(raw: str) -> str:
-    """Convert a webapp-relative NPC image path to a Foundry runtime path.
-
-    The djson stores paths like "assets/npcs/ELIDs/Foo.png" (served by the
-    webapp). Foundry clients resolve them as "systems/gfl5r/assets/npcs/...".
-    Falls back to a generic character icon when no image is supplied.
-    """
     if not raw:
         return "systems/gfl5r/assets/icons/actors/character.svg"
     raw = raw.lstrip("/")
@@ -410,33 +798,11 @@ def _npc_image_path(raw: str) -> str:
     return f"systems/gfl5r/assets/{raw}"
 
 
-def _build_embedded_narrative(name: str, narrative_type: str, source: dict) -> dict:
-    """Build an embedded narrative Item document referencing a named entry
-    from the matching narrative djson (advantages/disadvantages/passions/anxieties).
-    Missing entries still produce a valid item with empty flavor/description.
-    """
-    entry = source.get(name, {}) if source else {}
-    tags = entry.get("type", []) or entry.get("tags", [])
-    if isinstance(tags, str):
-        tags = [tags]
-    return build_narrative_item(name, {
-        "flavor": entry.get("flavor", ""),
-        "description": entry.get("description", ""),
-        "ring_bonus": entry.get("ring_bonus", ""),
-        "tags": tags,
-    }, narrative_type)
-
-
 _SKILL_GROUPS = ("combat", "fieldcraft", "technical", "social")
 
 
 def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
-    """Build an NPC actor document (with embedded narrative items) from djson.
-
-    `narrative_sources` maps narrative_type -> {entry_name: entry_data} loaded
-    from advantages.djson/disadvantages.djson/passions.djson/anxieties.djson,
-    used to hydrate embedded item flavor/description text.
-    """
+    """Build an NPC actor document (with embedded narrative items)."""
     npc_type = data.get("type", "")
     character_type = "t-doll" if npc_type == "T-Doll" else "human"
 
@@ -456,7 +822,6 @@ def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
     raw_skills = data.get("skills", {}) or {}
     skills = {group: int(raw_skills.get(group, 0)) for group in _SKILL_GROUPS}
 
-    # Compose a narrative description from flavor + description (+ armor note).
     narrative_parts = []
     flavor_html = data.get("flavor", "") or ""
     description_html = data.get("description", "") or ""
@@ -469,7 +834,6 @@ def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
         narrative_parts.append(f"<p><strong>Armor:</strong> {armor_val}</p>")
     narrative_description = "\n".join(narrative_parts)
 
-    # Embedded narrative items
     embedded_items = []
     for adv in data.get("advantages", []) or []:
         embedded_items.append(_build_embedded_narrative(adv, "advantage", narrative_sources.get("advantage", {})))
@@ -546,186 +910,111 @@ def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
     }
 
 
-def write_actor_pack(actors: list[dict], pack_path: Path):
-    """Write Actor documents (with embedded Items) as a LevelDB compendium pack."""
-    import shutil
-    if pack_path.exists():
-        shutil.rmtree(pack_path)
-
-    now = int(time.time() * 1000)
-    db = LevelDBWriter(pack_path)
-
-    stats_base = {
-        "compendiumSource": None,
-        "duplicateSource": None,
-        "exportSource": None,
-        "coreVersion": "13.351",
-        "systemId": "gfl5r",
-        "systemVersion": "0.1.0",
-        "createdTime": now,
-        "modifiedTime": now,
-        "lastModifiedBy": None,
-    }
-
-    for actor in actors:
-        aid = _uid()
-        embedded = actor.get("items", []) or []
-        item_docs = []
-        for item in embedded:
-            iid = _uid()
-            item_doc = {
-                "_id": iid,
-                "name": item["name"],
-                "type": item["type"],
-                "img": item.get("img", "icons/svg/item-bag.svg"),
-                "system": item.get("system", {}),
-                "effects": [],
-                "folder": None,
-                "sort": 0,
-                "ownership": {"default": 0},
-                "flags": {},
-                "_stats": dict(stats_base),
-            }
-            item_docs.append(item_doc)
-
-        actor_doc = {
-            "_id": aid,
-            "name": actor["name"],
-            "type": actor["type"],
-            "img": actor.get("img", "icons/svg/mystery-man.svg"),
-            "system": actor.get("system", {}),
-            "prototypeToken": {
-                "name": actor["name"],
-                "displayName": 0,
-                "actorLink": False,
-                "disposition": 0,
-                "texture": {"src": actor.get("img", "icons/svg/mystery-man.svg")},
-                "bar1": {"attribute": "fatigue"},
-                "bar2": {"attribute": "strife"},
-            },
-            "items": item_docs,
-            "effects": [],
-            "folder": None,
-            "sort": 0,
-            "ownership": {"default": 0},
-            "flags": {},
-            "_stats": dict(stats_base),
-        }
-
-        db.put(f"!actors!{aid}", json.dumps(actor_doc, ensure_ascii=False))
-        for item_doc in item_docs:
-            db.put(
-                f"!actors.items!{aid}.{item_doc['_id']}",
-                json.dumps(item_doc, ensure_ascii=False),
-            )
-
-    db.write()
+def _build_embedded_narrative(name: str, narrative_type: str, source: dict) -> dict:
+    entry = source.get(name, {}) if source else {}
+    tags = entry.get("type", []) or entry.get("tags", [])
+    if isinstance(tags, str):
+        tags = [tags]
+    return build_narrative_item(name, {
+        "flavor": entry.get("flavor", ""),
+        "description": entry.get("description", ""),
+        "ring_bonus": entry.get("ring_bonus", ""),
+        "tags": tags,
+    }, narrative_type)
 
 
-def write_pack(items: list[dict], pack_path: Path):
-    """Write items directly as a LevelDB compendium pack."""
-    import shutil
-    if pack_path.exists():
-        shutil.rmtree(pack_path)
-
-    now = int(time.time() * 1000)
-    db = LevelDBWriter(pack_path)
-
-    for item in items:
-        uid = _uid()
-        doc = {
-            "name": item["name"],
-            "type": item["type"],
-            "_id": uid,
-            "img": item.get("img", "icons/svg/item-bag.svg"),
-            "system": item.get("system", {}),
-            "effects": [],
-            "folder": None,
-            "sort": 0,
-            "ownership": {"default": 0},
-            "flags": {},
-            "_stats": {
-                "compendiumSource": None,
-                "duplicateSource": None,
-                "exportSource": None,
-                "coreVersion": "13.351",
-                "systemId": "gfl5r",
-                "systemVersion": "0.1.0",
-                "createdTime": now,
-                "modifiedTime": now,
-                "lastModifiedBy": None,
-            },
-        }
-        db.put(f"!items!{uid}", json.dumps(doc, ensure_ascii=False))
-
-    db.write()
-
-
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 def main():
-    parser = argparse.ArgumentParser(description="Build GFL5R compendium packs from webapp djson data")
-    parser.add_argument("--webapp-data", type=Path, default=Path("data"),
-                        help="Path to data/ directory containing .djson files")
+    parser = argparse.ArgumentParser(
+        description="Build GFL5R compendium packs from webapp JSON data"
+    )
+    parser.add_argument("--webapp-src", type=Path, default=Path("../webapp/src/data"),
+                        help="Path to webapp src/data/ directory (canonical game data)")
+    parser.add_argument("--data-dir", type=Path, default=Path("data"),
+                        help="Path to local Foundry data/ directory (conditions, disciplines, etc.)")
     parser.add_argument("--packs-dir", type=Path, default=Path("packs"),
-                        help="Output directory for LevelDB compendium packs")
+                        help="Output directory for compendium packs")
+    parser.add_argument("--format", choices=_OUTPUT_FORMATS,
+                        default="leveldb" if _LEVELDB_AVAILABLE else "json",
+                        help="Output format: leveldb (requires plyvel) or json (fallback)")
     args = parser.parse_args()
 
-    data_dir = args.webapp_data
+    webapp_src = args.webapp_src
+    data_dir = args.data_dir
     packs_dir = args.packs_dir
     packs_dir.mkdir(parents=True, exist_ok=True)
 
-    if not data_dir.exists():
-        raise SystemExit(f"Webapp data directory not found: {data_dir}")
-
     built = []
 
-    # Weapons
-    weapons_path = data_dir / "weapons.djson"
+    # -----------------------------------------------------------------------
+    # Weapons (webapp src)
+    # -----------------------------------------------------------------------
+    weapons_path = webapp_src / "weapons.json"
     if weapons_path.exists():
-        weapons_data = load_djson(weapons_path)
+        weapons_data = load_json(weapons_path)
         items = [build_weapon_item(name, data) for name, data in weapons_data.items()]
         write_pack(items, packs_dir / "gfl5r-weapons")
         built.append(f"gfl5r-weapons: {len(items)} items")
 
-    # Techniques (one pack per type)
-    techniques_dir = data_dir / "techniques"
-    if techniques_dir.exists():
-        for djson_path in sorted(techniques_dir.glob("*.djson")):
-            tech_type = djson_path.stem  # e.g., "combat", "electronic_warfare"
-            tech_data = load_djson(djson_path)
-            items = [build_technique_item(name, data, tech_type) for name, data in tech_data.items()]
+    # -----------------------------------------------------------------------
+    # Techniques (webapp src — single JSON keyed by type)
+    # -----------------------------------------------------------------------
+    techniques_path = webapp_src / "techniques.json"
+    if techniques_path.exists():
+        raw = load_json(techniques_path)
+        adapted = adapt_techniques(raw)
+        for tech_type, by_name in adapted.items():
+            items = [build_technique_item(name, data, tech_type) for name, data in by_name.items()]
             pack_name = f"gfl5r-techniques-{tech_type.replace('_', '-')}"
             write_pack(items, packs_dir / pack_name)
             built.append(f"{pack_name}: {len(items)} items")
 
-    # Narrative items
+    # -----------------------------------------------------------------------
+    # Narrative items (webapp src — arrays)
+    # -----------------------------------------------------------------------
     for narrative_file, narrative_type, pack_suffix in [
-        ("advantages.djson", "advantage", "narrative-advantages"),
-        ("disadvantages.djson", "disadvantage", "narrative-disadvantages"),
-        ("passions.djson", "passion", "narrative-passions"),
-        ("anxieties.djson", "anxiety", "narrative-anxieties"),
+        ("advantages.json", "advantage", "narrative-advantages"),
+        ("disadvantages.json", "disadvantage", "narrative-disadvantages"),
+        ("passions.json", "passion", "narrative-passions"),
+        ("anxieties.json", "anxiety", "narrative-anxieties"),
     ]:
-        path = data_dir / narrative_file
+        path = webapp_src / narrative_file
         if path.exists():
-            data = load_djson(path)
-            items = [build_narrative_item(name, d, narrative_type) for name, d in data.items()]
+            raw = load_json(path)
+            if isinstance(raw, list):
+                adapted = adapt_narrative(raw)
+            else:
+                adapted = raw  # already a dict
+            items = [build_narrative_item(name, d, narrative_type) for name, d in adapted.items()]
             write_pack(items, packs_dir / f"gfl5r-{pack_suffix}")
             built.append(f"gfl5r-{pack_suffix}: {len(items)} items")
 
-    # Disciplines
-    disc_path = data_dir / "disciplines.djson"
+    # -----------------------------------------------------------------------
+    # Disciplines (local data-dir — standard JSON, not djson)
+    # -----------------------------------------------------------------------
+    disc_path = data_dir / "disciplines.json"
     if disc_path.exists():
-        disc_data = load_djson(disc_path)
-        # Load cross-reference data for disciplines
-        perks = load_djson(data_dir / "perks.djson") if (data_dir / "perks.djson").exists() else {}
-        capstones = load_djson(data_dir / "capstones.djson") if (data_dir / "capstones.djson").exists() else {}
+        disc_data = load_json(disc_path)
 
-        # Build discipline-perks compendium from perks data
+        perks = {}
+        perks_path = webapp_src / "perks.json"
+        if perks_path.exists():
+            perks = load_json(perks_path)
+
+        capstones = {}
+        capstones_path = webapp_src / "capstones.json"
+        if capstones_path.exists():
+            capstones = load_json(capstones_path)
+
+        # Build discipline-perks compendium
         if perks:
             perk_items = [build_perk_item(name, data) for name, data in perks.items()]
             write_pack(perk_items, packs_dir / "gfl5r-discipline-perks")
             built.append(f"gfl5r-discipline-perks: {len(perk_items)} items")
 
-        # Build discipline-capstones compendium from capstones data
+        # Build discipline-capstones compendium
         if capstones:
             capstone_items = [build_capstone_item(name, data) for name, data in capstones.items()]
             write_pack(capstone_items, packs_dir / "gfl5r-discipline-capstones")
@@ -733,62 +1022,86 @@ def main():
 
         # Build technique lookup: name -> {rank, type}
         all_techniques = {}
-        techniques_dir_ref = data_dir / "techniques"
-        if techniques_dir_ref.exists():
-            for djson_path in techniques_dir_ref.glob("*.djson"):
-                tech_type = djson_path.stem.replace("_", " ").title()
-                for t_name, t_data in load_djson(djson_path).items():
-                    all_techniques[t_name] = {"rank": t_data.get("rank", 1), "type": tech_type}
+        techniques_path_ref = webapp_src / "techniques.json"
+        if techniques_path_ref.exists():
+            raw = load_json(techniques_path_ref)
+            adapted = adapt_techniques(raw)
+            for tech_type, by_name in adapted.items():
+                display_type = tech_type.replace("_", " ").title()
+                for t_name, t_data in by_name.items():
+                    all_techniques[t_name] = {"rank": t_data.get("rank", 1), "type": display_type}
+
         items = [build_discipline_item(name, data, perks, capstones, all_techniques) for name, data in disc_data.items()]
         write_pack(items, packs_dir / "gfl5r-disciplines")
         built.append(f"gfl5r-disciplines: {len(items)} items")
 
-    # Modules
-    modules_path = data_dir / "modules.djson"
+    # -----------------------------------------------------------------------
+    # Modules (webapp src)
+    # -----------------------------------------------------------------------
+    modules_path = webapp_src / "modules.json"
     if modules_path.exists():
-        modules_data = load_djson(modules_path)
+        modules_data = load_json(modules_path)
         items = [build_module_item(name, data) for name, data in modules_data.items()]
         write_pack(items, packs_dir / "gfl5r-modules")
         built.append(f"gfl5r-modules: {len(items)} items")
 
-    # General items
-    items_path = data_dir / "items.djson"
+    # -----------------------------------------------------------------------
+    # General items (webapp src)
+    # -----------------------------------------------------------------------
+    items_path = webapp_src / "items.json"
     if items_path.exists():
-        items_data = load_djson(items_path)
+        items_data = load_json(items_path)
         items = [build_item(name, data) for name, data in items_data.items()]
         write_pack(items, packs_dir / "gfl5r-items")
         built.append(f"gfl5r-items: {len(items)} items")
 
-    # Armor
-    armor_path = data_dir / "armor.djson"
+    # -----------------------------------------------------------------------
+    # Armor (webapp src)
+    # -----------------------------------------------------------------------
+    armor_path = webapp_src / "armor.json"
     if armor_path.exists():
-        armor_data = load_djson(armor_path)
+        armor_data = load_json(armor_path)
         items = [build_armor_item(name, data) for name, data in armor_data.items()]
         write_pack(items, packs_dir / "gfl5r-armor")
         built.append(f"gfl5r-armor: {len(items)} items")
 
-    # NPCs
-    npcs_path = data_dir / "npcs.djson"
+    # -----------------------------------------------------------------------
+    # NPCs (webapp src — array)
+    # -----------------------------------------------------------------------
+    npcs_path = webapp_src / "npcs.json"
     if npcs_path.exists():
-        npcs_data = load_djson(npcs_path)
+        raw = load_json(npcs_path)
+        if isinstance(raw, list):
+            npcs_data = adapt_npcs(raw)
+        else:
+            npcs_data = raw
+
+        # Load narrative sources for embedded items
         narrative_sources = {}
         for narrative_type, fname in [
-            ("advantage", "advantages.djson"),
-            ("disadvantage", "disadvantages.djson"),
-            ("passion", "passions.djson"),
-            ("anxiety", "anxieties.djson"),
+            ("advantage", "advantages.json"),
+            ("disadvantage", "disadvantages.json"),
+            ("passion", "passions.json"),
+            ("anxiety", "anxieties.json"),
         ]:
-            path = data_dir / fname
+            path = webapp_src / fname
             if path.exists():
-                narrative_sources[narrative_type] = load_djson(path)
+                raw_n = load_json(path)
+                if isinstance(raw_n, list):
+                    narrative_sources[narrative_type] = adapt_narrative(raw_n)
+                else:
+                    narrative_sources[narrative_type] = raw_n
+
         actors = [build_npc_actor(name, data, narrative_sources) for name, data in npcs_data.items()]
         write_actor_pack(actors, packs_dir / "gfl5r-npcs")
         built.append(f"gfl5r-npcs: {len(actors)} actors")
 
-    # Conditions (journal entries)
-    conditions_path = data_dir / "conditions.djson"
+    # -----------------------------------------------------------------------
+    # Conditions (local data-dir — standard JSON)
+    # -----------------------------------------------------------------------
+    conditions_path = data_dir / "conditions.json"
     if conditions_path.exists():
-        conditions_data = load_djson(conditions_path)
+        conditions_data = load_json(conditions_path)
         entries = [
             {"name": name, "content": build_condition_page_content(data)}
             for name, data in conditions_data.items()
@@ -796,10 +1109,10 @@ def main():
         write_journal_pack(entries, packs_dir / "gfl5r-journal-conditions")
         built.append(f"gfl5r-journal-conditions: {len(entries)} entries")
 
-    # Create empty packs for types without data yet
-    for empty_pack in [
-        "gfl5r-vehicles", "gfl5r-macros",
-    ]:
+    # -----------------------------------------------------------------------
+    # Empty stub packs
+    # -----------------------------------------------------------------------
+    for empty_pack in ["gfl5r-vehicles", "gfl5r-macros"]:
         pack_path = packs_dir / empty_pack
         if not pack_path.exists():
             write_pack([], pack_path)
