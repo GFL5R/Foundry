@@ -7,4 +7,12 @@
             {{/each}}
         </select>
     </div>
+    <div class="identity-field">
+        <span class="identity-field__label">{{localize 'gfl5r.npc.combat_rating'}}</span>
+        <input class="centered-input" type="number" name="system.combat_rating" value="{{data.system.combat_rating}}" data-dtype="Number" min="0" disabled/>
+    </div>
+    <div class="identity-field">
+        <span class="identity-field__label">{{localize 'gfl5r.npc.social_rating'}}</span>
+        <input class="centered-input" type="number" name="system.social_rating" value="{{data.system.social_rating}}" data-dtype="Number" min="0" disabled/>
+    </div>
 </div>

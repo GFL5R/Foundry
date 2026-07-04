@@ -353,7 +353,9 @@
                 "social": "Social"
             },
             "behaviors": "Behaviors",
-            "summary": "Summary"
+            "summary": "Summary",
+            "combat_rating": "Combat Rating",
+            "social_rating": "Social Rating"
         },
         "sheets": {
             "narrative": "Narrative",

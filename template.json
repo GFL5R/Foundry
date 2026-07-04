@@ -225,7 +225,9 @@
                 "technical": 0,
                 "social": 0
             },
-            "behaviors": ""
+            "behaviors": "",
+            "combat_rating": 0,
+            "social_rating": 0
         }
     },
     "Item": {

@@ -217,6 +217,11 @@ export class ActorGfl5r extends Actor {
         return this.isNpc && this.system.threat_level === "minion";
     }
 
+    /** @returns {boolean} True for NPCs that are not minions (standard, elite, boss). */
+    get isAdversary() {
+        return this.isNpc && this.system.threat_level !== "minion";
+    }
+
     get isHuman() {
         return this.isCharacterType && this.system.identity?.characterType === "human";
     }

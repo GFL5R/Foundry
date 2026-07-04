@@ -62,7 +62,7 @@ export class CombatGfl5r extends Combat {
             // If the character was unprepared (such as when surprised), their base initiative value is their vigilance attribute.
             // Minion NPCs can generate initiative value without a check, using their focus or vigilance attribute
             let initiative =
-                isPrepared === "true" ? actorSystem.focus : actorSystem.is_afflicted_or_compromised ? 1 : actorSystem.vigilance;
+                isPrepared === "true" ? actorSystem.focus : actorSystem.is_compromised ? 1 : actorSystem.vigilance;
 
             // Roll only for PC and Adversary
             if (isPc || combatant.actor.isAdversary) {
@@ -93,7 +93,7 @@ export class CombatGfl5r extends Combat {
                 // Roll formula
                 const createFormula = [];
                 if (!formula) {
-                    createFormula.push(`${actorSystem.rings[actorSystem.stance]}dr`);
+                    createFormula.push(`${actorSystem.approaches[actorSystem.stance]}dr`);
                     const skillValue = isPc ? actorSystem.skills[skillCat][skillId] : actorSystem.skills[skillCat];
                     if (skillValue > 0) {
                         createFormula.push(`${skillValue}ds`);

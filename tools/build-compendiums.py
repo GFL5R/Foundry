@@ -290,9 +290,24 @@ def adapt_npcs(webapp_data: list, narrative_sources: dict | None = None) -> dict
         passion = entry.get("passion", "")
         anxiety = entry.get("anxiety", "")
 
+        # Derive threat_level from combatRating if not explicitly set
+        raw_threat = entry.get("threat_level", "") or ""
+        if raw_threat:
+            threat_level = raw_threat
+        else:
+            cr = int(entry.get("combatRating", 0) or 0)
+            if cr <= 5:
+                threat_level = "minion"
+            elif cr <= 11:
+                threat_level = "standard"
+            elif cr <= 16:
+                threat_level = "elite"
+            else:
+                threat_level = "boss"
+
         by_name[name] = {
             "type": entry.get("type", ""),
-            "threat_level": entry.get("threat_level", "standard"),
+            "threat_level": threat_level,
             "approaches": approaches,
             "skills": skills,
             "flavor": entry.get("flavor", ""),
@@ -304,6 +319,8 @@ def adapt_npcs(webapp_data: list, narrative_sources: dict | None = None) -> dict
             "disadvantages": disadvantages_list,
             "passion": passion,
             "anxiety": anxiety,
+            "combatRating": entry.get("combatRating", 0),
+            "socialRating": entry.get("socialRating", 0),
         }
     return by_name
 
@@ -876,8 +893,10 @@ def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
                 "view_of_dolls": "",
             },
             "skills": skills,
-            "threat_level": "standard",
+            "threat_level": data.get("threat_level", "standard"),
             "behaviors": data.get("behaviors", "") or "",
+            "combat_rating": int(data.get("combatRating", 0) or 0),
+            "social_rating": int(data.get("socialRating", 0) or 0),
             "endurance": endurance,
             "composure": composure,
             "focus": focus,
