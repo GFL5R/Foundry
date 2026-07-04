@@ -87,10 +87,11 @@ export class BaseCharacterSheetGfl5r extends BaseSheetGfl5r {
             weaponry: [],
             armor: [],
             item: [],
+            module: [],
         };
 
         sheetData.items.forEach((item) => {
-            if (["item", "armor", "weaponry"].includes(item.type)) {
+            if (["item", "armor", "weaponry", "module"].includes(item.type)) {
                 out[item.type]?.push(item);
             }
         });

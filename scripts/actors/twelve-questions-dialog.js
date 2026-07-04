@@ -69,6 +69,7 @@ export class TwelveQuestionsDialog extends FormApplication {
     /** Provide template data */
     async getData(options = null) {
         const isHuman = this.data.characterType === "human";
+        const isTranshuman = this.data.characterType === "transhuman";
         const skillsList = game.gfl5r.HelpersGfl5r.getSkillsList(true);
 
         return {
@@ -80,7 +81,8 @@ export class TwelveQuestionsDialog extends FormApplication {
                 errors: this.summary.errors.join(", "),
             },
             isHuman,
-            isTDoll: !isHuman,
+            isTDoll: !isHuman && !isTranshuman,
+            isTranshuman,
             nationalities: HUMAN_NATIONALITIES,
             backgrounds: HUMAN_BACKGROUNDS,
             frames: TDOLL_FRAMES,
@@ -224,7 +226,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             });
         }
 
-        // Module drop zone (T-Doll step 3)
+        // Module drop zone (T-Doll / transhuman)
         if (stepKey === "step3.modules") {
             return { allowed: item.type === "module" };
         }

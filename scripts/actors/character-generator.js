@@ -109,6 +109,14 @@ export class CharacterGenerator {
             updates[`system.skills.${k}`] = v;
             updates[`system.skills_free.${k}`] = v;
         }
+        // View of Dolls bonus
+        let humanityBonus = 0;
+        if (viewOfDolls === "favor") {
+            humanityBonus = 5;
+        } else if (viewOfDolls === "tools" && viewDollsSkill && viewDollsSkill !== "none") {
+            ensureSkill(viewDollsSkill, 1);
+        }
+
         if (name) updates["name"] = name;
         if (goal) updates["system.narrative.personal_goal"] = goal;
         if (nameMeaning) updates["system.narrative.name_meaning"] = nameMeaning;
@@ -116,6 +124,105 @@ export class CharacterGenerator {
 
         await this.actor.update(updates);
         ui.notifications?.info("Human character creation applied.");
+    }
+
+    /**
+     * Apply transhuman character creation to the actor.
+     * Transhumans use nationality + background like humans,
+     * but also get T-Doll modules like T-Dolls.
+     */
+    async applyTranshumanBuild({
+        nationalityKey, backgroundKey, disciplineUuid, startingTechniqueUuid = "",
+        advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
+        viewOfDolls = "favor", viewDollsSkill = "",
+        goal = "", nameMeaning = "", storyEnd = "", name = "",
+    }) {
+        const nationality = HUMAN_NATIONALITIES.find(n => n.key === nationalityKey);
+        const background = HUMAN_BACKGROUNDS.find(b => b.key === backgroundKey);
+
+        if (!nationality || !background) {
+            ui.notifications?.warn("Select both a nationality and background.");
+            return;
+        }
+
+        const isStartingTechniqueValid = await this._validateStartingTechniqueSelection({
+            disciplineUuid,
+            startingTechniqueUuid,
+            currentRank: 1,
+        });
+        if (!isStartingTechniqueValid) return;
+
+        // Clear existing items
+        const allItemIds = this.actor.items.map(i => i.id);
+        if (allItemIds.length) await this.actor.deleteEmbeddedDocuments("Item", allItemIds);
+
+        // Build approaches: all start at 1, nationality adds +1 to two, background adds +1 to one
+        const approaches = { power: 1, precision: 1, swiftness: 1, resilience: 1, fortune: 1 };
+        nationality.approaches.forEach(key => { approaches[key] = (approaches[key] || 1) + 1; });
+        approaches[background.approach] = (approaches[background.approach] || 1) + 1;
+
+        // Build skills
+        const skills = {};
+        const ensureSkill = (key, min) => { if (key) skills[key] = Math.max(skills[key] || 0, min); };
+        ensureSkill(background.skill, 1);
+
+        // Apply discipline
+        const disciplineResult = await this._applyDiscipline(disciplineUuid);
+        if (disciplineResult.associatedSkills) {
+            disciplineResult.associatedSkills.forEach(sk => {
+                skills[sk] = (skills[sk] || 0) + 1;
+            });
+        }
+
+        await this._applyStartingTechnique({
+            disciplineSlotKey: "slot1",
+            disciplineItem: disciplineResult.disciplineItem,
+            startingTechniqueUuid,
+            currentRank: 1,
+        });
+
+        // Create narrative items
+        await this._createNarrativeItem(advantageUuid, "advantage");
+        await this._createNarrativeItem(disadvantageUuid, "disadvantage");
+        await this._createNarrativeItem(passionUuid, "passion");
+        await this._createNarrativeItem(anxietyUuid, "anxiety");
+
+        // Update actor
+        const updates = {
+            "system.identity.characterType": "transhuman",
+            "system.identity.nationality": nationalityKey,
+            "system.identity.background": backgroundKey,
+            "system.social.humanity": 50 + humanityBonus,
+            "system.social.fame": 40,
+            "system.social.status": 30,
+            "system.social.view_of_dolls": viewOfDolls,
+        };
+        for (const [k, v] of Object.entries(approaches)) {
+            updates[`system.approaches.${k}`] = v;
+        }
+        // Reset all skill_free baselines, then set the granted ones
+        for (const k of Object.keys(this.actor.system.skills_free || {})) {
+            updates[`system.skills_free.${k}`] = 0;
+        }
+        for (const [k, v] of Object.entries(skills)) {
+            updates[`system.skills.${k}`] = v;
+            updates[`system.skills_free.${k}`] = v;
+        }
+        // View of Dolls bonus
+        let humanityBonus = 0;
+        if (viewOfDolls === "favor") {
+            humanityBonus = 5;
+        } else if (viewOfDolls === "tools" && viewDollsSkill && viewDollsSkill !== "none") {
+            ensureSkill(viewDollsSkill, 1);
+        }
+
+        if (name) updates["name"] = name;
+        if (goal) updates["system.narrative.personal_goal"] = goal;
+        if (nameMeaning) updates["system.narrative.name_meaning"] = nameMeaning;
+        if (storyEnd) updates["system.narrative.story_end"] = storyEnd;
+
+        await this.actor.update(updates);
+        ui.notifications?.info("Transhuman character creation applied.");
     }
 
     /**
@@ -178,19 +285,6 @@ export class CharacterGenerator {
                 humanityBonus = -5;
                 break;
             case "weird": fameBonus = -5; break;
-        }
-
-        // Create module items
-        for (const uuid of moduleUuids) {
-            if (!uuid) continue;
-            try {
-                const source = await fromUuid(uuid);
-                if (source && source.type === "module") {
-                    await this.actor.createEmbeddedDocuments("Item", [source.toObject()]);
-                }
-            } catch (err) {
-                console.warn("GFL5R | Failed to create module from UUID", uuid, err);
-            }
         }
 
         // Create narrative items

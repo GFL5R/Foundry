@@ -67,6 +67,7 @@ export const RegisterHandlebars = function () {
             weaponry: "gfl5r.weapons.title",
             armor: "gfl5r.armors.title",
             item: "gfl5r.items.title",
+            module: "gfl5r.modules.title",
         };
 
         const key = keyByCategory[categoryId.toLowerCase()] ?? `TYPES.Item.${categoryId.toLowerCase()}`;

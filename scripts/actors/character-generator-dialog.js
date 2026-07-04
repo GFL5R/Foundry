@@ -40,6 +40,7 @@ export class CharacterGeneratorDialog extends FormApplication {
             approaches: CONFIG.gfl5r.stances,
             isHuman: this.builderState.buildType === "human",
             isTDoll: this.builderState.buildType === "t-doll",
+            isTranshuman: this.builderState.buildType === "transhuman",
         };
     }
 
@@ -133,7 +134,24 @@ export class CharacterGeneratorDialog extends FormApplication {
     }
 
     async _updateObject(event, formData) {
-        if (this.builderState.buildType === "t-doll") {
+        if (this.builderState.buildType === "transhuman") {
+            await this.generator.applyTranshumanBuild({
+                nationalityKey: formData["human.nationality"],
+                backgroundKey: formData["human.background"],
+                disciplineUuid: formData["discipline"],
+                startingTechniqueUuid: formData["startingTechnique"],
+                advantageUuid: formData["advantage"],
+                disadvantageUuid: formData["disadvantage"],
+                passionUuid: formData["passion"],
+                anxietyUuid: formData["anxiety"],
+                viewOfDolls: formData["human.viewOfDolls"] || "favor",
+                viewDollsSkill: formData["human.viewDollsSkill"] || "",
+                goal: formData["goal"] || "",
+                nameMeaning: formData["nameMeaning"] || "",
+                storyEnd: formData["storyEnd"] || "",
+                name: formData["name"] || "",
+            });
+        } else if (this.builderState.buildType === "t-doll") {
             await this.generator.applyTDollBuild({
                 frameKey: formData["tdoll.frame"],
                 disciplineUuid: formData["tdoll.discipline"],

@@ -4,10 +4,11 @@
         <select name="system.identity.characterType" {{^if data.editable}}disabled{{/if}}>
             <option value="human" {{#ifCond data.system.identity.characterType '==' 'human'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.human'}}</option>
             <option value="t-doll" {{#ifCond data.system.identity.characterType '==' 't-doll'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.t-doll'}}</option>
+            <option value="transhuman" {{#ifCond data.system.identity.characterType '==' 'transhuman'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.transhuman'}}</option>
         </select>
     </div>
-    {{!-- Nationality: humans only --}}
-    {{#if data.isHuman}}
+    {{!-- Nationality: humans and transhumans --}}
+    {{#ifCond data.system.identity.characterType '!=' 't-doll'}}
     <div class="identity-field">
         <span class="identity-field__label">{{localize 'gfl5r.identity.nationality'}}</span>
         <select name="system.identity.nationality" {{^if data.editable}}disabled{{/if}}>
@@ -17,9 +18,9 @@
             {{/each}}
         </select>
     </div>
-    {{/if}}
+    {{/ifCond}}
     <div class="identity-field">
-        <span class="identity-field__label">{{#if data.isTDoll}}{{localize 'gfl5r.identity.manufacturer'}}{{else}}{{localize 'gfl5r.identity.background'}}{{/if}}</span>
+        <span class="identity-field__label">{{localize 'gfl5r.identity.background'}}</span>
         {{#if data.isTDoll}}
         <input type="text" name="system.identity.manufacturer" value="{{data.system.identity.manufacturer}}" {{^if data.editable}}disabled{{/if}}/>
         {{else}}

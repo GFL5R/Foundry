@@ -129,8 +129,9 @@ export class ActorGfl5r extends Actor {
                 );
             }
 
-            // Compute Collapse max (humans only): sum of all approaches × 5
-            if (system.identity?.characterType === "human" && system.collapse) {
+            // Compute Collapse max (humans and transhumans): sum of all approaches × 5
+            const collapseTypes = ["human", "transhuman"];
+            if (collapseTypes.includes(system.identity?.characterType) && system.collapse) {
                 const app = system.approaches;
                 system.collapse.max = (
                     Number(app.power) + Number(app.precision) + Number(app.swiftness) +
@@ -148,7 +149,7 @@ export class ActorGfl5r extends Actor {
 
     /**
      * Compute derived attributes from approaches.
-     * Endurance differs for humans (×2) vs T-Dolls (×3).
+     * Endurance: humans and transhumans (×2), T-Dolls (×3).
      * @param {Object} system
      */
     static computeDerivedAttributes(system) {
@@ -158,8 +159,8 @@ export class ActorGfl5r extends Actor {
         const swiftness = Number(app.swiftness);
         const resilience = Number(app.resilience);
 
-        const isTDoll = system.identity?.characterType === "t-doll";
-        const enduranceMultiplier = isTDoll ? 3 : 2;
+        const charType = system.identity?.characterType;
+        const enduranceMultiplier = charType === "t-doll" ? 3 : 2;
 
         system.endurance = (power + resilience) * enduranceMultiplier;
         system.composure = (resilience + swiftness) * 2;
@@ -222,6 +223,10 @@ export class ActorGfl5r extends Actor {
 
     get isTDoll() {
         return this.isCharacterType && this.system.identity?.characterType === "t-doll";
+    }
+
+    get isTranshuman() {
+        return this.isCharacterType && this.system.identity?.characterType === "transhuman";
     }
 
     get hasPlayerOwnerActive() {

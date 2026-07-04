@@ -1,7 +1,9 @@
 {
     "I18N": {
         "Language": "English",
-        "Maintainers": ["GFL5R Team"]
+        "Maintainers": [
+            "GFL5R Team"
+        ]
     },
     "SETTINGS": {
         "None": "No option",
@@ -176,6 +178,7 @@
             "character_type": "Character Type",
             "human": "Human",
             "t-doll": "T-Doll",
+            "transhuman": "Transhuman",
             "age": "Age",
             "nationality": "Nationality",
             "background": "Background",
@@ -465,6 +468,7 @@
             "intro": "Answer twelve questions to define your character. Choose a character type to begin.",
             "type_human": "Human (Commander)",
             "type_tdoll": "T-Doll",
+            "type_transhuman": "Transhuman",
             "human_intro": "You are a human commander working for B.R.I.E.F., a PMC that hunts bounties in a post-Collapse world. These twelve questions will define who you are, where you came from, and what drives you forward.",
             "tdoll_intro": "You are a Tactical Doll — an autonomous android built for combat. Assigned to a commander, you operate in the field as weapon and partner. These twelve questions will define your frame, your history, and who you are becoming.",
             "next": "Next",

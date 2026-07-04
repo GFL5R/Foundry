@@ -64,6 +64,7 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
         // Character type info
         sheetData.data.isHuman = this.actor.isHuman;
         sheetData.data.isTDoll = this.actor.isTDoll;
+        sheetData.data.isTranshuman = this.actor.isTranshuman;
 
         // Identity option tables (used by sheet identity selectors)
         sheetData.data.identityOptions = {
@@ -407,6 +408,10 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
                 formData["system.identity.manufacturer"] = frame.manufacturer;
                 formData["system.identity.model"] = frame.model;
             }
+        } else if (characterType === "human") {
+            // Clear manufacturer/model for humans
+            formData["system.identity.manufacturer"] = "";
+            formData["system.identity.model"] = "";
         }
 
         formData["system.focus"] = currentData.focus;

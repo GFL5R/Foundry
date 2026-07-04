@@ -57,6 +57,14 @@ export class TwelveQuestions {
             "step6.passion",
             "step7.anxiety",
         ],
+        transhuman: [
+            "step3.discipline",
+            "step3.startingTechnique",
+            "step4.advantage",
+            "step5.disadvantage",
+            "step6.passion",
+            "step7.anxiety",
+        ],
     };
 
     /**
@@ -128,6 +136,7 @@ export class TwelveQuestions {
         step8: {
             // Human: view of dolls (string) + optional skill
             // T-Doll: met commander (text)
+            // Transhuman: (shared with modules via step3.modules)
             viewOfDolls: "favor",
             viewDollsSkill: "none",
             metCommander: "",
@@ -177,6 +186,9 @@ export class TwelveQuestions {
             this.data.step1.selection = identity.nationality || "";
             this.data.step2.selection = identity.background || "";
             this.data.step8.viewOfDolls = sys.social?.view_of_dolls || "favor";
+        } else if (this.data.characterType === "transhuman") {
+            this.data.step1.selection = identity.nationality || "";
+            this.data.step2.selection = identity.background || "";
         } else {
             this.data.step1.selection = identity.frame || "";
             this.data.step10.nameOrigin = identity.name_origin || "human";
@@ -205,27 +217,28 @@ export class TwelveQuestions {
     validateForm() {
         const errors = [];
         const isHuman = this.data.characterType === "human";
+        const isTranshuman = this.data.characterType === "transhuman";
 
         // Step 1 required
         if (!this.data.step1.selection) {
-            errors.push(isHuman ? "Select a nationality" : "Select a frame");
+            errors.push(isHuman || isTranshuman ? "Select a nationality" : "Select a frame");
         }
 
-        // Step 2 required for humans
-        if (isHuman && !this.data.step2.selection) {
+        // Step 2 required for humans and transhumans
+        if ((isHuman || isTranshuman) && !this.data.step2.selection) {
             errors.push("Select a background");
         }
 
         // Discipline required
-        if (isHuman && this.data.step3.discipline.length === 0) {
+        if ((isHuman || isTranshuman) && this.data.step3.discipline.length === 0) {
             errors.push("Select a discipline");
         }
-        if (!isHuman && this.data.step2.discipline.length === 0) {
+        if (!isHuman && !isTranshuman && this.data.step2.discipline.length === 0) {
             errors.push("Select a weapon discipline");
         }
 
-        // Human starting technique required (must be rank 1 and in-discipline; enforced by drop validation)
-        if (isHuman && this.data.step3.startingTechnique.length === 0) {
+        // Human/transhuman starting technique required
+        if ((isHuman || isTranshuman) && this.data.step3.startingTechnique.length === 0) {
             errors.push("Select a starting technique");
         }
 
@@ -236,7 +249,7 @@ export class TwelveQuestions {
 
         // Summary of approach assignments
         const summary = {};
-        if (isHuman) {
+        if (isHuman || isTranshuman) {
             const nat = HUMAN_NATIONALITIES.find(n => n.key === this.data.step1.selection);
             const bg = HUMAN_BACKGROUNDS.find(b => b.key === this.data.step2.selection);
             if (nat) {
@@ -267,12 +280,32 @@ export class TwelveQuestions {
         const generator = new CharacterGenerator(actor);
 
         const isHuman = this.data.characterType === "human";
+        const isTranshuman = this.data.characterType === "transhuman";
 
         if (isHuman) {
             await generator.applyHumanBuild({
                 nationalityKey: this.data.step1.selection,
                 backgroundKey: this.data.step2.selection,
-                disciplineUuid: this._getFirstItemUuid(cache, isHuman ? "step3.discipline" : "step2.discipline"),
+                disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
+                startingTechniqueUuid: this._getFirstItemUuid(cache, "step3.startingTechnique"),
+                advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),
+                disadvantageUuid: this._getFirstItemUuid(cache, "step5.disadvantage"),
+                passionUuid: this._getFirstItemUuid(cache, "step6.passion"),
+                anxietyUuid: this._getFirstItemUuid(cache, "step7.anxiety"),
+                viewOfDolls: this.data.step8.viewOfDolls,
+                viewDollsSkill: this.data.step8.viewDollsSkill,
+                goal: this.data.step9.personalGoal,
+                nameMeaning: this.data.step10.nameMeaning,
+                storyEnd: this.data.step12.storyEnd,
+                name: this.data.step11.name,
+            });
+        } else if (isTranshuman) {
+            // Transhuman uses the same build as human — it's not a starting option,
+            // but something earned mid-campaign. Starting transhumans are just humans.
+            await generator.applyHumanBuild({
+                nationalityKey: this.data.step1.selection,
+                backgroundKey: this.data.step2.selection,
+                disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
                 startingTechniqueUuid: this._getFirstItemUuid(cache, "step3.startingTechnique"),
                 advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),
                 disadvantageUuid: this._getFirstItemUuid(cache, "step5.disadvantage"),

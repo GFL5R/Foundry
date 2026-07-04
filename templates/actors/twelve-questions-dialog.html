@@ -30,16 +30,19 @@
                             <option value="t-doll" {{#ifCond data.characterType '==' 't-doll'}}selected{{/ifCond}}>
                                 {{localize 'gfl5r.twelve_questions.type_tdoll'}}
                             </option>
+                            <option value="transhuman" {{#ifCond data.characterType '==' 'transhuman'}}selected{{/ifCond}}>
+                                {{localize 'gfl5r.twelve_questions.type_transhuman'}}
+                            </option>
                         </select>
                     </div>
                 </div>
 
                 <div class="tq-type-description">
-                    {{#if isHuman}}
+                    {{#ifCond isHuman '||' isTranshuman}}
                     <p>{{localize 'gfl5r.twelve_questions.human_intro'}}</p>
                     {{else}}
                     <p>{{localize 'gfl5r.twelve_questions.tdoll_intro'}}</p>
-                    {{/if}}
+                    {{/ifCond}}
                 </div>
 
                 <button class="tq-next" type="button">
@@ -49,8 +52,8 @@
 
             {{!-- ==================== PART 1: ORIGIN (Q1-Q2) ==================== --}}
             <article class="tab tq-part" data-group="primary" data-tab="part1">
-                {{#if isHuman}}
-                    {{!-- HUMAN Q1: Nationality --}}
+                {{#ifCond isHuman '||' isTranshuman}}
+                    {{!-- Q1: Nationality --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q1.title'}}</h2>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.human.q1.flavor'}}</p>
                     <div class="form-group">
@@ -68,7 +71,7 @@
                         </div>
                     </div>
 
-                    {{!-- HUMAN Q2: Background --}}
+                    {{!-- Q2: Background --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q2.title'}}</h2>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.human.q2.flavor'}}</p>
                     <div class="form-group">
@@ -156,7 +159,7 @@
                         </div>
                         {{/ifCond}}
                     </div>
-                {{/if}}
+                {{/ifCond}}
 
                 <div class="tq-nav-buttons">
                     <button class="tq-prev" type="button"><i class="fas fa-arrow-left"></i> {{localize 'gfl5r.twelve_questions.prev'}}</button>
@@ -166,8 +169,8 @@
 
             {{!-- ==================== PART 2: TRAINING (Q3) ==================== --}}
             <article class="tab tq-part" data-group="primary" data-tab="part2">
-                {{#if isHuman}}
-                    {{!-- HUMAN Q3: Discipline --}}
+                {{#ifCond isHuman '||' isTranshuman}}
+                    {{!-- Q3: Discipline + Starting Technique --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q3.title'}}</h2>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.human.q3.flavor'}}</p>
                     <div class="tq-drop-zone" data-step="step3.discipline">
@@ -231,7 +234,7 @@
                             <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_module'}}
                         </div>
                     </div>
-                {{/if}}
+                {{/ifCond}}
 
                 <div class="tq-nav-buttons">
                     <button class="tq-prev" type="button"><i class="fas fa-arrow-left"></i> {{localize 'gfl5r.twelve_questions.prev'}}</button>
@@ -243,10 +246,10 @@
             <article class="tab tq-part" data-group="primary" data-tab="part3">
                 {{!-- Q4: Advantage --}}
                 <h2>
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q4.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q4.title'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q4.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q4.title'}}{{/ifCond}}
                 </h2>
                 <p class="tq-flavor">
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q4.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q4.flavor'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q4.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q4.flavor'}}{{/ifCond}}
                 </p>
                 <div class="tq-drop-zone" data-step="step4.advantage">
                     <ul class="tq-item-list">
@@ -267,10 +270,10 @@
 
                 {{!-- Q5: Disadvantage --}}
                 <h2>
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q5.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q5.title'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q5.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q5.title'}}{{/ifCond}}
                 </h2>
                 <p class="tq-flavor">
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q5.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q5.flavor'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q5.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q5.flavor'}}{{/ifCond}}
                 </p>
                 <div class="tq-drop-zone" data-step="step5.disadvantage">
                     <ul class="tq-item-list">
@@ -291,10 +294,10 @@
 
                 {{!-- Q6: Passion --}}
                 <h2>
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q6.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q6.title'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q6.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q6.title'}}{{/ifCond}}
                 </h2>
                 <p class="tq-flavor">
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q6.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q6.flavor'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q6.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q6.flavor'}}{{/ifCond}}
                 </p>
                 <div class="tq-drop-zone" data-step="step6.passion">
                     <ul class="tq-item-list">
@@ -315,10 +318,10 @@
 
                 {{!-- Q7: Anxiety --}}
                 <h2>
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q7.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q7.title'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q7.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q7.title'}}{{/ifCond}}
                 </h2>
                 <p class="tq-flavor">
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q7.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q7.flavor'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q7.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q7.flavor'}}{{/ifCond}}
                 </p>
                 <div class="tq-drop-zone" data-step="step7.anxiety">
                     <ul class="tq-item-list">
@@ -345,8 +348,8 @@
 
             {{!-- ==================== PART 4: WORLDVIEW (Q8-Q9) ==================== --}}
             <article class="tab tq-part" data-group="primary" data-tab="part4">
-                {{#if isHuman}}
-                    {{!-- HUMAN Q8: View of Dolls --}}
+                {{#ifCond isHuman '||' isTranshuman}}
+                    {{!-- Q8: View of Dolls (human/transhuman) --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q8.title'}}</h2>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.human.q8.flavor'}}</p>
                     <div class="form-group">
@@ -388,14 +391,14 @@
                             <textarea name="step8.metCommander" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.tdoll.q8.placeholder'}}">{{data.step8.metCommander}}</textarea>
                         </div>
                     </div>
-                {{/if}}
+                {{/ifCond}}
 
                 {{!-- Q9: Personal Goal (shared) --}}
                 <h2>
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q9.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q9.title'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q9.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q9.title'}}{{/ifCond}}
                 </h2>
                 <p class="tq-flavor">
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q9.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q9.flavor'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q9.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q9.flavor'}}{{/ifCond}}
                 </p>
                 <div class="form-group">
                     <label>{{localize 'gfl5r.narrative.personal_goal'}}</label>
@@ -412,8 +415,8 @@
 
             {{!-- ==================== PART 5: IDENTITY (Q10-Q12) ==================== --}}
             <article class="tab tq-part" data-group="primary" data-tab="part5">
-                {{#if isHuman}}
-                    {{!-- HUMAN Q10: Name Meaning --}}
+                {{#ifCond isHuman '||' isTranshuman}}
+                    {{!-- Q10: Name Meaning --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q10.title'}}</h2>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.human.q10.flavor'}}</p>
                     <div class="form-group">
@@ -446,7 +449,7 @@
                             </select>
                         </div>
                     </div>
-                {{/if}}
+                {{/ifCond}}
 
                 {{!-- Q11: Name (shared) --}}
                 <h2>{{localize 'gfl5r.twelve_questions.q11.title'}}</h2>
@@ -461,7 +464,7 @@
                 {{!-- Q12: Story End (shared) --}}
                 <h2>{{localize 'gfl5r.twelve_questions.q12.title'}}</h2>
                 <p class="tq-flavor">
-                    {{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q12.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q12.flavor'}}{{/if}}
+                    {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q12.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q12.flavor'}}{{/ifCond}}
                 </p>
                 <div class="form-group">
                     <label>{{localize 'gfl5r.narrative.story_end'}}</label>
