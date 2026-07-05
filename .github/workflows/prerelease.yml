@@ -23,10 +23,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Foundry
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Checkout webapp
+        uses: actions/checkout@v4
+        with:
+          repository: GFL5R/webapp
+          path: webapp
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
@@ -72,9 +78,9 @@ jobs:
           print(f"Compiled {len(out)} bytes to styles/gfl5r.css")
           EOF
 
-      - name: Build compendium packs from djson data
+      - name: Build compendium packs from webapp data
         run: |
-          python tools/build-compendiums.py --webapp-data data --packs-dir packs
+          python tools/build-compendiums.py --webapp-src webapp/src/data --data-dir data --packs-dir packs
 
       - name: Read version from system.json
         id: version
