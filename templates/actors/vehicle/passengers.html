@@ -1,34 +1,37 @@
-<div class="passenger-management">
-    <h3>Passenger Slots ({{passengerSlots.occupiedCount}}/{{passengerSlots.total}})</h3>
-
-    <div class="passenger-list">
-        {{#each passengerSlots.slots as |slot|}}
-        <div class="passenger-slot {{#if slot.passenger}}occupied{{else}}empty{{/if}}">
-            <div class="slot-number">Slot {{add slot.index 1}}</div>
-            <div class="slot-content">
-                {{#if slot.passenger}}
-                    <img src="{{slot.passenger.img}}" width="36" height="36"/>
-                    <span class="passenger-name">{{slot.passenger.name}}</span>
-                    <a class="passenger-remove" data-slot-index="{{slot.index}}" title="Remove Passenger">
-                        <i class="fas fa-times-circle"></i>
-                    </a>
-                {{else}}
-                    <span class="empty-text">Empty</span>
-                {{/if}}
+<div class="gfl-panel">
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">Passenger Slots ({{passengerSlots.occupiedCount}}/{{passengerSlots.total}})</span>
+    </div>
+    <div class="gfl-panel__body">
+        <div class="passenger-list">
+            {{#each passengerSlots.slots as |slot|}}
+            <div class="passenger-slot {{#if slot.passenger}}occupied{{else}}empty{{/if}}">
+                <div class="slot-number">Slot {{add slot.index 1}}</div>
+                <div class="slot-content">
+                    {{#if slot.passenger}}
+                        <img src="{{slot.passenger.img}}" width="36" height="36"/>
+                        <span class="passenger-name">{{slot.passenger.name}}</span>
+                        <a class="passenger-remove" data-slot-index="{{slot.index}}" title="Remove Passenger">
+                            <i class="fas fa-times-circle"></i>
+                        </a>
+                    {{else}}
+                        <span class="empty-text">Empty</span>
+                    {{/if}}
+                </div>
             </div>
+            {{else}}
+            <div class="no-slots">
+                <p>No passenger slots configured. Set Total Slots in the Stats tab.</p>
+            </div>
+            {{/each}}
         </div>
-        {{else}}
-        <div class="no-slots">
-            <p>No passenger slots configured. Set Total Slots in the Stats tab.</p>
-        </div>
-        {{/each}}
-    </div>
 
-    {{#if (lt passengerSlots.occupiedCount passengerSlots.total)}}
-    <div class="add-passenger">
-        <a class="passenger-add button" title="Add Passenger">
-            <i class="fas fa-user-plus"></i> Add Passenger
-        </a>
+        {{#if (lt passengerSlots.occupiedCount passengerSlots.total)}}
+        <div class="add-passenger">
+            <a class="passenger-add gfl-panel__add" title="Add Passenger">
+                <i class="fas fa-user-plus"></i> Add Passenger
+            </a>
+        </div>
+        {{/if}}
     </div>
-    {{/if}}
 </div>

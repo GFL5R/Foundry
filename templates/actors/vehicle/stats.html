@@ -1,42 +1,45 @@
-<div class="vehicle-stats">
-    <div class="grid grid-2col">
-        {{!-- Crew Info --}}
-        <div class="stats-block">
-            <h3>Crew</h3>
-            <div class="form-group">
-                <label>Required Crew</label>
+<div class="grid grid-2col" style="width:100%; gap:0.5rem;">
+    {{!-- Crew Info --}}
+    <div class="gfl-panel">
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">Crew</span>
+        </div>
+        <div class="gfl-panel__body">
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Required Crew</span>
                 <input type="number" name="system.crew.required" value="{{data.system.crew.required}}" data-dtype="Number" min="1"/>
             </div>
-            <div class="form-group">
-                <label>Minimum Crew</label>
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Minimum Crew</span>
                 <input type="number" name="system.crew.minimum" value="{{data.system.crew.minimum}}" data-dtype="Number" min="1"/>
             </div>
-            <div class="form-group">
-                <label>Crew Notes</label>
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Crew Notes</span>
                 <input type="text" name="system.crew.notes" value="{{data.system.crew.notes}}" placeholder="e.g., Driver + gunner."/>
             </div>
         </div>
+    </div>
 
-        {{!-- Durability --}}
-        <div class="stats-block">
-            <h3>Durability</h3>
-            <div class="form-group">
-                <label>Armor Value</label>
+    {{!-- Durability --}}
+    <div class="gfl-panel">
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">Durability</span>
+        </div>
+        <div class="gfl-panel__body">
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Armor Value</span>
                 <input type="number" name="system.armor_value" value="{{data.system.armor_value}}" data-dtype="Number" min="0"/>
             </div>
-            <div class="form-group">
-                <label>Damage Threshold</label>
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Damage Threshold</span>
                 <input type="number" name="system.damage_threshold" value="{{data.system.damage_threshold}}" data-dtype="Number" min="0"/>
             </div>
-            <div class="form-group">
-                <label>Current Damage</label>
-                <div class="flexrow">
-                    <input type="number" name="system.current_damage.value" value="{{data.system.current_damage.value}}" data-dtype="Number" min="0"/>
-                </div>
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Current Damage</span>
+                <input type="number" name="system.current_damage.value" value="{{data.system.current_damage.value}}" data-dtype="Number" min="0"/>
             </div>
             {{#if data.system.damage_threshold}}
             <div class="damage-bar">
-                <div class="bar-label">Damage: {{data.system.current_damage.value}} / {{data.system.damage_threshold}}</div>
                 <div class="bar-bg">
                     <div class="bar-fill" style="width:{{damagePercent}}%; background:{{#if (gte damagePercent 75)}}#cc3333{{else}}{{#if (gte damagePercent 50)}}#cc9933{{else}}#33cc33{{/if}}{{/if}};"></div>
                 </div>
@@ -44,29 +47,38 @@
             {{/if}}
         </div>
     </div>
+</div>
 
+<div class="grid grid-2col" style="width:100%; gap:0.5rem; margin-top:0.5rem;">
     {{!-- Performance --}}
-    <div class="grid grid-2col">
-        <div class="stats-block">
-            <h3>Performance</h3>
-            <div class="form-group">
-                <label>Speed Rating</label>
+    <div class="gfl-panel">
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">Performance</span>
+        </div>
+        <div class="gfl-panel__body">
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Speed Rating</span>
                 <input type="number" name="system.speed" value="{{data.system.speed}}" data-dtype="Number" min="1" max="10"/>
             </div>
-            <div class="form-group">
-                <label>Vehicle Type</label>
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Vehicle Type</span>
                 <input type="text" name="system.vehicle_type" value="{{data.system.vehicle_type}}" placeholder="e.g., Armored Transport"/>
             </div>
         </div>
+    </div>
 
-        <div class="stats-block">
-            <h3>Passenger Capacity</h3>
-            <div class="form-group">
-                <label>Total Slots</label>
+    {{!-- Passenger Capacity --}}
+    <div class="gfl-panel">
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">Passenger Capacity</span>
+        </div>
+        <div class="gfl-panel__body">
+            <div class="vehicle-field">
+                <span class="vehicle-field__label">Total Slots</span>
                 <input type="number" name="system.passenger_slots.total" value="{{data.system.passenger_slots.total}}" data-dtype="Number" min="0"/>
             </div>
             <div class="passenger-summary">
-                <span>Occupied: {{passengerSlots.occupied.length}} / {{passengerSlots.total}}</span>
+                Occupied: {{passengerSlots.occupiedCount}} / {{passengerSlots.total}}
             </div>
         </div>
     </div>

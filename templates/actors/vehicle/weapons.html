@@ -1,65 +1,65 @@
-<div class="vehicle-weapons">
-    <h3>Vehicle Weapons</h3>
-
-    {{#if data.system.weapons.length}}
-    <div class="weapons-list">
-        {{#each data.system.weapons as |weapon index|}}
-        <div class="weapon-card">
-            <div class="weapon-header">
-                <h4>{{weapon.name}}</h4>
-                <a class="vehicle-weapon-delete" data-weapon-index="{{index}}" title="Delete Weapon">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </div>
-            <div class="weapon-details grid grid-2col">
-                <div class="weapon-stat">
-                    <label>Mount</label>
-                    <span>{{weapon.mount}}</span>
-                </div>
-                <div class="weapon-stat">
-                    <label>Category</label>
-                    <span>{{weapon.category}}</span>
-                </div>
-                <div class="weapon-stat">
-                    <label>Skill</label>
-                    <span>{{weapon.skill}}</span>
-                </div>
-                <div class="weapon-stat">
-                    <label>Range</label>
-                    <span>{{weapon.range}}</span>
-                </div>
-                <div class="weapon-stat">
-                    <label>Damage</label>
-                    <span>{{weapon.damage}}</span>
-                </div>
-                <div class="weapon-stat">
-                    <label>Deadliness</label>
-                    <span>{{weapon.deadliness}}</span>
-                </div>
-            </div>
-            {{#if weapon.qualities.length}}
-            <div class="weapon-qualities">
-                <label>Qualities:</label>
-                <span>{{join weapon.qualities ", "}}</span>
-            </div>
-            {{/if}}
-            {{#if weapon.notes}}
-            <div class="weapon-notes">
-                <p><em>{{weapon.notes}}</em></p>
-            </div>
-            {{/if}}
-        </div>
-        {{/each}}
-    </div>
-    {{else}}
-    <div class="no-weapons">
-        <p>No weapons configured. Add weapons using the button below.</p>
-    </div>
-    {{/if}}
-
-    <div class="add-weapon">
-        <a class="vehicle-weapon-add button" title="Add Weapon">
+<div class="gfl-panel">
+    <div class="gfl-panel__header">
+        <span class="gfl-panel__label">Vehicle Weapons</span>
+        <a class="vehicle-weapon-add gfl-panel__add" title="Add Weapon">
             <i class="fas fa-crosshairs"></i> Add Weapon
         </a>
+    </div>
+    <div class="gfl-panel__body">
+        {{#if data.system.weapons.length}}
+        <div class="weapons-list">
+            {{#each data.system.weapons as |weapon index|}}
+            <div class="weapon-card">
+                <div class="weapon-header">
+                    <span class="weapon-name">{{weapon.name}}</span>
+                    <a class="vehicle-weapon-delete" data-weapon-index="{{index}}" title="Delete Weapon">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+                <div class="weapon-details">
+                    <div class="weapon-stat">
+                        <span class="weapon-stat__label">Mount</span>
+                        <span class="weapon-stat__value">{{weapon.mount}}</span>
+                    </div>
+                    <div class="weapon-stat">
+                        <span class="weapon-stat__label">Category</span>
+                        <span class="weapon-stat__value">{{weapon.category}}</span>
+                    </div>
+                    <div class="weapon-stat">
+                        <span class="weapon-stat__label">Skill</span>
+                        <span class="weapon-stat__value">{{weapon.skill}}</span>
+                    </div>
+                    <div class="weapon-stat">
+                        <span class="weapon-stat__label">Range</span>
+                        <span class="weapon-stat__value">{{weapon.range}}</span>
+                    </div>
+                    <div class="weapon-stat">
+                        <span class="weapon-stat__label">Damage</span>
+                        <span class="weapon-stat__value">{{weapon.damage}}</span>
+                    </div>
+                    <div class="weapon-stat">
+                        <span class="weapon-stat__label">Deadliness</span>
+                        <span class="weapon-stat__value">{{weapon.deadliness}}</span>
+                    </div>
+                </div>
+                {{#if weapon.qualities.length}}
+                <div class="weapon-qualities">
+                    <span class="weapon-stat__label">Qualities:</span>
+                    <span>{{join weapon.qualities ", "}}</span>
+                </div>
+                {{/if}}
+                {{#if weapon.notes}}
+                <div class="weapon-notes">
+                    <p><em>{{weapon.notes}}</em></p>
+                </div>
+                {{/if}}
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="no-weapons">
+            <p>No weapons configured. Add weapons using the button above.</p>
+        </div>
+        {{/if}}
     </div>
 </div>

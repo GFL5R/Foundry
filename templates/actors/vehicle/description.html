@@ -1,15 +1,23 @@
-<div class="vehicle-description">
-    <div class="form-group">
-        <label>Description</label>
-        <div class="editor-wrapper">
-            {{editor data.system.narrative.description target="system.narrative.description" button=true owner=owner editable=editable}}
+<div class="grid grid-2col" style="width:100%; gap:0.5rem;">
+    <div class="gfl-panel">
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">Description</span>
+        </div>
+        <div class="gfl-panel__body">
+            <div class="editor-wrapper">
+                {{editor data.system.narrative.description target="system.narrative.description" button=true owner=owner editable=editable}}
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Notes</label>
-        <div class="editor-wrapper">
-            {{editor data.system.narrative.notes target="system.narrative.notes" button=true owner=owner editable=editable}}
+    <div class="gfl-panel">
+        <div class="gfl-panel__header">
+            <span class="gfl-panel__label">Notes</span>
+        </div>
+        <div class="gfl-panel__body">
+            <div class="editor-wrapper">
+                {{editor data.system.narrative.notes target="system.narrative.notes" button=true owner=owner editable=editable}}
+            </div>
         </div>
     </div>
 </div>
