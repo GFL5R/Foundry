@@ -40,6 +40,18 @@ export class ActorGfl5r extends Actor {
                     { overwrite: false }
                 );
                 break;
+
+            case "vehicle":
+                foundry.utils.mergeObject(
+                    docData.prototypeToken,
+                    {
+                        actorLink: true,
+                        disposition: 0,
+                        bar1: { attribute: "current_damage" },
+                    },
+                    { overwrite: false }
+                );
+                break;
         }
         return super.create(docData, options);
     }
@@ -145,6 +157,12 @@ export class ActorGfl5r extends Actor {
                 system.approach_limit = vals[0] + vals[1];
             }
         }
+
+        if (this.isVehicle) {
+            const system = this.system;
+            system.current_damage.value = system.current_damage?.value ?? 0;
+            system.current_damage.max = system.damage_threshold || 0;
+        }
     }
 
     /**
@@ -199,6 +217,10 @@ export class ActorGfl5r extends Actor {
             return null;
         }
         return tpl;
+    }
+
+    get isVehicle() {
+        return this.type === "vehicle";
     }
 
     get isCharacterType() {

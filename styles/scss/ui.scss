@@ -248,6 +248,14 @@ button {
                     &-mass_battle:before {
                         content: "\f447";
                     }
+
+                    &-chase:before {
+                        content: "\f5e4";
+                    }
+
+                    &-electronic_warfare:before {
+                        content: "\f6ff";
+                    }
                 }
             }
         }

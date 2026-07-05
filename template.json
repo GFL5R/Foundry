@@ -1,6 +1,6 @@
 {
     "Actor": {
-        "types": ["character", "npc"],
+        "types": ["character", "npc", "vehicle"],
         "templates": {
             "identity": {
                 "identity": {
@@ -228,6 +228,31 @@
             "behaviors": "",
             "combat_rating": 0,
             "social_rating": 0
+        },
+        "vehicle": {
+            "templates": [
+                "identity",
+                "narrative"
+            ],
+            "vehicle_type": "",
+            "armor_value": 0,
+            "damage_threshold": 0,
+            "current_damage": {
+                "value": 0,
+                "max": 0
+            },
+            "speed": 3,
+            "passenger_slots": {
+                "total": 0,
+                "occupied": []
+            },
+            "crew": {
+                "required": 1,
+                "minimum": 1,
+                "notes": ""
+            },
+            "losing_ground": 0,
+            "weapons": []
         }
     },
     "Item": {

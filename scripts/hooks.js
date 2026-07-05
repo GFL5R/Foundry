@@ -198,15 +198,17 @@ export default class HooksGfl5r {
 
         // *** Conf ***
         const encounterTypeList = Object.keys(CONFIG.gfl5r.initiativeSkills);
+        const encounterType = game.settings.get(CONFIG.gfl5r.namespace, "initiative-encounter");
         const prepared = {
             character: game.settings.get(CONFIG.gfl5r.namespace, "initiative-prepared-character"),
             adversary: game.settings.get(CONFIG.gfl5r.namespace, "initiative-prepared-adversary"),
             minion: game.settings.get(CONFIG.gfl5r.namespace, "initiative-prepared-minion"),
         };
+        const sceneSpeed = game.settings.get(CONFIG.gfl5r.namespace, "scene-speed") || 1;
 
-        // *** Template ***
+        // *** Template - Combat Tracker Bar ***
         const tpl = await foundry.applications.handlebars.renderTemplate(`${CONFIG.gfl5r.paths.templates}gm/combat-tracker-bar.html`, {
-            encounterType: game.settings.get(CONFIG.gfl5r.namespace, "initiative-encounter"),
+            encounterType,
             encounterTypeList,
             prepared,
         });
@@ -217,6 +219,24 @@ export default class HooksGfl5r {
             elmt.replaceWith(tpl);
         } else {
             html.find(".combat-tracker-header").append(tpl);
+        }
+
+        // *** Template - Scene Speed Bar (only during chases) ***
+        if (encounterType === "chase") {
+            const speedTpl = await foundry.applications.handlebars.renderTemplate(`${CONFIG.gfl5r.paths.templates}gm/scene-speed-bar.html`, {
+                sceneSpeed,
+            });
+
+            // Add/replace scene speed bar
+            const speedElmt = html.find("#gfl5r_scene_speed_bar");
+            if (speedElmt.length > 0) {
+                speedElmt.replaceWith(speedTpl);
+            } else {
+                html.find(".combat-tracker-header").prepend(speedTpl);
+            }
+        } else {
+            // Remove scene speed bar if not a chase
+            html.find("#gfl5r_scene_speed_bar").remove();
         }
 
         // Buttons Listeners
@@ -244,6 +264,23 @@ export default class HooksGfl5r {
                 actor: rev ? "false" : "true",
             };
             game.settings.set(CONFIG.gfl5r.namespace, `initiative-prepared-${preparedId}`, nextValue[prepared[preparedId]]);
+        });
+
+        // Scene Speed Controls
+        html.find(".speed-control").on("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const action = $(event.currentTarget).data("action");
+            const current = game.settings.get(CONFIG.gfl5r.namespace, "scene-speed") || 1;
+            let newSpeed = current;
+            if (action === "increase" && current < 10) {
+                newSpeed = current + 1;
+            } else if (action === "decrease" && current > 1) {
+                newSpeed = current - 1;
+            }
+            if (newSpeed !== current) {
+                game.settings.set(CONFIG.gfl5r.namespace, "scene-speed", newSpeed);
+            }
         });
     }
 

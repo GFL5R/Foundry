@@ -1,0 +1,80 @@
+<form class="{{cssClass}} {{actor.type}} flexcol theme-wrapper" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+        <div class="header-fields">
+            <div class="document-name">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="Vehicle Name"/>
+            </div>
+            <div class="grid grid-3col">
+                <div class="resource">
+                    <label for="system.armor_value" class="resource-label">Armor Value</label>
+                    <input type="number" name="system.armor_value" value="{{data.system.armor_value}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label for="system.damage_threshold" class="resource-label">Damage Threshold</label>
+                    <input type="number" name="system.damage_threshold" value="{{data.system.damage_threshold}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label for="system.speed" class="resource-label">Speed</label>
+                    <input type="number" name="system.speed" value="{{data.system.speed}}" data-dtype="Number" min="1" max="10"/>
+                </div>
+            </div>
+            <div class="grid grid-3col">
+                <div class="resource">
+                    <label for="system.current_damage" class="resource-label">Current Damage</label>
+                    <div class="resource-content flexrow">
+                        <input type="number" name="system.current_damage.value" value="{{data.system.current_damage.value}}" data-dtype="Number" min="0"/>
+                        <span> / {{data.system.damage_threshold}}</span>
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Vehicle Type</label>
+                    <input type="text" name="system.vehicle_type" value="{{data.system.vehicle_type}}" placeholder="e.g., Armored Transport"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Losing Ground</label>
+                    <div class="resource-content flexrow">
+                        <a class="losing-ground-remove" title="Remove Stack"><i class="fas fa-minus-circle"></i></a>
+                        <span class="losing-ground-value" style="font-size: 1.2em; margin: 0 8px;">{{losingGround}}/3</span>
+                        <a class="losing-ground-add" title="Add Stack"><i class="fas fa-plus-circle"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="stats">Stats</a>
+        <a class="item" data-tab="passengers">Passengers</a>
+        <a class="item" data-tab="weapons">Weapons</a>
+        <a class="item" data-tab="description">Description</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Stats Tab --}}
+        <div class="tab stats" data-group="primary" data-tab="stats">
+            {{> "systems/gfl5r/templates/actors/vehicle/stats.html"}}
+        </div>
+
+        {{!-- Passengers Tab --}}
+        <div class="tab passengers" data-group="primary" data-tab="passengers">
+            {{> "systems/gfl5r/templates/actors/vehicle/passengers.html"}}
+        </div>
+
+        {{!-- Weapons Tab --}}
+        <div class="tab weapons" data-group="primary" data-tab="weapons">
+            {{> "systems/gfl5r/templates/actors/vehicle/weapons.html"}}
+        </div>
+
+        {{!-- Description Tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            {{> "systems/gfl5r/templates/actors/vehicle/description.html"}}
+        </div>
+
+    </section>
+</form>

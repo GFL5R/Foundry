@@ -35,7 +35,8 @@
     "TYPES": {
         "Actor": {
             "character": "Character",
-            "npc": "NPC"
+            "npc": "NPC",
+            "vehicle": "Vehicle"
         },
         "Item": {
             "technique": "Technique",
@@ -155,11 +156,19 @@
                 "mass_battle": "Mass Battle",
                 "prepared_true": "Prepared",
                 "prepared_false": "Unprepared",
+                "prepared_actor": "Per Actor",
                 "encounter_types": {
                     "skirmish": "Skirmish",
                     "intrigue": "Intrigue",
                     "duel": "Duel",
-                    "mass_battle": "Mass Battle"
+                    "mass_battle": "Mass Battle",
+                    "chase": "Chase",
+                    "electronic_warfare": "Electronic Warfare"
+                },
+                "character_types": {
+                    "character": "Character",
+                    "adversary": "Adversary",
+                    "minion": "Minion"
                 }
             }
         },
@@ -271,7 +280,8 @@
             "elid_stage_3": "Late Stage ELID",
             "parapluie_stage_1": "Parapluie Stage 1",
             "parapluie_stage_2": "Parapluie Stage 2",
-            "parapluie_stage_3": "Parapluie Stage 3"
+            "parapluie_stage_3": "Parapluie Stage 3",
+            "losing_ground": "Losing Ground"
         },
         "compendium": {
             "not_for_players": "Not available for players.",
@@ -381,6 +391,42 @@
             "combat_rating": "Combat Rating",
             "social_rating": "Social Rating"
         },
+        "vehicle": {
+            "title": "Vehicle",
+            "vehicle_type": "Vehicle Type",
+            "armor_value": "Armor Value",
+            "damage_threshold": "Damage Threshold",
+            "current_damage": "Current Damage",
+            "speed": "Speed Rating",
+            "passenger_slots": "Passenger Slots",
+            "total_slots": "Total Slots",
+            "slot": "Slot",
+            "empty": "Empty",
+            "add_passenger": "Add Passenger",
+            "remove_passenger": "Remove Passenger",
+            "select_passenger": "Select Passenger",
+            "crew": "Crew",
+            "crew_required": "Required Crew",
+            "crew_minimum": "Minimum Crew",
+            "crew_notes": "Crew Notes",
+            "losing_ground": "Losing Ground",
+            "losing_ground_stacks": "Losing Ground Stacks",
+            "losing_ground_add": "Add Losing Ground Stack",
+            "losing_ground_remove": "Remove Losing Ground Stack",
+            "losing_ground_out": "Out of the chase!",
+            "weapons": "Weapons",
+            "add_weapon": "Add Weapon",
+            "delete_weapon": "Delete Weapon",
+            "durability": "Durability",
+            "performance": "Performance",
+            "passenger_capacity": "Passenger Capacity"
+        },
+        "scene_speed": {
+            "title": "Scene Speed",
+            "label": "Scene Speed",
+            "hint": "Sets the chase scene speed, which determines TN for all vehicle techniques.",
+            "not_set": "Not Set"
+        },
         "multiselect": {
             "no_results": "No matches",
             "placeholder": "Search...",
@@ -398,6 +444,9 @@
             "flavor": "Flavor",
             "name": "Name",
             "types": "Types",
+            "stats": "Stats",
+            "passengers": "Passengers",
+            "weapons": "Weapons",
             "source_reference": {
                 "reference": "Reference",
                 "page_abbreviation": "p. "

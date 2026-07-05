@@ -1,0 +1,390 @@
+/** GFL5R — Vehicle Actor Sheet **/
+
+// ---------------------------------------------------------------------------
+// Header
+// ---------------------------------------------------------------------------
+.vehicle {
+    .sheet-header {
+        .grid-3col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .resource {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .resource-label {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: $dandelion;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .resource-content {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .losing-ground-value {
+            color: $red-light;
+            font-weight: 700;
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Stats tab
+// ---------------------------------------------------------------------------
+.vehicle-stats {
+    .grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .stats-block {
+        padding: 10px 14px;
+        background: rgba($white, 0.03);
+        border: 1px solid $border-color;
+        border-radius: 3px;
+
+        h3 {
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: $dandelion;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px solid $border-color;
+        }
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0;
+
+        label {
+            flex: 0 0 120px;
+            font-size: 0.7rem;
+            color: rgba($white, 0.7);
+        }
+
+        input {
+            flex: 1;
+            height: 1.5rem;
+            font-size: 0.75rem;
+        }
+    }
+}
+
+// Damage progress bar
+.damage-bar {
+    margin-top: 8px;
+
+    .bar-label {
+        font-size: 0.6rem;
+        color: rgba($white, 0.5);
+        margin-bottom: 3px;
+    }
+
+    .bar-bg {
+        height: 8px;
+        background: rgba($black, 0.4);
+        border: 1px solid rgba($white, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .bar-fill {
+        height: 100%;
+        transition: width 0.3s ease, background 0.3s ease;
+        border-radius: 3px;
+    }
+}
+
+.passenger-summary {
+    font-size: 0.75rem;
+    color: rgba($white, 0.6);
+    margin-top: 4px;
+}
+
+// ---------------------------------------------------------------------------
+// Passengers tab
+// ---------------------------------------------------------------------------
+.passenger-management {
+    h3 {
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        font-size: 0.8rem;
+        color: $dandelion;
+        margin: 0 0 12px 0;
+    }
+}
+
+.passenger-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.passenger-slot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    border: 1px solid rgba($white, 0.08);
+
+    &.occupied {
+        background: rgba($green, 0.08);
+        border-color: rgba($green, 0.25);
+    }
+
+    &.empty {
+        background: rgba($white, 0.02);
+        border-style: dashed;
+    }
+}
+
+.slot-number {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 0.6rem;
+    color: rgba($white, 0.35);
+    min-width: 40px;
+    text-transform: uppercase;
+}
+
+.slot-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+
+    img {
+        border: none;
+        border-radius: 3px;
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+    }
+}
+
+.passenger-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.empty-text {
+    font-size: 0.7rem;
+    color: rgba($white, 0.3);
+    font-style: italic;
+}
+
+.passenger-remove {
+    margin-left: auto;
+    color: rgba($red, 0.5);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+
+    &:hover {
+        color: $red;
+    }
+}
+
+.add-passenger {
+    margin-top: 8px;
+
+    .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba($green, 0.15);
+        border: 1px solid rgba($green, 0.3);
+        color: lighten($green, 10%);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            background: rgba($green, 0.3);
+            box-shadow: 0 0 10px rgba($green, 0.2);
+        }
+    }
+}
+
+.no-slots p {
+    font-size: 0.75rem;
+    color: rgba($white, 0.35);
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+}
+
+// ---------------------------------------------------------------------------
+// Weapons tab
+// ---------------------------------------------------------------------------
+.vehicle-weapons h3 {
+    font-family: "Rajdhani", "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+    color: $dandelion;
+    margin: 0 0 12px 0;
+}
+
+.weapons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.weapon-card {
+    padding: 10px 14px;
+    background: rgba($white, 0.02);
+    border: 1px solid $border-color;
+    border-radius: 3px;
+}
+
+.weapon-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    h4 {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $white;
+        margin: 0;
+    }
+}
+
+.vehicle-weapon-delete {
+    color: rgba($red, 0.5);
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: color 0.2s;
+
+    &:hover {
+        color: $red;
+    }
+}
+
+.weapon-details.grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+    margin-bottom: 6px;
+}
+
+.weapon-stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+
+    label {
+        color: rgba($white, 0.45);
+        font-size: 0.6rem;
+        text-transform: uppercase;
+    }
+
+    span {
+        color: rgba($white, 0.8);
+        font-family: "Share Tech Mono", monospace;
+    }
+}
+
+.weapon-qualities {
+    font-size: 0.65rem;
+    color: rgba($white, 0.5);
+    margin-bottom: 4px;
+
+    label {
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        color: rgba($white, 0.45);
+    }
+}
+
+.weapon-notes p {
+    font-size: 0.65rem;
+    color: rgba($white, 0.45);
+    margin: 0;
+}
+
+.no-weapons p {
+    font-size: 0.75rem;
+    color: rgba($white, 0.35);
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.add-weapon {
+    margin-top: 8px;
+
+    .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba($amber, 0.15);
+        border: 1px solid rgba($amber, 0.3);
+        color: lighten($amber, 8%);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            background: rgba($amber, 0.3);
+            box-shadow: 0 0 10px rgba($amber, 0.2);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Description tab
+// ---------------------------------------------------------------------------
+.vehicle-description {
+    .form-group {
+        margin-bottom: 12px;
+
+        label {
+            display: block;
+            font-family: "Rajdhani", "Segoe UI", sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: $dandelion;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+    }
+
+    .editor-wrapper {
+        min-height: 150px;
+        border: 1px solid $border-color;
+        border-radius: 3px;
+    }
+}

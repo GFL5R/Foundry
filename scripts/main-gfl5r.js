@@ -10,6 +10,7 @@ import HooksGfl5r from "./hooks.js";
 import { ActorGfl5r } from "./actor.js";
 import { CharacterSheetGfl5r } from "./actors/character-sheet.js";
 import { NpcSheetGfl5r } from "./actors/npc-sheet.js";
+import { VehicleSheetGfl5r } from "./actors/vehicle-sheet.js";
 import { RulerGfl5r, TokenRulerGfl5r } from "./tatical-grid-rulers.js";
 // Dice and rolls
 import { Gfl5rBaseDie } from "./dice/dietype/gfl5r-base-die.js";
@@ -129,6 +130,11 @@ Hooks.once("init", async () => {
     fdc.Actors.registerSheet(GFL5R.namespace, NpcSheetGfl5r, {
         types: ["npc"],
         label: "TYPES.Actor.npc",
+        makeDefault: true,
+    });
+    fdc.Actors.registerSheet(GFL5R.namespace, VehicleSheetGfl5r, {
+        types: ["vehicle"],
+        label: "TYPES.Actor.vehicle",
         makeDefault: true,
     });
 

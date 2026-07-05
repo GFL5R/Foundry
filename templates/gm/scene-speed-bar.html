@@ -1,0 +1,14 @@
+<div class="scene-speed-bar flexrow" id="gfl5r_scene_speed_bar">
+    <label>{{localize "gfl5r.scene_speed.label"}}:</label>
+    <div class="speed-controls flexrow">
+        <a class="speed-control speed-down {{#if (lte sceneSpeed 1)}}disabled{{/if}}" data-action="decrease" title="Decrease Scene Speed">
+            <i class="fas fa-minus"></i>
+        </a>
+        <span class="speed-value active">
+            {{sceneSpeed}}
+        </span>
+        <a class="speed-control speed-up {{#if (gte sceneSpeed 10)}}disabled{{/if}}" data-action="increase" title="Increase Scene Speed">
+            <i class="fas fa-plus"></i>
+        </a>
+    </div>
+</div>

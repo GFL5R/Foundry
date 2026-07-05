@@ -26,6 +26,8 @@ export const GFL5R = {
         duel: "resolve",
         skirmish: "tactics",
         mass_battle: "command",
+        chase: "piloting",
+        electronic_warfare: "computers",
     },
 
     // Approach-scoped wounded conditions (lightly/severely per approach)
@@ -220,6 +222,13 @@ export const GFL5R = {
             name: "gfl5r.conditions.parapluie_stage_3",
             img: "systems/gfl5r/assets/icons/conditions/parapluie_stage_3.webp",
             system: { id: "GFL5RCon000031" }
+        },
+        // Vehicle / Chase conditions
+        {
+            id: "losing_ground",
+            name: "gfl5r.conditions.losing_ground",
+            img: "systems/gfl5r/assets/icons/conditions/losing_ground.svg",
+            system: { id: "GFL5RCon000032" }
         },
     ],
     regex: {

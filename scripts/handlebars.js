@@ -159,4 +159,56 @@ export const RegisterHandlebars = function () {
         }
         return result;
     });
+
+    // Basic math helpers
+    Handlebars.registerHelper("add", function (a, b) {
+        return Number(a) + Number(b);
+    });
+
+    Handlebars.registerHelper("subtract", function (a, b) {
+        return Number(a) - Number(b);
+    });
+
+    Handlebars.registerHelper("gte", function (a, b, options) {
+        const result = Number(a) >= Number(b);
+        if (typeof options?.fn === "function") {
+            return result ? options.fn(this) : options.inverse(this);
+        }
+        return result;
+    });
+
+    Handlebars.registerHelper("lte", function (a, b, options) {
+        const result = Number(a) <= Number(b);
+        if (typeof options?.fn === "function") {
+            return result ? options.fn(this) : options.inverse(this);
+        }
+        return result;
+    });
+
+    Handlebars.registerHelper("lt", function (a, b, options) {
+        const result = Number(a) < Number(b);
+        if (typeof options?.fn === "function") {
+            return result ? options.fn(this) : options.inverse(this);
+        }
+        return result;
+    });
+
+    Handlebars.registerHelper("gt", function (a, b, options) {
+        const result = Number(a) > Number(b);
+        if (typeof options?.fn === "function") {
+            return result ? options.fn(this) : options.inverse(this);
+        }
+        return result;
+    });
+
+    // Lookup helper for accessing objects by dynamic key
+    Handlebars.registerHelper("lookup", function (obj, key) {
+        return obj && obj[key];
+    });
+
+    // Join array with separator
+    Handlebars.registerHelper("join", function (arr, sep) {
+        if (!Array.isArray(arr)) return "";
+        return arr.join(sep || ", ");
+    });
 };

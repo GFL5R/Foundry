@@ -1,0 +1,71 @@
+/** GFL5R — Scene Speed Bar (GM Combat Tracker) **/
+
+.scene-speed-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 4px 12px;
+    margin: 0 0 4px 0;
+    background: rgba($amber, 0.08);
+    border: 1px solid rgba($amber, 0.2);
+    border-radius: 3px;
+
+    label {
+        font-family: "Rajdhani", "Segoe UI", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: $amber;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+}
+
+.speed-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    background: rgba($amber, 0.15);
+    color: $amber;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover:not(.disabled) {
+        background: rgba($amber, 0.35);
+        color: lighten($amber, 10%);
+        box-shadow: 0 0 8px rgba($amber, 0.3);
+    }
+
+    &.disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+}
+
+.speed-value {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+
+    &.active {
+        color: $amber;
+    }
+
+    &.not-set {
+        color: rgba($white, 0.3);
+        font-size: 0.65rem;
+        font-style: italic;
+    }
+}

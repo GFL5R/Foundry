@@ -1,0 +1,73 @@
+<div class="vehicle-stats">
+    <div class="grid grid-2col">
+        {{!-- Crew Info --}}
+        <div class="stats-block">
+            <h3>Crew</h3>
+            <div class="form-group">
+                <label>Required Crew</label>
+                <input type="number" name="system.crew.required" value="{{data.system.crew.required}}" data-dtype="Number" min="1"/>
+            </div>
+            <div class="form-group">
+                <label>Minimum Crew</label>
+                <input type="number" name="system.crew.minimum" value="{{data.system.crew.minimum}}" data-dtype="Number" min="1"/>
+            </div>
+            <div class="form-group">
+                <label>Crew Notes</label>
+                <input type="text" name="system.crew.notes" value="{{data.system.crew.notes}}" placeholder="e.g., Driver + gunner."/>
+            </div>
+        </div>
+
+        {{!-- Durability --}}
+        <div class="stats-block">
+            <h3>Durability</h3>
+            <div class="form-group">
+                <label>Armor Value</label>
+                <input type="number" name="system.armor_value" value="{{data.system.armor_value}}" data-dtype="Number" min="0"/>
+            </div>
+            <div class="form-group">
+                <label>Damage Threshold</label>
+                <input type="number" name="system.damage_threshold" value="{{data.system.damage_threshold}}" data-dtype="Number" min="0"/>
+            </div>
+            <div class="form-group">
+                <label>Current Damage</label>
+                <div class="flexrow">
+                    <input type="number" name="system.current_damage.value" value="{{data.system.current_damage.value}}" data-dtype="Number" min="0"/>
+                </div>
+            </div>
+            {{#if data.system.damage_threshold}}
+            <div class="damage-bar">
+                <div class="bar-label">Damage: {{data.system.current_damage.value}} / {{data.system.damage_threshold}}</div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width:{{damagePercent}}%; background:{{#if (gte damagePercent 75)}}#cc3333{{else}}{{#if (gte damagePercent 50)}}#cc9933{{else}}#33cc33{{/if}}{{/if}};"></div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+
+    {{!-- Performance --}}
+    <div class="grid grid-2col">
+        <div class="stats-block">
+            <h3>Performance</h3>
+            <div class="form-group">
+                <label>Speed Rating</label>
+                <input type="number" name="system.speed" value="{{data.system.speed}}" data-dtype="Number" min="1" max="10"/>
+            </div>
+            <div class="form-group">
+                <label>Vehicle Type</label>
+                <input type="text" name="system.vehicle_type" value="{{data.system.vehicle_type}}" placeholder="e.g., Armored Transport"/>
+            </div>
+        </div>
+
+        <div class="stats-block">
+            <h3>Passenger Capacity</h3>
+            <div class="form-group">
+                <label>Total Slots</label>
+                <input type="number" name="system.passenger_slots.total" value="{{data.system.passenger_slots.total}}" data-dtype="Number" min="0"/>
+            </div>
+            <div class="passenger-summary">
+                <span>Occupied: {{passengerSlots.occupied.length}} / {{passengerSlots.total}}</span>
+            </div>
+        </div>
+    </div>
+</div>

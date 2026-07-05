@@ -32,7 +32,7 @@
             </td>
             <td>
                 <a data-actor-uuid="{{actor.uuid}}" data-type="prepared" class="actor-modify-control">
-                    <i data-type="text" data-text="<h2>{{localize 'gfl5r.conflict.initiative.title'}} : {{localize (localize 'gfl5r.conflict.initiative.prepared_{value}' value=actor.isPrepared)}}</h2>" class="fa fas prepared-icon-{{actor.isPrepared}} {{#ifCond actor.isPrepared '==' 'false'}}badvalue{{/ifCond}} actor-infos-control"></i>
+                    <i data-type="text" data-text="<h2>{{localize 'gfl5r.conflict.initiative.title'}} : {{localize (concat 'gfl5r.conflict.initiative.prepared_' actor.isPrepared)}}</h2>" class="fa fas prepared-icon-{{actor.isPrepared}} {{#ifCond actor.isPrepared '==' 'false'}}badvalue{{/ifCond}} actor-infos-control"></i>
                 </a>
             </td>
             <td>{{#if actor.haveWeaponEquipped}}<i data-type="weapons" data-actor-uuid="{{actor.uuid}}" class="fas fa-fan actor-infos-control {{#if actor.haveWeaponReadied}}badvalue{{/if}}"></i>{{/if}}</td>

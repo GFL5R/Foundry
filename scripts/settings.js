@@ -200,6 +200,22 @@ export const RegisterSettings = function () {
     });
 
     /* ------------------------------------ */
+    /* Scene Speed (Chase/Vehicle) - GM     */
+    /* ------------------------------------ */
+    game.settings.register(CONFIG.gfl5r.namespace, "scene-speed", {
+        name: "gfl5r.scene_speed.label",
+        hint: "gfl5r.scene_speed.hint",
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 1,
+        range: { min: 1, max: 10, step: 1 },
+        onChange: () => {
+            ui.combat?.render(true);
+        },
+    });
+
+    /* ------------------------------------ */
     /* GM Monitor windows (GM only)         */
     /* ------------------------------------ */
     game.settings.register(CONFIG.gfl5r.namespace, "gm-monitor-actors", {
