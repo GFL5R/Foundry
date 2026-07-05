@@ -499,6 +499,22 @@ def build_armor_item(name: str, data: dict) -> dict:
     }
 
 
+def build_vehicle_item(name: str, data: dict) -> dict:
+    return {
+        "name": name,
+        "type": "vehicle",
+        "system": {
+            "source_reference": {"source": "GFL5R", "page": 0},
+            "flavor": data.get("flavor", ""),
+            "description": data.get("description", ""),
+            "armor_value": int(data.get("armor_value", 0)),
+            "damage_threshold": int(data.get("damage_threshold", 10)),
+            "current_damage": 0,
+            "passenger_capacity": int(data.get("passenger_capacity", 1)),
+        },
+    }
+
+
 def build_item(name: str, data: dict) -> dict:
     return {
         "name": name,
@@ -1129,9 +1145,19 @@ def main():
         built.append(f"gfl5r-journal-conditions: {len(entries)} entries")
 
     # -----------------------------------------------------------------------
+    # Vehicles (webapp src)
+    # -----------------------------------------------------------------------
+    vehicles_path = webapp_src / "vehicles.json"
+    if vehicles_path.exists():
+        vehicles_data = load_json(vehicles_path)
+        items = [build_vehicle_item(name, data) for name, data in vehicles_data.items()]
+        write_pack(items, packs_dir / "gfl5r-vehicles")
+        built.append(f"gfl5r-vehicles: {len(items)} items")
+
+    # -----------------------------------------------------------------------
     # Empty stub packs
     # -----------------------------------------------------------------------
-    for empty_pack in ["gfl5r-vehicles", "gfl5r-macros"]:
+    for empty_pack in ["gfl5r-macros"]:
         pack_path = packs_dir / empty_pack
         if not pack_path.exists():
             write_pack([], pack_path)
