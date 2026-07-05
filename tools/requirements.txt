@@ -1,3 +1,2 @@
-# No external dependencies needed.
-# leveldb_writer.py (in tools/) is a pure-Python LevelDB writer.
-# No C-level libraries required.
+plyvel
+libsass
