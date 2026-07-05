@@ -26,6 +26,11 @@ export const PreloadTemplates = async function () {
         `${tpl}actors/npc/social.html`,
         `${tpl}actors/npc/skill.html`,
         `${tpl}actors/npc/summary.html`,
+        // *** Actors : Vehicle ***
+        `${tpl}actors/vehicle/stats.html`,
+        `${tpl}actors/vehicle/passengers.html`,
+        `${tpl}actors/vehicle/weapons.html`,
+        `${tpl}actors/vehicle/description.html`,
         // *** Items ***
         `${tpl}items/armor/armors.html`,
         `${tpl}items/armor/armor-entry.html`,
