@@ -256,7 +256,7 @@
             "name": "gfl5r-vehicles",
             "label": "Vehicles",
             "path": "packs/gfl5r-vehicles",
-            "type": "Item",
+            "type": "Actor",
             "system": "gfl5r"
         },
         {

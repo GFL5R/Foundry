@@ -499,19 +499,86 @@ def build_armor_item(name: str, data: dict) -> dict:
     }
 
 
-def build_vehicle_item(name: str, data: dict) -> dict:
+def _vehicle_image_path(raw: str) -> str:
+    if not raw:
+        return "systems/gfl5r/assets/icons/actors/character.svg"
+    raw = raw.lstrip("/")
+    if raw.startswith("assets/"):
+        raw = raw[len("assets/"):]
+    return f"systems/gfl5r/assets/{raw}"
+
+
+def build_vehicle_actor(name: str, data: dict) -> dict:
+    """Build a vehicle Actor document from webapp vehicles.json data."""
+    # Compose description from flavor + description
+    flavor = (data.get("flavor") or "").strip()
+    description = (data.get("description") or "").strip()
+    desc_parts = []
+    if flavor:
+        desc_parts.append(flavor)
+    if description:
+        desc_parts.append(description)
+
+    # Map webapp weapons to actor weapons schema
+    weapons = []
+    for w in data.get("weapons", []) or []:
+        weapons.append({
+            "name": w.get("name", ""),
+            "mount": w.get("mount", ""),
+            "category": w.get("category", ""),
+            "skill": w.get("skill", "Firearms"),
+            "range": int(w.get("range", 3)),
+            "damage": int(w.get("damage", 0)),
+            "deadliness": int(w.get("deadliness", 0)),
+            "qualities": w.get("qualities", []),
+            "notes": w.get("notes", ""),
+        })
+
+    dt = int(data.get("damage_threshold", 10))
+
     return {
         "name": name,
         "type": "vehicle",
+        "img": _vehicle_image_path(data.get("image", "")),
         "system": {
-            "source_reference": {"source": "GFL5R", "page": 0},
-            "flavor": data.get("flavor", ""),
-            "description": data.get("description", ""),
+            "identity": {
+                "characterType": "",
+                "age": "",
+                "nationality": "",
+                "background": "",
+                "frame": "",
+                "manufacturer": "",
+                "model": data.get("type", ""),
+                "name_origin": "",
+            },
+            "narrative": {
+                "notes": "",
+                "description": "\n".join(desc_parts),
+                "personal_goal": "",
+                "name_meaning": "",
+                "story_end": "",
+                "met_commander": "",
+            },
+            "vehicle_type": data.get("type", ""),
             "armor_value": int(data.get("armor_value", 0)),
-            "damage_threshold": int(data.get("damage_threshold", 10)),
-            "current_damage": 0,
-            "passenger_capacity": int(data.get("passenger_capacity", 1)),
+            "damage_threshold": dt,
+            "current_damage": {"value": 0, "max": dt},
+            "speed": int(data.get("speed", 3)),
+            "passenger_slots": {
+                "total": int(data.get("passenger_capacity", 0)),
+                "occupied": [],
+            },
+            "crew": {
+                "required": int(data.get("crew", 1)),
+                "minimum": int(data.get("min_crew", 1)),
+                "notes": data.get("crew_notes", ""),
+            },
+            "losing_ground": 0,
+            "weapons": weapons,
+            "price": int(data.get("price", 0)),
+            "rarity": int(data.get("rarity", 0)),
         },
+        "items": [],
     }
 
 
@@ -1150,9 +1217,9 @@ def main():
     vehicles_path = webapp_src / "vehicles.json"
     if vehicles_path.exists():
         vehicles_data = load_json(vehicles_path)
-        items = [build_vehicle_item(name, data) for name, data in vehicles_data.items()]
-        write_pack(items, packs_dir / "gfl5r-vehicles")
-        built.append(f"gfl5r-vehicles: {len(items)} items")
+        actors = [build_vehicle_actor(name, data) for name, data in vehicles_data.items()]
+        write_actor_pack(actors, packs_dir / "gfl5r-vehicles")
+        built.append(f"gfl5r-vehicles: {len(actors)} actors")
 
     # -----------------------------------------------------------------------
     # Empty stub packs
