@@ -91,16 +91,14 @@ $selectors: (
       filter: drop-shadow(0 0 3px var(--color-dark-1));
     }
     
-    // Apply masks for each icon
+    // Apply background images for each icon
     @each $name, $url in $gfl5r-custom-icons {
       &.#{$name}::before {
         content: "";
         position: absolute;
         width: 95%;
         height: 95%;
-        background-color: currentColor;
-        mask: url($url) no-repeat center / contain;
-        -webkit-mask: url($url) no-repeat center / contain;
+        background: url($url) no-repeat center / contain;
         z-index: 0;
       }
     }

@@ -501,7 +501,7 @@ def build_armor_item(name: str, data: dict) -> dict:
 
 def _vehicle_image_path(raw: str) -> str:
     if not raw:
-        return "systems/gfl5r/assets/icons/actors/character.svg"
+        return "systems/gfl5r/assets/icons/actors/vehicle.svg"
     raw = raw.lstrip("/")
     if raw.startswith("assets/"):
         raw = raw[len("assets/"):]
@@ -891,7 +891,7 @@ def write_pack(items: list[dict], pack_path: Path):
 # ---------------------------------------------------------------------------
 def _npc_image_path(raw: str) -> str:
     if not raw:
-        return "systems/gfl5r/assets/icons/actors/character.svg"
+        return "systems/gfl5r/assets/icons/actors/doll.svg"
     raw = raw.lstrip("/")
     if raw.startswith("assets/"):
         raw = raw[len("assets/"):]

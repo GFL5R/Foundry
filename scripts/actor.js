@@ -8,7 +8,8 @@ export class ActorGfl5r extends Actor {
     static async create(docData, options = {}) {
         // Replace default image
         if (docData.img === undefined) {
-            const iconName = docData.type === "npc" ? "character" : docData.type;
+            const iconMap = { character: "commander", npc: "doll", vehicle: "vehicle" };
+            const iconName = iconMap[docData.type] || docData.type;
             docData.img = `${CONFIG.gfl5r.paths.assets}icons/actors/${iconName}.svg`;
         }
 
