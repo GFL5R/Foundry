@@ -4,7 +4,8 @@
  */
 
 export const HUMAN_NATIONALITIES = [
-    { key: "united-states", label: "United States", approaches: ["swiftness", "power"] },
+    { key: "fsa", label: "Free States of America (FSA)", approaches: ["swiftness", "power"] },
+    { key: "ara", label: "American Rossartrist Alliance", approaches: ["resilience", "precision"] },
     { key: "neo-soviet-union", label: "Neo-Soviet Union (NUSSR)", approaches: ["resilience", "power"] },
     { key: "china", label: "China", approaches: ["precision", "fortune"] },
     { key: "latin-america", label: "Latin America Alliance", approaches: ["precision", "power"] },

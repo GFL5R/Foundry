@@ -5,6 +5,7 @@
  */
 
 import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, TDOLL_FRAMES } from "./character-builder-data.js";
+import { NATIONALITY_ITEMS, BACKGROUND_GEAR, DISCIPLINE_WEAPON_GRANTS } from "./starting-equipment.js";
 
 export class CharacterGenerator {
     static STEPS = [
@@ -87,6 +88,11 @@ export class CharacterGenerator {
         await this._createNarrativeItem(disadvantageUuid, "disadvantage");
         await this._createNarrativeItem(passionUuid, "passion");
         await this._createNarrativeItem(anxietyUuid, "anxiety");
+
+        // Grant starting equipment
+        await this._grantNationalityGear(nationalityKey);
+        await this._grantBackgroundGear(backgroundKey);
+        await this._grantDisciplineWeapon(disciplineResult?.label || "");
 
         // Update actor
         const updates = {
@@ -186,6 +192,11 @@ export class CharacterGenerator {
         await this._createNarrativeItem(disadvantageUuid, "disadvantage");
         await this._createNarrativeItem(passionUuid, "passion");
         await this._createNarrativeItem(anxietyUuid, "anxiety");
+
+        // Grant starting equipment
+        await this._grantNationalityGear(nationalityKey);
+        await this._grantBackgroundGear(backgroundKey);
+        await this._grantDisciplineWeapon(disciplineResult?.label || "");
 
         // Update actor
         const updates = {
@@ -292,6 +303,9 @@ export class CharacterGenerator {
         await this._createNarrativeItem(disadvantageUuid, "disadvantage");
         await this._createNarrativeItem(passionUuid, "passion");
         await this._createNarrativeItem(anxietyUuid, "anxiety");
+
+        // Grant starting equipment (T-Dolls get discipline weapon only)
+        await this._grantDisciplineWeapon(disciplineResult?.label || "");
 
         // Update actor
         const updates = {
@@ -511,6 +525,139 @@ export class CharacterGenerator {
         }
 
         return true;
+    }
+
+    /**
+     * Grant starting nationality gear by searching compendiums for matching item names.
+     * Falls back to creating basic item data if compendium items aren't found.
+     */
+    async _grantNationalityGear(nationalityKey) {
+        const itemNames = NATIONALITY_ITEMS[nationalityKey];
+        if (!itemNames?.length) return;
+        await this._grantItemsByName(itemNames, "item");
+    }
+
+    /**
+     * Grant starting background gear + optional armor.
+     */
+    async _grantBackgroundGear(backgroundKey) {
+        const gear = BACKGROUND_GEAR[backgroundKey];
+        if (!gear) return;
+        if (gear.items?.length) await this._grantItemsByName(gear.items, "item");
+        if (gear.armor) await this._grantItemsByName([gear.armor], "armor");
+    }
+
+    /**
+     * Grant a weapon matching the discipline's grant (category + maxPrice).
+     * Searches the gfl5r-weapons compendium for the best fit.
+     */
+    async _grantDisciplineWeapon(disciplineTitle) {
+        const grant = DISCIPLINE_WEAPON_GRANTS[disciplineTitle];
+        if (!grant) return;
+
+        try {
+            const pack = game.packs.get("gfl5r.gfl5r-weapons");
+            if (!pack) return;
+
+            const index = await pack.getIndex({ fields: ["name", "system.category", "system.price"] });
+            const candidates = index
+                .filter(entry => entry.system?.category === grant.category && (entry.system?.price || 0) <= grant.maxPrice)
+                .sort((a, b) => (b.system?.price || 0) - (a.system?.price || 0));
+
+            if (candidates.length) {
+                const doc = await pack.getDocument(candidates[0]._id);
+                if (doc) {
+                    const itemData = doc.toObject();
+                    await this.actor.createEmbeddedDocuments("Item", [itemData]);
+                }
+            }
+        } catch (err) {
+            console.warn("GFL5R | Failed to grant discipline weapon", disciplineTitle, err);
+        }
+    }
+
+    /**
+     * Grant items by name: search compendiums for matching names,
+     * fall back to creating placeholder item data.
+     */
+    async _grantItemsByName(itemNames, itemType) {
+        const packMap = {
+            item: "gfl5r.gfl5r-items",
+            armor: "gfl5r.gfl5r-armor",
+            weapon: "gfl5r.gfl5r-weapons",
+        };
+        const packId = packMap[itemType] || "gfl5r.gfl5r-items";
+
+        for (const name of itemNames) {
+            try {
+                const pack = game.packs.get(packId);
+                if (!pack) {
+                    await this._createFallbackItem(name, itemType);
+                    continue;
+                }
+
+                const index = await pack.getIndex({ fields: ["name"] });
+                const entry = index.find(e => e.name === name);
+
+                if (entry) {
+                    const doc = await pack.getDocument(entry._id);
+                    if (doc) {
+                        const itemData = doc.toObject();
+                        await this.actor.createEmbeddedDocuments("Item", [itemData]);
+                        continue;
+                    }
+                }
+
+                // Fallback: create a basic placeholder item
+                await this._createFallbackItem(name, itemType);
+            } catch (err) {
+                console.warn("GFL5R | Failed to grant item", name, err);
+                await this._createFallbackItem(name, itemType);
+            }
+        }
+    }
+
+    /**
+     * Create a basic placeholder item on the actor when compendium lookup fails.
+     */
+    async _createFallbackItem(name, itemType) {
+        try {
+            const foundryType = itemType === "weapon" ? "weaponry" : itemType;
+            const itemData = {
+                name,
+                type: foundryType,
+                img: "icons/svg/item-bag.svg",
+                system: {
+                    source_reference: { source: "GFL5R", page: 0 },
+                    flavor: `Starting gear (${itemType}). Full stats not found in compendium.`,
+                    description: "",
+                },
+            };
+
+            if (foundryType === "item") {
+                itemData.system.quantity = 1;
+                itemData.system.price = 0;
+                itemData.system.rarity = "common";
+            } else if (foundryType === "armor") {
+                itemData.system.weight = 0;
+                itemData.system.protection = 0;
+                itemData.system.price = 0;
+                itemData.system.equipped = true;
+            } else if (foundryType === "weaponry") {
+                itemData.system.category = "HG";
+                itemData.system.skill = "firearms";
+                itemData.system.ideal_range = 2;
+                itemData.system.damage = 0;
+                itemData.system.deadliness = 0;
+                itemData.system.grip = "1-Handed";
+                itemData.system.price = 0;
+                itemData.system.equipped = true;
+            }
+
+            await this.actor.createEmbeddedDocuments("Item", [itemData]);
+        } catch (err) {
+            console.warn("GFL5R | Failed to create fallback item", name, err);
+        }
     }
 
     /**

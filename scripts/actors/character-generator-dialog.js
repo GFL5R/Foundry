@@ -130,6 +130,17 @@ export class CharacterGeneratorDialog extends FormApplication {
             if (!isValidTechnique) return;
 
             input.value = item.uuid || item.id || "";
+            return;
+        }
+
+        // Equipment drops: weapon, armor, or general item
+        if (dropType === "weapon" || dropType === "item") {
+            const allowedTypes = dropType === "weapon" ? ["weaponry"] : ["item", "armor"];
+            if (!allowedTypes.includes(item.type)) {
+                ui.notifications?.warn(`Item type "${item.type}" not allowed here (expected ${allowedTypes.join(" or ")})`);
+                return;
+            }
+            input.value = item.uuid || item.id || "";
         }
     }
 
@@ -183,6 +194,38 @@ export class CharacterGeneratorDialog extends FormApplication {
                 name: formData["name"] || "",
             });
         }
+
+        // Process extra equipment items dropped into the form
+        await this._processExtraEquipment(formData);
+
         this.close();
+    }
+
+    /**
+     * Process any additional equipment/weapons dropped into the form.
+     */
+    async _processExtraEquipment(formData) {
+        const uuids = [
+            formData["extraWeapon"],
+            formData["extraItem1"],
+            formData["extraItem2"],
+            formData["extraItem3"],
+        ].filter(Boolean);
+
+        for (const uuid of uuids) {
+            try {
+                const item = await fromUuid(uuid);
+                if (!item) continue;
+                const allowedTypes = ["weaponry", "item", "armor"];
+                if (!allowedTypes.includes(item.type)) {
+                    console.warn("GFL5R | Extra equipment drop not a valid type", item.type, uuid);
+                    continue;
+                }
+                const itemData = item.toObject();
+                await this.generator.actor.createEmbeddedDocuments("Item", [itemData]);
+            } catch (err) {
+                console.warn("GFL5R | Failed to process extra equipment", uuid, err);
+            }
+        }
     }
 }
