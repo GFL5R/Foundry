@@ -12,7 +12,6 @@ export class CharacterGeneratorDialog extends FormApplication {
         this.generator = new CharacterGenerator(actor);
         this.builderState = {
             step: 0,
-            buildType: actor.type === "human" ? "human" : "doll",
             formValues: {},
         };
     }
@@ -38,19 +37,13 @@ export class CharacterGeneratorDialog extends FormApplication {
             backgrounds: HUMAN_BACKGROUNDS,
             frames: TDOLL_FRAMES,
             approaches: CONFIG.gfl5r.stances,
-            isHuman: this.builderState.buildType === "human",
-            isDoll: this.builderState.buildType === "doll",
-            isTranshuman: this.builderState.formValues["human.isTranshuman"] || false,
+            isHuman: this.actor.type === "human",
+            isDoll: this.actor.type === "doll",
         };
     }
 
     activateListeners(html) {
         super.activateListeners(html);
-
-        html.find("[name='buildType']").on("change", (ev) => {
-            this.builderState.buildType = ev.currentTarget.value;
-            this.render(false);
-        });
 
         html.find("[data-action='builder-next']").on("click", (ev) => {
             ev.preventDefault();
@@ -145,7 +138,7 @@ export class CharacterGeneratorDialog extends FormApplication {
     }
 
     async _updateObject(event, formData) {
-        if (this.builderState.buildType === "doll") {
+        if (this.actor.type === "doll") {
             await this.generator.applyDollBuild({
                 frameKey: formData["doll.frame"],
                 disciplineUuid: formData["doll.discipline"],

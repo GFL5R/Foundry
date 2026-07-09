@@ -2,23 +2,11 @@
     <div class="builder-content">
         <h2>Character Creation</h2>
 
-        {{!-- Character Type Toggle --}}
-        <div class="form-group">
-            <label>{{localize 'gfl5r.identity.character_type'}}</label>
-            <div class="form-fields">
-                <select name="buildType">
-                    <option value="human" {{#if isHuman}}selected{{/if}}>{{localize 'gfl5r.identity.human'}}</option>
-                    <option value="doll" {{#if isDoll}}selected{{/if}}>{{localize 'gfl5r.identity.doll'}}</option>
-                </select>
-            </div>
-        </div>
-
-        {{!-- Transhuman checkbox (only for human builds) --}}
         {{#if isHuman}}
         <div class="form-group">
             <label>{{localize 'gfl5r.identity.transhuman'}}</label>
             <div class="form-fields">
-                <input type="checkbox" name="human.isTranshuman" {{#if isTranshuman}}checked{{/if}} />
+                <input type="checkbox" name="human.isTranshuman" />
             </div>
         </div>
         {{/if}}
