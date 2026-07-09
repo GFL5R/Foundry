@@ -148,7 +148,7 @@
                     {{/each}}
 
                     <h2>{{localize 'gfl5r.twelve_questions.tdoll.q2.title'}}</h2>
-                    <p>Choose modules worth up to <strong>{{data.moduleBudget}} URNC</strong>. Each module shows its cost; the budget decreases as you add modules.</p>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.tdoll.q2.flavor'}} You have <strong>{{data.moduleBudget}} URNC</strong> to spend on modules.</p>
                     <div class="tq-drop-zone" data-step="step2.modules">
                         <ul class="tq-item-list">
                             {{#each cache.step2.modules}}
@@ -233,7 +233,7 @@
 
                 {{else}}
                     <h2>{{localize 'gfl5r.twelve_questions.tdoll.q3.title'}}</h2>
-                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.tdoll.q3.flavor'}}</p>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.tdoll.q3.flavor'}} You have <strong>{{data.step3.xpBudget}} XP</strong> to spend on skill ranks and techniques (<strong>{{xpRemaining}} remaining</strong>).</p>
                     <div class="tq-drop-zone" data-step="step3.discipline">
                         <ul class="tq-item-list">
                             {{#each cache.step3.discipline}}
@@ -253,6 +253,45 @@
                         </div>
                         {{/ifCond}}
                     </div>
+
+                    {{#if disciplineSkills.length}}
+                    <h3>Discipline Skills</h3>
+                    <p class="tq-flavor">Each discipline skill starts at Rank 1 for free. Spend XP to raise them further (cost = new rank &times; 2).</p>
+                    <div class="tq-skill-grid">
+                        {{#each disciplineSkills}}
+                        <div class="tq-skill-row">
+                            <span class="tq-skill-name">{{this.name}}</span>
+                            <span class="tq-skill-rank">Rank {{this.totalRank}}</span>
+                            <div class="tq-skill-controls">
+                                <button type="button" class="tq-skill-btn tq-skill-minus" data-skill="{{this.id}}" data-delta="-1" {{#unless this.canRemove}}disabled{{/unless}}><i class="fas fa-minus"></i></button>
+                                <button type="button" class="tq-skill-btn tq-skill-plus" data-skill="{{this.id}}" data-delta="+1" {{#unless this.canAfford}}disabled{{/unless}}><i class="fas fa-plus"></i></button>
+                            </div>
+                            <span class="tq-skill-cost">{{#if this.canAfford}}+{{this.costForNext}} XP{{/if}}{{#if this.canRemove}}&minus;{{this.refundForRemove}} XP{{/if}}</span>
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+
+                    {{#if cache.step3.discipline.length}}
+                    <h3>Techniques <span class="tq-xp-cost">(3 XP each)</span></h3>
+                    <p class="tq-flavor">Drag techniques from your discipline here to learn them.</p>
+                    <div class="tq-drop-zone" data-step="step3.techniques">
+                        <ul class="tq-item-list">
+                            {{#each cache.step3.techniques}}
+                            <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                                <img src="{{this.img}}" width="24" height="24" />
+                                <span class="tq-item-name">{{this.name}}</span>
+                                <span class="tq-item-detail">{{localize 'gfl5r.global.rank'}} {{this.system.rank_required}}</span>
+                                <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        <div class="tq-dropbox">
+                            <i class="fas fa-arrow-down"></i> Drop techniques here
+                        </div>
+                    </div>
+                    {{/if}}
+
                     <div class="form-group">
                         <label>Weapon Imprint</label>
                         <div class="form-fields">

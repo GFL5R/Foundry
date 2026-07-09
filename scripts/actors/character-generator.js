@@ -265,10 +265,11 @@ export class CharacterGenerator {
      * Apply T-Doll character creation to the actor
      */
     async applyDollBuild({
-        frameKey, disciplineUuid, startingTechniqueUuid = "", moduleUuids = [],
+        frameKey, disciplineUuid, techniqueUuids = [], moduleUuids = [],
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         nameOrigin = "human",
         goal = "", storyEnd = "", name = "", metCommander = "",
+        skillPurchases = {},
         q4BonusSkill = "none", q5BonusApproach = "none",
         step1Narrative = "", step2Narrative = "", step3Narrative = "",
         step4Narrative = "", step5Narrative = "", step6Narrative = "",
@@ -281,13 +282,6 @@ export class CharacterGenerator {
             ui.notifications?.warn("Select a frame.");
             return;
         }
-
-        const isStartingTechniqueValid = await this._validateStartingTechniqueSelection({
-            disciplineUuid,
-            startingTechniqueUuid,
-            currentRank: 1,
-        });
-        if (!isStartingTechniqueValid) return;
 
         // Clear existing items
         const allItemIds = this.actor.items.map(i => i.id);
@@ -318,12 +312,27 @@ export class CharacterGenerator {
             });
         }
 
-        await this._applyStartingTechnique({
-            disciplineSlotKey: "slot1",
-            disciplineItem: disciplineResult.disciplineItem,
-            startingTechniqueUuid,
-            currentRank: 1,
-        });
+        // Apply skill purchases from Q3 XP spending (+1 per purchase, stacking on top of discipline +1)
+        if (skillPurchases) {
+            for (const [skillId, purchased] of Object.entries(skillPurchases)) {
+                skills[skillId] = (skills[skillId] || 0) + purchased;
+            }
+        }
+
+        // Apply techniques from Q3 drop zone
+        if (techniqueUuids && techniqueUuids.length > 0) {
+            const slot = this.actor.system.disciplines?.slot1 || {};
+            const disciplineItem = disciplineResult.disciplineItem
+                || (slot.disciplineId ? this.actor.items.get(slot.disciplineId) : null);
+            for (const uuid of techniqueUuids) {
+                await this._applyStartingTechnique({
+                    disciplineSlotKey: "slot1",
+                    disciplineItem,
+                    startingTechniqueUuid: uuid,
+                    currentRank: 1,
+                });
+            }
+        }
 
         // Name origin bonuses
         let humanityBonus = 0;

@@ -72,6 +72,7 @@ export class TwelveQuestionsDialog extends FormApplication {
         const isHuman = this.actor.type === "human";
         const isTranshuman = isHuman && this.data.identity?.is_transhuman;
         const skillsList = game.gfl5r.HelpersGfl5r.getSkillsList(true);
+        const disciplineSkills = this._computeDisciplineSkills();
 
         return {
             ...(await super.getData(options)),
@@ -90,7 +91,51 @@ export class TwelveQuestionsDialog extends FormApplication {
             approachesList: game.gfl5r.HelpersGfl5r.getRingsList(),
             skillsList,
             skillsListFlat: game.gfl5r.HelpersGfl5r.getSkillsList(false),
+            disciplineSkills,
+            xpRemaining: (this.data?.step3?.xpBudget || 16) - (this.data?.step3?.xpSpent || 0),
         };
+    }
+
+    /** Compute discipline-associated skills with display info for the current view */
+    _computeDisciplineSkills() {
+        const disciplineItem = foundry.utils.getProperty(this.cache, "step3.discipline")?.[0];
+        if (!disciplineItem) return [];
+
+        const associated = disciplineItem.system?.associated_skills || [];
+        if (!associated.length) return [];
+
+        const purchases = this.data?.step3?.skillPurchases || {};
+        const xpSpent = this.data?.step3?.xpSpent || 0;
+        const xpBudget = this.data?.step3?.xpBudget || 16;
+
+        return associated.map(skillName => {
+            const skillId = skillName.toLowerCase().replace(/[\s\-]+/g, "_");
+            const purchased = purchases[skillId] || 0;
+            const totalRank = 1 + purchased; // base 1 from discipline, plus purchased
+
+            // Cost to buy one more rank
+            const nextCost = (totalRank + 1 - 1) * 2; // new rank × 2... wait
+            // Actually: ranks purchased start at +1 means buying rank 2+, so next rank = (purchased + 1 + 1 - 1) × 2
+            // The purchased field tracks ranks purchased beyond the free +1
+            // So current total = 1 + purchased
+            // Next purchase would be for (purchased + 1) ranks bought, so new rank = purchased + 1 + 1
+            // Cost = (purchased + 2) × 2 for the next rank
+            const costForNext = (purchased + 2) * 2;
+            const canRemove = purchased > 0;
+
+            const refundForRemove = (purchased + 1) * 2;
+
+            return {
+                id: skillId,
+                name: skillName,
+                purchased,
+                totalRank,
+                costForNext,
+                canAfford: (xpSpent + costForNext) <= xpBudget,
+                canRemove,
+                refundForRemove,
+            };
+        });
     }
 
     /** Shortcut for character type */
@@ -144,6 +189,57 @@ export class TwelveQuestionsDialog extends FormApplication {
             const stepKey = dropZone.data("step");
             const itemId = $(event.currentTarget).closest(".tq-item").data("itemId");
             this._deleteOwnedItem(stepKey, itemId);
+            this.submit();
+        });
+
+        // Skill purchase +/- buttons
+        html.find(".tq-skill-btn").on("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const btn = $(event.currentTarget);
+            const skillId = btn.data("skill");
+            const delta = parseInt(btn.data("delta")) || 0;
+            if (!skillId || delta === 0) return;
+
+            const purchases = this.data.step3?.skillPurchases || {};
+            const current = purchases[skillId] || 0;
+            const newVal = current + delta;
+
+            // Can't go below 0
+            if (newVal < 0) return;
+
+            // Calculate XP cost: each rank beyond the free +1 costs newRank × 2 XP
+            // purchased counts additional ranks purchased; total rank = 1 + purchased
+            // Buying the nth additional rank makes actual rank = n+1, costing (n+1) × 2
+            let xpCost = 0;
+            if (delta > 0) {
+                for (let r = current + 1; r <= newVal; r++) {
+                    xpCost += (r + 1) * 2;
+                }
+            } else {
+                for (let r = current; r > newVal; r--) {
+                    xpCost -= (r + 1) * 2;
+                }
+            }
+
+            const xpBudget = this.data.step3?.xpBudget || 16;
+            const currentXpSpent = this.data.step3?.xpSpent || 0;
+            const newXpSpent = currentXpSpent + xpCost;
+
+            if (newXpSpent > xpBudget) {
+                ui.notifications?.warn(`Not enough XP! Need ${xpCost} more but only ${xpBudget - currentXpSpent} remain.`);
+                return;
+            }
+            if (newXpSpent < 0) {
+                ui.notifications?.warn("XP spent cannot go below 0");
+                return;
+            }
+
+            foundry.utils.setProperty(this.data, "step3.skillPurchases", {
+                ...purchases,
+                [skillId]: newVal,
+            });
+            this.data.step3.xpSpent = newXpSpent;
             this.submit();
         });
 
@@ -233,6 +329,39 @@ export class TwelveQuestionsDialog extends FormApplication {
             });
         }
 
+        // T-Doll technique drop zone (multiple, costs 3 XP each)
+        if (stepKey === "step3.techniques") {
+            if (item.type !== "technique") return { allowed: false };
+
+            const disciplineItem = foundry.utils.getProperty(this.cache, "step3.discipline")?.[0] || null;
+            if (!disciplineItem) {
+                return {
+                    allowed: false,
+                    message: game.i18n.localize("gfl5r.disciplines.warning.assign_discipline_first"),
+                };
+            }
+
+            const techList = foundry.utils.getProperty(this.data, "step3.techniques") || [];
+            if (techList.includes(item.uuid || item.id)) {
+                return { allowed: false, message: "Technique already added" };
+            }
+
+            const currentXpSpent = this.data.step3?.xpSpent || 0;
+            const budget = this.data.step3?.xpBudget || 16;
+            if (currentXpSpent + 3 > budget) {
+                return {
+                    allowed: false,
+                    message: `Not enough XP! Technique costs 3 XP but only ${budget - currentXpSpent} remain.`,
+                };
+            }
+
+            return this._validateTechniqueForDiscipline({
+                techniqueItem: item,
+                disciplineItem,
+                currentRank: 1,
+            });
+        }
+
         // Narrative drop zones
         if (stepKey === "step4.advantage") {
             return { allowed: item.type === "narrative" && item.system.narrative_type === "advantage" };
@@ -311,6 +440,10 @@ export class TwelveQuestionsDialog extends FormApplication {
             if (stepKey === "step3.discipline") {
                 foundry.utils.setProperty(this.data, "step3.startingTechnique", []);
                 foundry.utils.setProperty(this.cache, "step3.startingTechnique", []);
+                foundry.utils.setProperty(this.data, "step3.techniques", []);
+                foundry.utils.setProperty(this.cache, "step3.techniques", []);
+                foundry.utils.setProperty(this.data, "step3.xpSpent", 0);
+                foundry.utils.setProperty(this.data, "step3.skillPurchases", {});
             }
         } else if (stepKey === "step2.modules") {
             // Multi-slot modules with budget check
@@ -323,6 +456,22 @@ export class TwelveQuestionsDialog extends FormApplication {
             if (!list.includes(itemRef)) {
                 list.push(itemRef);
                 this.data.moduleBudget = currentBudget - moduleCost;
+                const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
+                cached.push(item);
+                foundry.utils.setProperty(this.cache, stepKey, cached);
+            }
+        } else if (stepKey === "step3.techniques") {
+            // Multi-slot techniques with XP budget check
+            const techCost = 3;
+            const xpBudget = this.data.step3?.xpBudget || 16;
+            const currentXpSpent = this.data.step3?.xpSpent || 0;
+            if (currentXpSpent + techCost > xpBudget) {
+                ui.notifications?.warn(`Not enough XP! Technique costs ${techCost} XP but only ${xpBudget - currentXpSpent} remain.`);
+                return;
+            }
+            if (!list.includes(itemRef)) {
+                list.push(itemRef);
+                this.data.step3.xpSpent = currentXpSpent + techCost;
                 const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
                 cached.push(item);
                 foundry.utils.setProperty(this.cache, stepKey, cached);
@@ -357,7 +506,22 @@ export class TwelveQuestionsDialog extends FormApplication {
             }
         }
 
+        // Refund XP if deleting from step3.techniques
+        if (stepKey === "step3.techniques") {
+            this.data.step3.xpSpent = Math.max(0, (this.data.step3?.xpSpent || 0) - 3);
+        }
+
         list.splice(idx, 1);
+
+        // If deleting discipline, also clear techniques and reset XP
+        if (stepKey === "step3.discipline") {
+            foundry.utils.setProperty(this.data, "step3.startingTechnique", []);
+            foundry.utils.setProperty(this.cache, "step3.startingTechnique", []);
+            foundry.utils.setProperty(this.data, "step3.techniques", []);
+            foundry.utils.setProperty(this.cache, "step3.techniques", []);
+            foundry.utils.setProperty(this.data, "step3.xpSpent", 0);
+            foundry.utils.setProperty(this.data, "step3.skillPurchases", {});
+        }
 
         const cached = foundry.utils.getProperty(this.cache, stepKey);
         if (Array.isArray(cached)) {
@@ -378,6 +542,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             "step2.modules",
             "step3.discipline",
             "step3.startingTechnique",
+            "step3.techniques",
             "step4.advantage",
             "step5.disadvantage",
             "step6.passion",

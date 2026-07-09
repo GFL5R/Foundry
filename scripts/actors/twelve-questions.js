@@ -55,6 +55,7 @@ export class TwelveQuestions {
         tdoll: [
             "step2.modules",
             "step3.discipline",
+            "step3.techniques",
             "step4.advantage",
             "step5.disadvantage",
             "step6.passion",
@@ -127,9 +128,13 @@ export class TwelveQuestions {
             modules: [],
         },
         step3: {
-            // Human: discipline + starting technique; Doll: discipline (item array)
+            // Human: discipline + starting technique; Doll: discipline + techniques + skill XP
             discipline: [],
             startingTechnique: [],
+            techniques: [],
+            xpBudget: 16,
+            xpSpent: 0,
+            skillPurchases: {},
         },
         step4: {
             // Advantage (item array, single)
@@ -301,7 +306,10 @@ export class TwelveQuestions {
             errors.push("Enter a character name");
         }
 
-        // Doll module budget validation (validate at generate time with cache)
+        // T-Doll technique/XP budget validation
+        if (!isHuman && this.data.step3.xpSpent > (this.data.step3.xpBudget || 16)) {
+            errors.push(`XP spent (${this.data.step3.xpSpent}) exceeds budget (${this.data.step3.xpBudget || 16})`);
+        }
 
         // Summary of approach assignments
         const summary = {};
@@ -412,6 +420,7 @@ export class TwelveQuestions {
             await generator.applyDollBuild({
                 frameKey: this.data.step1.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
+                techniqueUuids: this._getItemUuids(cache, "step3.techniques"),
                 moduleUuids: this._getItemUuids(cache, "step2.modules"),
                 advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),
                 disadvantageUuid: this._getFirstItemUuid(cache, "step5.disadvantage"),
@@ -422,6 +431,7 @@ export class TwelveQuestions {
                 metCommander: this.data.step8.metCommander,
                 storyEnd: this.data.step12.storyEnd,
                 name: this.data.step11.name,
+                skillPurchases: this.data.step3.skillPurchases || {},
                 q4BonusSkill: this.data.step4.bonusSkill,
                 q5BonusApproach: this.data.step5.bonusApproach,
                 step1Narrative: this.data.step1Narrative,

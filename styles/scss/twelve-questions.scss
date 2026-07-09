@@ -308,4 +308,78 @@
         padding: 0.75rem 1rem;
         margin: 1rem 0;
     }
+
+    // -- Skill XP purchase grid --
+
+    .tq-skill-grid {
+        margin: 0.5rem 0;
+    }
+
+    .tq-skill-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.5rem;
+        background: $bg-panel;
+        border: 1px solid $border-color;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .tq-skill-name {
+        flex: 1;
+        color: $white;
+        font-size: 0.85rem;
+    }
+
+    .tq-skill-rank {
+        color: $yellow;
+        font-size: 0.85rem;
+        font-weight: bold;
+        min-width: 4rem;
+        text-align: center;
+    }
+
+    .tq-skill-controls {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .tq-skill-btn {
+        width: 1.5rem;
+        height: 1.5rem;
+        border: 1px solid $border-color;
+        border-radius: 0.15rem;
+        background: $bg-panel-alt;
+        color: $white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        padding: 0;
+        line-height: 1;
+        &:hover:not(:disabled) {
+            background: $bg-hover;
+            border-color: $border-glow;
+            color: $yellow;
+        }
+        &:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    }
+
+    .tq-skill-cost {
+        color: $white-dim;
+        font-size: 0.75rem;
+        min-width: 4rem;
+        text-align: right;
+    }
+
+    .tq-xp-cost {
+        color: $white-dim;
+        font-size: 0.75rem;
+        font-weight: normal;
+    }
 }
