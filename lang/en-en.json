@@ -196,7 +196,6 @@
             "human": "Human",
             "t-doll": "T-Doll",
             "transhuman": "Transhuman",
-            "age": "Age",
             "nationality": "Nationality",
             "background": "Background",
             "frame": "Frame",
@@ -571,13 +570,13 @@
             }
         },
         "twelve_questions": {
-            "title": "Character Creation — 12 Questions",
+            "title": "Character Creation \u2014 12 Questions",
             "intro": "Answer twelve questions to define your character. Choose a character type to begin.",
             "type_human": "Human (Commander)",
             "type_tdoll": "T-Doll",
             "type_transhuman": "Transhuman",
             "human_intro": "You are a human commander working for B.R.I.E.F., a PMC that hunts bounties in a post-Collapse world. These twelve questions will define who you are, where you came from, and what drives you forward.",
-            "tdoll_intro": "You are a Tactical Doll — an autonomous android built for combat. Assigned to a commander, you operate in the field as weapon and partner. These twelve questions will define your frame, your history, and who you are becoming.",
+            "tdoll_intro": "You are a Tactical Doll \u2014 an autonomous android built for combat. Assigned to a commander, you operate in the field as weapon and partner. These twelve questions will define your frame, your history, and who you are becoming.",
             "next": "Next",
             "prev": "Back",
             "choose": "Choose...",
@@ -604,110 +603,115 @@
             "human": {
                 "q1": {
                     "title": "Question 1: Where are you from?",
-                    "flavor": "The post-Collapse world is fractured into rival power blocs. Your nationality shaped your worldview, your training, and the way you approach problems."
+                    "flavor": "In post-collapse society, borders grow ever thinner, but they do still remain. The flag you were born under has imprinted on you, whether for better or worse.",
+                    "narrative": "Briefly describe your childhood from where you were born."
                 },
                 "q2": {
-                    "title": "Question 2: What is your background?",
-                    "flavor": "Before you signed on with B.R.I.E.F., you had a life. Your background defines the skills and mindset you bring to the field."
+                    "title": "Question 2: What kind of job did you have before this one?",
+                    "flavor": "The kind of person who works a single job for their entire life is a rare kind indeed, especially in the year 2072. What did you do before your current situation, and if it's different, why did you change?",
+                    "narrative": "Briefly describe your professional history, and if there was a transition, what prompted it."
                 },
                 "q3": {
-                    "title": "Question 3: What path have you chosen?",
-                    "flavor": "Your discipline is your combat doctrine — the framework that determines how you operate in the field. Drag a discipline and one rank 1 technique from that discipline."
+                    "title": "Question 3: Who taught you the trade?",
+                    "flavor": "Whether healing or hurting, someone taught you how to do what you do. Briefly describe your mentor, whoever they may be, and select a discipline from the list of disciplines, plus one rank 1 technique from it."
                 },
                 "q4": {
-                    "title": "Question 4: How do you stand out in your field?",
-                    "flavor": "Every operator has something that sets them apart. What advantage gives you an edge over others? Drag an advantage from the compendium."
+                    "title": "Question 4: Why do you fight?",
+                    "flavor": "Everyone has a reason to fight. Fame, fortune, love, anything you can think of. Briefly describe your reason to keep picking up your gun."
                 },
                 "q5": {
-                    "title": "Question 5: What holds you back the most?",
-                    "flavor": "Nobody is perfect. What flaw, limitation, or burden do you carry? Drag a disadvantage from the compendium."
+                    "title": "Question 5: Why would you stop?",
+                    "flavor": "Everyone puts down the gun eventually. Most as they lay bleeding out in the dirt, but the lucky few walk away with a victory of some sort. What is your victory? A ticket to a white-zone paradise? A lover to settle down with? Briefly describe what your exit condition looks like."
                 },
                 "q6": {
-                    "title": "Question 6: What sets you apart from other humans?",
-                    "flavor": "Beyond your combat role, what personal obsession or hobby defines you? Drag a passion from the compendium."
+                    "title": "Question 6: What are Dolls?",
+                    "flavor": "You work alongside artificial humanoid operatives who think and adapt alongside you. Name one and describe what they are to you. A partner? A weapon? A liability? A friend? Maybe something you haven't quite figured out yet."
                 },
                 "q7": {
-                    "title": "Question 7: What do you fear the most?",
-                    "flavor": "Fear drives decisions under pressure. What psychological trigger haunts you? Drag an anxiety from the compendium."
+                    "title": "Question 7: How did you make your name?",
+                    "flavor": "Every operator has the job that should have gone wrong, but they managed to pull out of just in time. Briefly describe your defining moment."
                 },
                 "q8": {
-                    "title": "Question 8: How do you view Dolls?",
-                    "flavor": "This is the defining question for a commander. Do you see your T-Doll as a person — a partner with agency and feelings? Or as a tool — a weapon system to be maintained and deployed?",
-                    "option_person": "Person — They're people. (+5 Humanity)",
-                    "option_tool": "Tool — They're equipment. (+1 Skill)",
+                    "title": "Question 8: What holds you back?",
+                    "flavor": "Your flaw, your scar, your bad habit. The thing that makes every job harder than it needs to be. Briefly describe what it is, and how it shows when things go sideways.",
+                    "option_person": "Person \u2014 They're people. (+5 Humanity)",
+                    "option_tool": "Tool \u2014 They're equipment. (+1 Skill)",
                     "bonus_skill": "Choose a bonus skill"
                 },
                 "q9": {
-                    "title": "Question 9: What do you fight for?",
-                    "flavor": "Beyond survival and paychecks, what motivates you to keep going into the field?"
+                    "title": "Question 9: What gets you through the day?",
+                    "flavor": "Whether it brings you genuine joy or simply makes you feel at peace, you have a passion in your heart for something. Describe how you came upon this interest and how it helps you moving forward."
                 },
                 "q10": {
-                    "title": "Question 10: What does your name mean?",
-                    "flavor": "Names carry weight. Was yours inherited, earned, gifted, or taken?",
-                    "placeholder": "The story behind your name..."
+                    "title": "Question 10: What keeps you up at night?",
+                    "flavor": "Everyone is afraid of something. It gets under your skin, and you can't think of anything else when it's there. Describe the situation that made you like this, and what happens when it comes to pass."
                 },
                 "q12": {
-                    "flavor": "Every story ends. How do you see yours ending? Quiet retirement? Glorious last stand? Something classified?"
+                    "title": "Question 12: How does your story end?",
+                    "flavor": "Everyone dies eventually. It's a fact of life. How should it happen for you?"
                 }
             },
             "tdoll": {
                 "q1": {
                     "title": "Question 1: Who made you, and what is your model number?",
-                    "flavor": "Your manufacturer and frame model define your physical capabilities. Each frame was designed for a purpose — your approaches and starting skills come from your hardware."
+                    "flavor": "Every manufacturer, even the individual model lines, had different design philosophies. Each frame was designed for a purpose: your approaches and starting skills come from your hardware.",
+                    "narrative": "Briefly describe what it was like waking up for the first time. Did you wake up on the assembly line for QC? In a store when you were bought for the first time? Or maybe your memory was wiped and you woke up in a seedy market stall."
                 },
                 "q2": {
-                    "title": "Question 2: What weapon were you imprinted with?",
-                    "flavor": "Your weapon imprint is hardwired into your fire control core. It defines your combat doctrine. Drag a discipline from the compendium."
+                    "title": "Question 2: What modifications set you apart from the rest of your line?",
+                    "flavor": "No T-Doll stays stock for long, and you certainly didn't. Whether they were installed by your own choice or forced upon you, you have upgrades now. Every unit of your model line rolled off with the same baseline specs. Same frame, same firmware, same factory calibration. But somewhere along the way, someone invested in making you different."
                 },
                 "q3": {
-                    "title": "Question 3: What upgrades set you apart?",
-                    "flavor": "Factory stock gets you killed. What modifications and software upgrades have been installed? Drag modules from the compendium."
+                    "title": "Question 3: What weapon were you imprinted with?",
+                    "flavor": "The fire control core is what makes a Doll a T-Doll. Fire control cores come imprinted with a specific weapon class. What's yours? The gun isn't just equipment. It's wired into your reflexes, your targeting systems, your sense of self. Some Dolls wear their imprint like a second name. Others resent it: a role assigned before they had any say, an expectation baked into hardware they can't uninstall."
                 },
                 "q4": {
-                    "title": "Question 4: What is your greatest achievement so far?",
-                    "flavor": "You once exceeded your design parameters. What did you accomplish? Drag an advantage from the compendium."
+                    "title": "Question 4: Why do you fight?",
+                    "flavor": "Orders are one thing. But Dolls develop their own reasons. Loyalty to a commander who treated you like a person. Revenge against the faction that scrapped your squad. The simple fact that combat is the only thing you've ever been good at. Briefly describe what keeps pulling your trigger."
                 },
                 "q5": {
-                    "title": "Question 5: What holds you back the most?",
-                    "flavor": "Hardware limitations or behavioral quirks that affect your performance. Drag a disadvantage from the compendium."
+                    "title": "Question 5: Why would you stop?",
+                    "flavor": "Many Dolls dream of a future where they can stop fighting. What does yours look like? A cozy shop in a green or white zone? Freedom to explore the yellow zone? Something else entirely? Briefly describe what life should look like after the final round is fired."
                 },
                 "q6": {
-                    "title": "Question 6: What makes you different?",
-                    "flavor": "Despite official claims, Dolls develop personal quirks and interests. What hobby or fixation proves you're more than programming? Drag a passion from the compendium."
+                    "title": "Question 6: What are Humans?",
+                    "flavor": "You exist alongside creatures of flesh and blood who give you orders, fight beside you, patch your chassis, and sometimes forget you're more than hardware. Name one human you know and describe what they are to you."
                 },
                 "q7": {
-                    "title": "Question 7: What are you most afraid of?",
-                    "flavor": "Officially, Dolls don't experience fear. But your neural cloud processes something that looks exactly like it. Drag an anxiety from the compendium."
+                    "title": "Question 7: What is your greatest achievement so far?",
+                    "flavor": "It was a legendary moment. The kind of feat where you exceed every safety limit of your frame and hear of nothing else for the next three days in the repair bay. Describe this moment."
                 },
                 "q8": {
-                    "title": "Question 8: When did you meet your Commander?",
-                    "flavor": "The bond between a Doll and their Commander is the core of your operational life. Were you factory-fresh? Secondhand? Rescued from a scrapyard?",
+                    "title": "Question 8: What is your malfunction?",
+                    "flavor": "No Doll is flawless. A frame that overheats under sustained load, or a hesitation that surfaces at the wrong moment. Whatever it is, it bothers you more than it should. Briefly describe what it is, and how it manifests.",
                     "label": "How you met",
                     "placeholder": "Describe the circumstances of your assignment..."
                 },
                 "q9": {
-                    "title": "Question 9: What do you want for yourself?",
-                    "flavor": "Beyond your mission parameters, what do you desire? Freedom? Recognition? Answers about your own design?"
+                    "title": "Question 9: What makes you different?",
+                    "flavor": "Somewhere between the factory and now, you picked up something that wasn't in the blueprint. A fascination with pre-Collapse cinema. An insistence on arranging your ammunition by year of manufacture. A habit of collecting small objects from completed missions that serves no tactical purpose and that you've never been able to explain to anyone's satisfaction, including your own. Describe how you came upon this interest and how it helps you moving forward."
                 },
                 "q10": {
-                    "title": "Question 10: How were you named?",
-                    "flavor": "Your name carries mechanical implications. A human name makes you relatable; a callsign earns reputation; a weapon designation defines you by your imprint; a strange name confuses everyone.",
+                    "title": "Question 10: What are you most afraid of?",
+                    "flavor": "Officially, Dolls don't experience fear. But anyone who's been around one long enough will know that that's not true. Deep in your neural cloud there's something that gnaws. Memory corruption. Obsolescence. The specific and vivid possibility of watching your Commander die while you're too damaged to intervene. You may not talk about it, but it's always there. Describe this fear, and how you react.",
                     "option_human": "Human Name (+5 Humanity)",
                     "option_callsign": "Callsign / Nickname (+5 Fame)",
-                    "option_weapon": "Weapon Designation (+1 Firearms, −5 Humanity)",
-                    "option_weird": "Weird Name (−5 Fame)"
+                    "option_weapon": "Weapon Designation (+1 Firearms, \u22125 Humanity)",
+                    "option_weird": "Weird Name (\u22125 Fame)"
                 },
                 "q12": {
-                    "flavor": "Dolls aren't immortal, just durable. How does your service end? Civilian life? Field death? Scrapped? Something else?"
+                    "title": "Question 12: How does your story end?",
+                    "flavor": "Dolls aren't built to last forever. Eventually your chassis fails beyond repair, your neural cloud degrades past recovery, or someone with a clipboard decides you're obsolete. How should it happen for you?"
                 }
             },
             "q11": {
-                "title": "Question 11: What is your name?",
-                "flavor": "The name that will appear on mission reports and be spoken by those who know you.",
+                "title": "Question 11: What is your name, and what does it mean?",
+                "flavor": "You have a name on file, and a story behind it. It could be given to you by your parents, or a nickname given by a colleague, but it's what you're called now.",
                 "placeholder": "Enter character name"
             },
             "q12": {
-                "title": "Question 12: How will your story end?",
+                "title": "Question 12: How does your story end?",
+                "flavor": "This question has no mechanical bearing. But you should keep it in mind, your DM certainly will...",
                 "placeholder": "How do you see your story ending?"
             }
         },

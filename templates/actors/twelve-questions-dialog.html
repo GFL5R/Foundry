@@ -70,6 +70,13 @@
                             </select>
                         </div>
                     </div>
+                    {{!-- Q1: Narrative --}}
+                    <div class="form-group">
+                        <label>Childhood</label>
+                        <div class="form-fields">
+                            <textarea name="step1Narrative" rows="2" placeholder="Briefly describe your childhood...">{{data.step1Narrative}}</textarea>
+                        </div>
+                    </div>
 
                     {{!-- Q2: Background --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q2.title'}}</h2>
@@ -88,6 +95,13 @@
                             </select>
                         </div>
                     </div>
+                    {{!-- Q2: Narrative --}}
+                    <div class="form-group">
+                        <label>Professional History</label>
+                        <div class="form-fields">
+                            <textarea name="step2Narrative" rows="2" placeholder="Briefly describe your professional history...">{{data.step2Narrative}}</textarea>
+                        </div>
+                    </div>
 
                 {{else}}
                     {{!-- TDOLL Q1: Frame --}}
@@ -104,6 +118,13 @@
                                 </option>
                                 {{/each}}
                             </select>
+                        </div>
+                    </div>
+                    {{!-- Q1: Narrative --}}
+                    <div class="form-group">
+                        <label>Awakening</label>
+                        <div class="form-fields">
+                            <textarea name="step1Narrative" rows="2" placeholder="Describe your first awakening...">{{data.step1Narrative}}</textarea>
                         </div>
                     </div>
 
@@ -159,6 +180,13 @@
                         </div>
                         {{/ifCond}}
                     </div>
+                    {{!-- Q2: Narrative --}}
+                    <div class="form-group">
+                        <label>Upgrade History</label>
+                        <div class="form-fields">
+                            <textarea name="step2Narrative" rows="2" placeholder="Describe your upgrade history...">{{data.step2Narrative}}</textarea>
+                        </div>
+                    </div>
                 {{/ifCond}}
 
                 <div class="tq-nav-buttons">
@@ -212,6 +240,13 @@
                         </div>
                         {{/ifCond}}
                     </div>
+                    {{!-- Q3: Narrative (Mentor) --}}
+                    <div class="form-group">
+                        <label>Mentor</label>
+                        <div class="form-fields">
+                            <textarea name="step3Narrative" rows="2" placeholder="Describe your mentor...">{{data.step3Narrative}}</textarea>
+                        </div>
+                    </div>
 
                 {{else}}
                     {{!-- TDOLL Q3: Modules --}}
@@ -232,6 +267,13 @@
                         </ul>
                         <div class="tq-dropbox">
                             <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_module'}}
+                        </div>
+                    </div>
+                    {{!-- Q3: Narrative (Weapon) --}}
+                    <div class="form-group">
+                        <label>Weapon Imprint</label>
+                        <div class="form-fields">
+                            <textarea name="step3Narrative" rows="2" placeholder="Describe your relationship with your weapon...">{{data.step3Narrative}}</textarea>
                         </div>
                     </div>
                 {{/ifCond}}
@@ -267,6 +309,25 @@
                     </div>
                     {{/ifCond}}
                 </div>
+                {{!-- Q4: Narrative --}}
+                <div class="form-group">
+                    <label>Why do you fight?</label>
+                    <div class="form-fields">
+                        <textarea name="step4Narrative" rows="2" placeholder="Why do you fight?">{{data.step4Narrative}}</textarea>
+                    </div>
+                </div>
+                {{!-- Q4: Bonus Skill --}}
+                <div class="form-group">
+                    <label>Bonus Skill (+1)</label>
+                    <div class="form-fields">
+                        <select name="step4.bonusSkill">
+                            <option value="none" {{#ifCond data.step4.bonusSkill '==' 'none'}}selected{{/ifCond}}>None</option>
+                            {{#each skillsListFlat}}
+                            <option value="{{this.id}}" {{#ifCond ../data.step4.bonusSkill '==' this.id}}selected{{/ifCond}}>{{this.label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
 
                 {{!-- Q5: Disadvantage --}}
                 <h2>
@@ -290,6 +351,25 @@
                         <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_disadvantage'}}
                     </div>
                     {{/ifCond}}
+                </div>
+                {{!-- Q5: Narrative --}}
+                <div class="form-group">
+                    <label>Why would you stop?</label>
+                    <div class="form-fields">
+                        <textarea name="step5Narrative" rows="2" placeholder="What would make you stop?">{{data.step5Narrative}}</textarea>
+                    </div>
+                </div>
+                {{!-- Q5: Bonus Approach --}}
+                <div class="form-group">
+                    <label>Bonus Approach (+1)</label>
+                    <div class="form-fields">
+                        <select name="step5.bonusApproach">
+                            <option value="none" {{#ifCond data.step5.bonusApproach '==' 'none'}}selected{{/ifCond}}>None</option>
+                            {{#each approachesList}}
+                            <option value="{{this.id}}" {{#ifCond ../data.step5.bonusApproach '==' this.id}}selected{{/ifCond}}>{{this.label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
                 </div>
 
                 {{!-- Q6: Passion --}}
@@ -315,6 +395,13 @@
                     </div>
                     {{/ifCond}}
                 </div>
+                {{!-- Q6: Narrative --}}
+                <div class="form-group">
+                    <label>{{#ifCond isHuman '||' isTranshuman}}What are Dolls?{{else}}What are Humans?{{/ifCond}}</label>
+                    <div class="form-fields">
+                        <textarea name="step6Narrative" rows="2" placeholder="{{#ifCond isHuman '||' isTranshuman}}What are they to you?{{else}}What are humans to you?{{/ifCond}}">{{data.step6Narrative}}</textarea>
+                    </div>
+                </div>
 
                 {{!-- Q7: Anxiety --}}
                 <h2>
@@ -338,6 +425,13 @@
                         <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_anxiety'}}
                     </div>
                     {{/ifCond}}
+                </div>
+                {{!-- Q7: Narrative (achievement) --}}
+                <div class="form-group">
+                    <label>{{#ifCond isHuman '||' isTranshuman}}How did you make your name?{{else}}Greatest Achievement{{/ifCond}}</label>
+                    <div class="form-fields">
+                        <textarea name="step7Narrative" rows="2" placeholder="Describe your defining moment...">{{data.step7Narrative}}</textarea>
+                    </div>
                 </div>
 
                 <div class="tq-nav-buttons">
@@ -393,6 +487,14 @@
                     </div>
                 {{/ifCond}}
 
+                {{!-- Q8: Narrative (flaw/malfunction) --}}
+                <div class="form-group">
+                    <label>{{#ifCond isHuman '||' isTranshuman}}What holds you back?{{else}}Malfunction{{/ifCond}}</label>
+                    <div class="form-fields">
+                        <textarea name="step8Narrative" rows="2" placeholder="What holds you back?">{{data.step8Narrative}}</textarea>
+                    </div>
+                </div>
+
                 {{!-- Q9: Personal Goal (shared) --}}
                 <h2>
                     {{#ifCond isHuman '||' isTranshuman}}{{localize 'gfl5r.twelve_questions.human.q9.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q9.title'}}{{/ifCond}}
@@ -404,6 +506,13 @@
                     <label>{{localize 'gfl5r.narrative.personal_goal'}}</label>
                     <div class="form-fields">
                         <textarea name="step9.personalGoal" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.goal_placeholder'}}">{{data.step9.personalGoal}}</textarea>
+                    </div>
+                </div>
+                {{!-- Q9: Narrative (passion/quirk) --}}
+                <div class="form-group">
+                    <label>{{#ifCond isHuman '||' isTranshuman}}What gets you through the day?{{else}}Quirk{{/ifCond}}</label>
+                    <div class="form-fields">
+                        <textarea name="step9Narrative" rows="2" placeholder="What makes you different?">{{data.step9Narrative}}</textarea>
                     </div>
                 </div>
 
@@ -419,6 +528,12 @@
                     {{!-- Q10: Name Meaning --}}
                     <h2>{{localize 'gfl5r.twelve_questions.human.q10.title'}}</h2>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.human.q10.flavor'}}</p>
+                    <div class="form-group">
+                        <label>What are you most afraid of?</label>
+                        <div class="form-fields">
+                            <textarea name="step10Narrative" rows="2" placeholder="What keeps you up at night?">{{data.step10Narrative}}</textarea>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label>{{localize 'gfl5r.narrative.name_meaning'}}</label>
                         <div class="form-fields">

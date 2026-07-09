@@ -30,6 +30,11 @@ export class CharacterGenerator {
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
+        q4BonusSkill = "none", q5BonusApproach = "none",
+        step1Narrative = "", step2Narrative = "", step3Narrative = "",
+        step4Narrative = "", step5Narrative = "", step6Narrative = "",
+        step7Narrative = "", step8Narrative = "", step9Narrative = "",
+        step10Narrative = "",
     }) {
         const nationality = HUMAN_NATIONALITIES.find(n => n.key === nationalityKey);
         const background = HUMAN_BACKGROUNDS.find(b => b.key === backgroundKey);
@@ -55,10 +60,20 @@ export class CharacterGenerator {
         nationality.approaches.forEach(key => { approaches[key] = (approaches[key] || 1) + 1; });
         approaches[background.approach] = (approaches[background.approach] || 1) + 1;
 
+        // Q5 bonus approach
+        if (q5BonusApproach && q5BonusApproach !== "none") {
+            approaches[q5BonusApproach] = (approaches[q5BonusApproach] || 1) + 1;
+        }
+
         // Build skills
         const skills = {};
         const ensureSkill = (key, min) => { if (key) skills[key] = Math.max(skills[key] || 0, min); };
         ensureSkill(background.skill, 1);
+
+        // Q4 bonus skill
+        if (q4BonusSkill && q4BonusSkill !== "none") {
+            ensureSkill(q4BonusSkill, 1);
+        }
 
         // View of Dolls bonus
         let humanityBonus = 0;
@@ -115,18 +130,15 @@ export class CharacterGenerator {
             updates[`system.skills.${k}`] = v;
             updates[`system.skills_free.${k}`] = v;
         }
-        // View of Dolls bonus
-        let humanityBonus = 0;
-        if (viewOfDolls === "favor") {
-            humanityBonus = 5;
-        } else if (viewOfDolls === "tools" && viewDollsSkill && viewDollsSkill !== "none") {
-            ensureSkill(viewDollsSkill, 1);
-        }
 
         if (name) updates["name"] = name;
         if (goal) updates["system.narrative.personal_goal"] = goal;
         if (nameMeaning) updates["system.narrative.name_meaning"] = nameMeaning;
         if (storyEnd) updates["system.narrative.story_end"] = storyEnd;
+
+        // Q4/Q5 stored for reference
+        updates["system.twelve_questions.q4BonusSkill"] = q4BonusSkill;
+        updates["system.twelve_questions.q5BonusApproach"] = q5BonusApproach;
 
         await this.actor.update(updates);
         ui.notifications?.info("Human character creation applied.");
@@ -142,6 +154,11 @@ export class CharacterGenerator {
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
+        q4BonusSkill = "none", q5BonusApproach = "none",
+        step1Narrative = "", step2Narrative = "", step3Narrative = "",
+        step4Narrative = "", step5Narrative = "", step6Narrative = "",
+        step7Narrative = "", step8Narrative = "", step9Narrative = "",
+        step10Narrative = "",
     }) {
         const nationality = HUMAN_NATIONALITIES.find(n => n.key === nationalityKey);
         const background = HUMAN_BACKGROUNDS.find(b => b.key === backgroundKey);
@@ -167,10 +184,20 @@ export class CharacterGenerator {
         nationality.approaches.forEach(key => { approaches[key] = (approaches[key] || 1) + 1; });
         approaches[background.approach] = (approaches[background.approach] || 1) + 1;
 
+        // Q5 bonus approach
+        if (q5BonusApproach && q5BonusApproach !== "none") {
+            approaches[q5BonusApproach] = (approaches[q5BonusApproach] || 1) + 1;
+        }
+
         // Build skills
         const skills = {};
         const ensureSkill = (key, min) => { if (key) skills[key] = Math.max(skills[key] || 0, min); };
         ensureSkill(background.skill, 1);
+
+        // Q4 bonus skill
+        if (q4BonusSkill && q4BonusSkill !== "none") {
+            ensureSkill(q4BonusSkill, 1);
+        }
 
         // Apply discipline
         const disciplineResult = await this._applyDiscipline(disciplineUuid);
@@ -219,18 +246,15 @@ export class CharacterGenerator {
             updates[`system.skills.${k}`] = v;
             updates[`system.skills_free.${k}`] = v;
         }
-        // View of Dolls bonus
-        let humanityBonus = 0;
-        if (viewOfDolls === "favor") {
-            humanityBonus = 5;
-        } else if (viewOfDolls === "tools" && viewDollsSkill && viewDollsSkill !== "none") {
-            ensureSkill(viewDollsSkill, 1);
-        }
 
         if (name) updates["name"] = name;
         if (goal) updates["system.narrative.personal_goal"] = goal;
         if (nameMeaning) updates["system.narrative.name_meaning"] = nameMeaning;
         if (storyEnd) updates["system.narrative.story_end"] = storyEnd;
+
+        // Q4/Q5 stored for reference
+        updates["system.twelve_questions.q4BonusSkill"] = q4BonusSkill;
+        updates["system.twelve_questions.q5BonusApproach"] = q5BonusApproach;
 
         await this.actor.update(updates);
         ui.notifications?.info("Transhuman character creation applied.");
@@ -244,6 +268,11 @@ export class CharacterGenerator {
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         nameOrigin = "human",
         goal = "", storyEnd = "", name = "", metCommander = "",
+        q4BonusSkill = "none", q5BonusApproach = "none",
+        step1Narrative = "", step2Narrative = "", step3Narrative = "",
+        step4Narrative = "", step5Narrative = "", step6Narrative = "",
+        step7Narrative = "", step8Narrative = "", step9Narrative = "",
+        step10Narrative = "",
     }) {
         const frame = TDOLL_FRAMES.find(f => f.key === frameKey);
 
@@ -266,9 +295,19 @@ export class CharacterGenerator {
         // Approaches come directly from frame
         const approaches = { ...frame.approaches };
 
+        // Q5 bonus approach
+        if (q5BonusApproach && q5BonusApproach !== "none") {
+            approaches[q5BonusApproach] = (approaches[q5BonusApproach] || 0) + 1;
+        }
+
         // Frame starting skills
         const skills = {};
         frame.skills.forEach(sk => { skills[sk] = Math.max(skills[sk] || 0, 1); });
+
+        // Q4 bonus skill
+        if (q4BonusSkill && q4BonusSkill !== "none") {
+            skills[q4BonusSkill] = Math.max(skills[q4BonusSkill] || 0, 1);
+        }
 
         // Apply discipline (T-Dolls start at Rank 2)
         const disciplineResult = await this._applyDiscipline(disciplineUuid);
@@ -335,6 +374,10 @@ export class CharacterGenerator {
         if (goal) updates["system.narrative.personal_goal"] = goal;
         if (storyEnd) updates["system.narrative.story_end"] = storyEnd;
         if (metCommander) updates["system.narrative.met_commander"] = metCommander;
+
+        // Q4/Q5 stored for reference
+        updates["system.twelve_questions.q4BonusSkill"] = q4BonusSkill;
+        updates["system.twelve_questions.q5BonusApproach"] = q5BonusApproach;
 
         await this.actor.update(updates);
         ui.notifications?.info("T-Doll character creation applied.");

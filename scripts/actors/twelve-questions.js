@@ -77,17 +77,29 @@ export class TwelveQuestions {
         characterType: "human",
         generated: false,
 
-        // ---- Human steps ----
+        // Narrative text fields for each question
+        step1Narrative: "",
+        step2Narrative: "",
+        step3Narrative: "",
+        step4Narrative: "",
+        step5Narrative: "",
+        step6Narrative: "",
+        step7Narrative: "",
+        step8Narrative: "",
+        step9Narrative: "",
+        step10Narrative: "",
+
+    // ---- Human steps ----
         // Step 1: Nationality (select)
         // Step 2: Background (select)
         // Step 3: Discipline (drag-drop)
-        // Step 4: Advantage (drag-drop)
-        // Step 5: Disadvantage (drag-drop)
+        // Step 4: Advantage (drag-drop) + bonus skill
+        // Step 5: Disadvantage (drag-drop) + bonus approach
         // Step 6: Passion (drag-drop)
         // Step 7: Anxiety (drag-drop)
-        // Step 8: View of Dolls (select + optional skill)
+        // Step 8: View of Dolls / relationship (select + optional skill)
         // Step 9: Personal Goal (text)
-        // Step 10: Name Meaning (text)
+        // Step 10: Name Meaning or Origin (text/select)
         // Step 11: Name (text)
         // Step 12: Story End (text)
 
@@ -123,10 +135,12 @@ export class TwelveQuestions {
         step4: {
             // Advantage (item array, single)
             advantage: [],
+            bonusSkill: "none",
         },
         step5: {
             // Disadvantage (item array, single)
             disadvantage: [],
+            bonusApproach: "none",
         },
         step6: {
             // Passion (item array, single)
@@ -182,8 +196,23 @@ export class TwelveQuestions {
     _fromActor(actor) {
         const sys = actor.system;
         const identity = sys.identity || {};
+        const tq = sys.twelve_questions || {};
 
         this.data.characterType = identity.characterType || "human";
+
+        // Load narrative fields
+        this.data.step1Narrative = tq.step1Narrative || "";
+        this.data.step2Narrative = tq.step2Narrative || "";
+        this.data.step3Narrative = tq.step3Narrative || "";
+        this.data.step4Narrative = tq.step4Narrative || "";
+        this.data.step5Narrative = tq.step5Narrative || "";
+        this.data.step6Narrative = tq.step6Narrative || "";
+        this.data.step7Narrative = tq.step7Narrative || "";
+        this.data.step8Narrative = tq.step8Narrative || "";
+        this.data.step9Narrative = tq.step9Narrative || "";
+        this.data.step10Narrative = tq.step10Narrative || "";
+        this.data.step4.bonusSkill = tq.q4BonusSkill || "none";
+        this.data.step5.bonusApproach = tq.q5BonusApproach || "none";
 
         if (this.data.characterType === "human") {
             this.data.step1.selection = identity.nationality || "";
@@ -310,6 +339,18 @@ export class TwelveQuestions {
                 nameMeaning: this.data.step10.nameMeaning,
                 storyEnd: this.data.step12.storyEnd,
                 name: this.data.step11.name,
+                q4BonusSkill: this.data.step4.bonusSkill,
+                q5BonusApproach: this.data.step5.bonusApproach,
+                step1Narrative: this.data.step1Narrative,
+                step2Narrative: this.data.step2Narrative,
+                step3Narrative: this.data.step3Narrative,
+                step4Narrative: this.data.step4Narrative,
+                step5Narrative: this.data.step5Narrative,
+                step6Narrative: this.data.step6Narrative,
+                step7Narrative: this.data.step7Narrative,
+                step8Narrative: this.data.step8Narrative,
+                step9Narrative: this.data.step9Narrative,
+                step10Narrative: this.data.step10Narrative,
             });
         } else if (isTranshuman) {
             // Transhuman uses the same build as human — it's not a starting option,
@@ -329,6 +370,18 @@ export class TwelveQuestions {
                 nameMeaning: this.data.step10.nameMeaning,
                 storyEnd: this.data.step12.storyEnd,
                 name: this.data.step11.name,
+                q4BonusSkill: this.data.step4.bonusSkill,
+                q5BonusApproach: this.data.step5.bonusApproach,
+                step1Narrative: this.data.step1Narrative,
+                step2Narrative: this.data.step2Narrative,
+                step3Narrative: this.data.step3Narrative,
+                step4Narrative: this.data.step4Narrative,
+                step5Narrative: this.data.step5Narrative,
+                step6Narrative: this.data.step6Narrative,
+                step7Narrative: this.data.step7Narrative,
+                step8Narrative: this.data.step8Narrative,
+                step9Narrative: this.data.step9Narrative,
+                step10Narrative: this.data.step10Narrative,
             });
         } else {
             await generator.applyTDollBuild({
@@ -344,6 +397,18 @@ export class TwelveQuestions {
                 metCommander: this.data.step8.metCommander,
                 storyEnd: this.data.step12.storyEnd,
                 name: this.data.step11.name,
+                q4BonusSkill: this.data.step4.bonusSkill,
+                q5BonusApproach: this.data.step5.bonusApproach,
+                step1Narrative: this.data.step1Narrative,
+                step2Narrative: this.data.step2Narrative,
+                step3Narrative: this.data.step3Narrative,
+                step4Narrative: this.data.step4Narrative,
+                step5Narrative: this.data.step5Narrative,
+                step6Narrative: this.data.step6Narrative,
+                step7Narrative: this.data.step7Narrative,
+                step8Narrative: this.data.step8Narrative,
+                step9Narrative: this.data.step9Narrative,
+                step10Narrative: this.data.step10Narrative,
             });
         }
 
