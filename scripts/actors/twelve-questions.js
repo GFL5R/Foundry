@@ -76,6 +76,7 @@ export class TwelveQuestions {
      */
     data = {
         generated: false,
+        characterType: "",
         moduleBudget: 60000,
 
         // Narrative text fields for each question
@@ -203,8 +204,9 @@ export class TwelveQuestions {
         // Transhuman is a subtype of human; if a human has is_transhuman,
         // we still treat the twelve-questions as human flow.
         if (actor.type === "human") {
-            // data already has human defaults
+            this.data.characterType = "human";
         } else if (actor.type === "doll") {
+            this.data.characterType = "doll";
             this.data.step10.nameOrigin = actor.system.identity?.name_origin || "human";
         }
     }
@@ -268,36 +270,27 @@ export class TwelveQuestions {
      */
     validateForm() {
         const errors = [];
-        const isHumanFlow = this.data.step1.selection
-            ? !!HUMAN_NATIONALITIES.find(n => n.key === this.data.step1.selection)
-            : true; // unknown yet, skip check
-        // Still check by attempting to detect a nationality or frame
-        const isFrame = this.data.step1.selection
-            ? !!TDOLL_FRAMES.find(f => f.key === this.data.step1.selection)
-            : false;
-        const isHuman = !isFrame;
-        const isTranshuman = false; // transhuman uses same validation as human
+        const characterType = this.data.characterType;
+        const isHuman = characterType === "human" || characterType === "transhuman";
+        const isDoll = characterType === "doll";
 
         // Step 1 required
         if (!this.data.step1.selection) {
-            errors.push(isHuman || isTranshuman ? "Select a nationality" : "Select a frame");
+            errors.push(isDoll ? "Select a frame" : "Select a nationality");
         }
 
-        // Step 2 required for humans and transhumans
-        if ((isHuman || isTranshuman) && !this.data.step2.selection) {
+        // Step 2 (Background) required for humans only
+        if (isHuman && !this.data.step2.selection) {
             errors.push("Select a background");
         }
 
-        // Discipline required (human: step3, doll: step3)
-        if (isHuman && this.data.step3.discipline.length === 0) {
-            errors.push("Select a discipline");
-        }
-        if (!isHuman && this.data.step3.discipline.length === 0) {
-            errors.push("Select a weapon discipline");
+        // Discipline required for both
+        if (this.data.step3.discipline.length === 0) {
+            errors.push(isDoll ? "Select a weapon discipline" : "Select a discipline");
         }
 
-        // Human/transhuman starting technique required
-        if ((isHuman || isTranshuman) && this.data.step3.startingTechnique.length === 0) {
+        // Human starting technique required
+        if (isHuman && this.data.step3.startingTechnique.length === 0) {
             errors.push("Select a starting technique");
         }
 
@@ -307,13 +300,13 @@ export class TwelveQuestions {
         }
 
         // T-Doll technique/XP budget validation
-        if (!isHuman && this.data.step3.xpSpent > (this.data.step3.xpBudget || 16)) {
+        if (isDoll && this.data.step3.xpSpent > (this.data.step3.xpBudget || 16)) {
             errors.push(`XP spent (${this.data.step3.xpSpent}) exceeds budget (${this.data.step3.xpBudget || 16})`);
         }
 
         // Summary of approach assignments
         const summary = {};
-        if (isHuman || isTranshuman) {
+        if (isHuman) {
             const nat = HUMAN_NATIONALITIES.find(n => n.key === this.data.step1.selection);
             const bg = HUMAN_BACKGROUNDS.find(b => b.key === this.data.step2.selection);
             if (nat) {

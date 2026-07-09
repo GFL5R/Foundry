@@ -614,42 +614,52 @@
                 },
                 "q3": {
                     "title": "Question 3: Who taught you the trade?",
-                    "flavor": "Whether healing or hurting, someone taught you how to do what you do. Briefly describe your mentor, whoever they may be, and select a discipline from the list of disciplines, plus one rank 1 technique from it."
+                    "flavor": "Whether healing or hurting, someone taught you how to do what you do. Briefly describe your mentor, whoever they may be, and select a discipline from the list of disciplines, plus one rank 1 technique from it.",
+                    "narrative": "Briefly describe your mentor."
                 },
                 "q4": {
                     "title": "Question 4: Why do you fight?",
-                    "flavor": "Everyone has a reason to fight. Fame, fortune, love, anything you can think of. Briefly describe your reason to keep picking up your gun."
+                    "flavor": "Everyone has a reason to fight. Fame, fortune, love, anything you can think of. Briefly describe your reason to keep picking up your gun.",
+                    "narrative": "Briefly describe your reason to keep picking up your gun."
                 },
                 "q5": {
                     "title": "Question 5: Why would you stop?",
-                    "flavor": "Everyone puts down the gun eventually. Most as they lay bleeding out in the dirt, but the lucky few walk away with a victory of some sort. What is your victory? A ticket to a white-zone paradise? A lover to settle down with? Briefly describe what your exit condition looks like."
+                    "flavor": "Everyone puts down the gun eventually. Most as they lay bleeding out in the dirt, but the lucky few walk away with a victory of some sort. What is your victory? A ticket to a white-zone paradise? A lover to settle down with? Briefly describe what your exit condition looks like.",
+                    "narrative": "Briefly describe what your exit condition looks like."
                 },
                 "q6": {
                     "title": "Question 6: What are Dolls?",
-                    "flavor": "You work alongside artificial humanoid operatives who think and adapt alongside you. Name one and describe what they are to you. A partner? A weapon? A liability? A friend? Maybe something you haven't quite figured out yet."
+                    "flavor": "You work alongside artificial humanoid operatives who think and adapt alongside you. Name one and describe what they are to you. A partner? A weapon? A liability? A friend? Maybe something you haven't quite figured out yet.",
+                    "narrative": "Name one and describe what they are to you. A partner? A weapon? A liability? A friend? Maybe something you haven't quite figured out yet."
                 },
                 "q7": {
                     "title": "Question 7: How did you make your name?",
-                    "flavor": "Every operator has the job that should have gone wrong, but they managed to pull out of just in time. Briefly describe your defining moment."
+                    "flavor": "Every operator has the job that should have gone wrong, but they managed to pull out of just in time. Briefly describe your defining moment.",
+                    "narrative": "Briefly describe your defining moment."
                 },
                 "q8": {
                     "title": "Question 8: What holds you back?",
                     "flavor": "Your flaw, your scar, your bad habit. The thing that makes every job harder than it needs to be. Briefly describe what it is, and how it shows when things go sideways.",
+                    "narrative": "Briefly describe what it is, and how it shows when things go sideways.",
                     "option_person": "Person \u2014 They're people. (+5 Humanity)",
                     "option_tool": "Tool \u2014 They're equipment. (+1 Skill)",
                     "bonus_skill": "Choose a bonus skill"
                 },
                 "q9": {
                     "title": "Question 9: What gets you through the day?",
-                    "flavor": "Whether it brings you genuine joy or simply makes you feel at peace, you have a passion in your heart for something. Describe how you came upon this interest and how it helps you moving forward."
+                    "flavor": "Whether it brings you genuine joy or simply makes you feel at peace, you have a passion in your heart for something. Describe how you came upon this interest and how it helps you moving forward.",
+                    "narrative": "Describe how you came upon this interest and how it helps you moving forward."
                 },
                 "q10": {
                     "title": "Question 10: What keeps you up at night?",
-                    "flavor": "Everyone is afraid of something. It gets under your skin, and you can't think of anything else when it's there. Describe the situation that made you like this, and what happens when it comes to pass."
+                    "flavor": "Everyone is afraid of something. It gets under your skin, and you can't think of anything else when it's there. Describe the situation that made you like this, and what happens when it comes to pass.",
+                    "narrative": "Describe the situation that made you like this, and what happens when it comes to pass.",
+                    "placeholder": "What does your name mean?"
                 },
                 "q12": {
                     "title": "Question 12: How does your story end?",
-                    "flavor": "Everyone dies eventually. It's a fact of life. How should it happen for you?"
+                    "flavor": "Everyone dies eventually. It's a fact of life. How should it happen for you?",
+                    "narrative": "How should it happen for you?"
                 }
             },
             "tdoll": {
@@ -660,41 +670,50 @@
                 },
                 "q2": {
                     "title": "Question 2: What modifications set you apart from the rest of your line?",
-                    "flavor": "No T-Doll stays stock for long, and you certainly didn't. Whether they were installed by your own choice or forced upon you, you have upgrades now. Every unit of your model line rolled off with the same baseline specs. Same frame, same firmware, same factory calibration. But somewhere along the way, someone invested in making you different."
+                    "flavor": "No T-Doll stays stock for long, and you certainly didn't. Whether they were installed by your own choice or forced upon you, you have upgrades now. Every unit of your model line rolled off with the same baseline specs. Same frame, same firmware, same factory calibration. But somewhere along the way, someone invested in making you different.",
+                    "narrative": "Describe the situation(s) that led to your current spec sheet."
                 },
                 "q3": {
                     "title": "Question 3: What weapon were you imprinted with?",
-                    "flavor": "The fire control core is what makes a Doll a T-Doll. Fire control cores come imprinted with a specific weapon class. What's yours? The gun isn't just equipment. It's wired into your reflexes, your targeting systems, your sense of self. Some Dolls wear their imprint like a second name. Others resent it: a role assigned before they had any say, an expectation baked into hardware they can't uninstall."
+                    "flavor": "The fire control core is what makes a Doll a T-Doll. Fire control cores come imprinted with a specific weapon class. What's yours? The gun isn't just equipment. It's wired into your reflexes, your targeting systems, your sense of self. Some Dolls wear their imprint like a second name. Others resent it: a role assigned before they had any say, an expectation baked into hardware they can't uninstall.",
+                    "narrative": "Briefly describe your relationship with your weapon imprint."
                 },
                 "q4": {
                     "title": "Question 4: Why do you fight?",
-                    "flavor": "Orders are one thing. But Dolls develop their own reasons. Loyalty to a commander who treated you like a person. Revenge against the faction that scrapped your squad. The simple fact that combat is the only thing you've ever been good at. Briefly describe what keeps pulling your trigger."
+                    "flavor": "Orders are one thing. But Dolls develop their own reasons. Loyalty to a commander who treated you like a person. Revenge against the faction that scrapped your squad. The simple fact that combat is the only thing you've ever been good at. Briefly describe what keeps pulling your trigger.",
+                    "narrative": "Briefly describe what keeps pulling your trigger."
                 },
                 "q5": {
                     "title": "Question 5: Why would you stop?",
-                    "flavor": "Many Dolls dream of a future where they can stop fighting. What does yours look like? A cozy shop in a green or white zone? Freedom to explore the yellow zone? Something else entirely? Briefly describe what life should look like after the final round is fired."
+                    "flavor": "Many Dolls dream of a future where they can stop fighting. What does yours look like? A cozy shop in a green or white zone? Freedom to explore the yellow zone? Something else entirely? Briefly describe what life should look like after the final round is fired.",
+                    "narrative": "Briefly describe what life should look like after the final round is fired."
                 },
                 "q6": {
                     "title": "Question 6: What are Humans?",
-                    "flavor": "You exist alongside creatures of flesh and blood who give you orders, fight beside you, patch your chassis, and sometimes forget you're more than hardware. Name one human you know and describe what they are to you."
+                    "flavor": "You exist alongside creatures of flesh and blood who give you orders, fight beside you, patch your chassis, and sometimes forget you're more than hardware. Name one human you know and describe what they are to you.",
+                    "narrative": "Name one human you know and describe what they are to you."
                 },
                 "q7": {
                     "title": "Question 7: What is your greatest achievement so far?",
-                    "flavor": "It was a legendary moment. The kind of feat where you exceed every safety limit of your frame and hear of nothing else for the next three days in the repair bay. Describe this moment."
+                    "flavor": "It was a legendary moment. The kind of feat where you exceed every safety limit of your frame and hear of nothing else for the next three days in the repair bay. Describe this moment.",
+                    "narrative": "Describe this moment."
                 },
                 "q8": {
                     "title": "Question 8: What is your malfunction?",
                     "flavor": "No Doll is flawless. A frame that overheats under sustained load, or a hesitation that surfaces at the wrong moment. Whatever it is, it bothers you more than it should. Briefly describe what it is, and how it manifests.",
-                    "label": "How you met",
+                    "narrative": "Briefly describe what it is, and how it manifests.",
+                    "label": "How you met your Commander",
                     "placeholder": "Describe the circumstances of your assignment..."
                 },
                 "q9": {
                     "title": "Question 9: What makes you different?",
-                    "flavor": "Somewhere between the factory and now, you picked up something that wasn't in the blueprint. A fascination with pre-Collapse cinema. An insistence on arranging your ammunition by year of manufacture. A habit of collecting small objects from completed missions that serves no tactical purpose and that you've never been able to explain to anyone's satisfaction, including your own. Describe how you came upon this interest and how it helps you moving forward."
+                    "flavor": "Somewhere between the factory and now, you picked up something that wasn't in the blueprint. A fascination with pre-Collapse cinema. An insistence on arranging your ammunition by year of manufacture. A habit of collecting small objects from completed missions that serves no tactical purpose and that you've never been able to explain to anyone's satisfaction, including your own. Describe how you came upon this interest and how it helps you moving forward.",
+                    "narrative": "Describe how you came upon this interest and how it helps you moving forward."
                 },
                 "q10": {
                     "title": "Question 10: What are you most afraid of?",
                     "flavor": "Officially, Dolls don't experience fear. But anyone who's been around one long enough will know that that's not true. Deep in your neural cloud there's something that gnaws. Memory corruption. Obsolescence. The specific and vivid possibility of watching your Commander die while you're too damaged to intervene. You may not talk about it, but it's always there. Describe this fear, and how you react.",
+                    "narrative": "Describe this fear, and how you react.",
                     "option_human": "Human Name (+5 Humanity)",
                     "option_callsign": "Callsign / Nickname (+5 Fame)",
                     "option_weapon": "Weapon Designation (+1 Firearms, \u22125 Humanity)",
@@ -702,17 +721,20 @@
                 },
                 "q12": {
                     "title": "Question 12: How does your story end?",
-                    "flavor": "Dolls aren't built to last forever. Eventually your chassis fails beyond repair, your neural cloud degrades past recovery, or someone with a clipboard decides you're obsolete. How should it happen for you?"
+                    "flavor": "Dolls aren't built to last forever. Eventually your chassis fails beyond repair, your neural cloud degrades past recovery, or someone with a clipboard decides you're obsolete. How should it happen for you?",
+                    "narrative": "How should it happen for you?"
                 }
             },
             "q11": {
                 "title": "Question 11: What is your name, and what does it mean?",
                 "flavor": "You have a name on file, and a story behind it. It could be given to you by your parents, or a nickname given by a colleague, but it's what you're called now.",
+                "narrative": "Write it down. Whatever you choose, this is who you are to the world.",
                 "placeholder": "Enter character name"
             },
             "q12": {
                 "title": "Question 12: How does your story end?",
                 "flavor": "This question has no mechanical bearing. But you should keep it in mind, your DM certainly will...",
+                "narrative": "This question has no mechanical bearing. But you should keep it in mind, your DM certainly will...",
                 "placeholder": "How do you see your story ending?"
             }
         },
