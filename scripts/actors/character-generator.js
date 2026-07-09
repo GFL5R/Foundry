@@ -26,6 +26,7 @@ export class CharacterGenerator {
      * Apply human character creation to the actor
      */
     async applyHumanBuild({
+        isTranshuman = false,
         nationalityKey, backgroundKey, disciplineUuid, startingTechniqueUuid = "",
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         viewOfDolls = "favor", viewDollsSkill = "",
@@ -111,7 +112,7 @@ export class CharacterGenerator {
 
         // Update actor
         const updates = {
-            "system.identity.characterType": "human",
+            "system.identity.is_transhuman": false,
             "system.identity.nationality": nationalityKey,
             "system.identity.background": backgroundKey,
             "system.social.humanity": 50 + humanityBonus,
@@ -227,7 +228,7 @@ export class CharacterGenerator {
 
         // Update actor
         const updates = {
-            "system.identity.characterType": "transhuman",
+            "system.identity.is_transhuman": true,
             "system.identity.nationality": nationalityKey,
             "system.identity.background": backgroundKey,
             "system.social.humanity": 50 + humanityBonus,
@@ -263,7 +264,7 @@ export class CharacterGenerator {
     /**
      * Apply T-Doll character creation to the actor
      */
-    async applyTDollBuild({
+    async applyDollBuild({
         frameKey, disciplineUuid, startingTechniqueUuid = "", moduleUuids = [],
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         nameOrigin = "human",
@@ -348,7 +349,7 @@ export class CharacterGenerator {
 
         // Update actor
         const updates = {
-            "system.identity.characterType": "t-doll",
+            "system.identity.is_transhuman": false,
             "system.identity.frame": frameKey,
             "system.identity.manufacturer": frame.manufacturer,
             "system.identity.model": frame.model,

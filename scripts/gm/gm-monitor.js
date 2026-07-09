@@ -275,7 +275,7 @@ export class GmMonitor extends HandlebarsApplicationMixin(ApplicationV2) {
 
         } else {
             // If empty add pc with owner
-            actors = game.actors.filter((actor) => actor.type === "character" && actor.hasPlayerOwnerActive);
+            actors = game.actors.filter((actor) => actor.isCharacter && actor.hasPlayerOwnerActive);
             this.saveActorsIds();
         }
 

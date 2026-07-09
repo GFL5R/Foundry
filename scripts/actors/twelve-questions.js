@@ -74,7 +74,6 @@ export class TwelveQuestions {
      * Default data structure for all 12 steps.
      */
     data = {
-        characterType: "human",
         generated: false,
 
         // Narrative text fields for each question
@@ -184,8 +183,24 @@ export class TwelveQuestions {
     constructor(actor = null) {
         if (actor?.system?.twelve_questions) {
             this.data = foundry.utils.mergeObject(this.data, actor.system.twelve_questions);
+            // Override type-derived fields from the actor's actual type
+            this._applyActorType(actor);
         } else if (actor) {
             this._fromActor(actor);
+        }
+    }
+
+    /**
+     * Set type-derived fields based on the actor's actual type.
+     * @param {Actor} actor
+     */
+    _applyActorType(actor) {
+        // Transhuman is a subtype of human; if a human has is_transhuman,
+        // we still treat the twelve-questions as human flow.
+        if (actor.type === "human") {
+            // data already has human defaults
+        } else if (actor.type === "doll") {
+            this.data.step10.nameOrigin = actor.system.identity?.name_origin || "human";
         }
     }
 
@@ -198,7 +213,10 @@ export class TwelveQuestions {
         const identity = sys.identity || {};
         const tq = sys.twelve_questions || {};
 
-        this.data.characterType = identity.characterType || "human";
+        // Determine type from actor type
+        const isHumanActor = actor.type === "human";
+        const isDollActor = actor.type === "doll";
+        this.data.characterType = isHumanActor ? "human" : "doll";
 
         // Load narrative fields
         this.data.step1Narrative = tq.step1Narrative || "";
@@ -214,13 +232,10 @@ export class TwelveQuestions {
         this.data.step4.bonusSkill = tq.q4BonusSkill || "none";
         this.data.step5.bonusApproach = tq.q5BonusApproach || "none";
 
-        if (this.data.characterType === "human") {
+        if (isHumanActor) {
             this.data.step1.selection = identity.nationality || "";
             this.data.step2.selection = identity.background || "";
             this.data.step8.viewOfDolls = sys.social?.view_of_dolls || "favor";
-        } else if (this.data.characterType === "transhuman") {
-            this.data.step1.selection = identity.nationality || "";
-            this.data.step2.selection = identity.background || "";
         } else {
             this.data.step1.selection = identity.frame || "";
             this.data.step10.nameOrigin = identity.name_origin || "human";
@@ -248,8 +263,15 @@ export class TwelveQuestions {
      */
     validateForm() {
         const errors = [];
-        const isHuman = this.data.characterType === "human";
-        const isTranshuman = this.data.characterType === "transhuman";
+        const isHumanFlow = this.data.step1.selection
+            ? !!HUMAN_NATIONALITIES.find(n => n.key === this.data.step1.selection)
+            : true; // unknown yet, skip check
+        // Still check by attempting to detect a nationality or frame
+        const isFrame = this.data.step1.selection
+            ? !!TDOLL_FRAMES.find(f => f.key === this.data.step1.selection)
+            : false;
+        const isHuman = !isFrame;
+        const isTranshuman = false; // transhuman uses same validation as human
 
         // Step 1 required
         if (!this.data.step1.selection) {
@@ -321,10 +343,11 @@ export class TwelveQuestions {
         const generator = new CharacterGenerator(actor);
 
         const isHuman = this.data.characterType === "human";
-        const isTranshuman = this.data.characterType === "transhuman";
+        const isTranshuman = false;
 
         if (isHuman) {
             await generator.applyHumanBuild({
+                isTranshuman: false,
                 nationalityKey: this.data.step1.selection,
                 backgroundKey: this.data.step2.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
@@ -353,9 +376,9 @@ export class TwelveQuestions {
                 step10Narrative: this.data.step10Narrative,
             });
         } else if (isTranshuman) {
-            // Transhuman uses the same build as human — it's not a starting option,
-            // but something earned mid-campaign. Starting transhumans are just humans.
+            // Transhuman uses the same build as human
             await generator.applyHumanBuild({
+                isTranshuman: true,
                 nationalityKey: this.data.step1.selection,
                 backgroundKey: this.data.step2.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
@@ -384,7 +407,7 @@ export class TwelveQuestions {
                 step10Narrative: this.data.step10Narrative,
             });
         } else {
-            await generator.applyTDollBuild({
+            await generator.applyDollBuild({
                 frameKey: this.data.step1.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step2.discipline"),
                 moduleUuids: this._getItemUuids(cache, "step3.modules"),

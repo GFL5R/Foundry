@@ -328,7 +328,8 @@ export class DicePickerDialog extends FormApplication {
             return;
         }
         switch (this._actor.type) {
-            case "character":
+            case "human":
+            case "doll":
                 // Skills are flat: system.skills.<skillId>
                 this.object.skill.value = this._actor.system.skills?.[this.object.skill.id] || 0;
                 this.object.skill.defaultValue = this.object.skill.value;

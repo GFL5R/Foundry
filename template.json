@@ -1,18 +1,7 @@
 {
     "Actor": {
-        "types": ["character", "npc", "vehicle"],
+        "types": ["human", "doll", "npc", "vehicle"],
         "templates": {
-            "identity": {
-                "identity": {
-                    "characterType": "human",
-                    "nationality": "",
-                    "background": "",
-                    "frame": "",
-                    "manufacturer": "",
-                    "model": "",
-                    "name_origin": ""
-                }
-            },
             "approaches": {
                 "approaches": {
                     "power": 1,
@@ -193,9 +182,8 @@
                 "met_commander": ""
             }
         },
-        "character": {
+        "human": {
             "templates": [
-                "identity",
                 "approaches",
                 "social",
                 "skills",
@@ -206,6 +194,44 @@
                 "disciplines",
                 "narrative"
             ],
+            "identity": {
+                "nationality": "",
+                "background": "",
+                "is_transhuman": false
+            },
+            "twelve_questions": {
+                "step1Narrative": "",
+                "step2Narrative": "",
+                "step3Narrative": "",
+                "step4Narrative": "",
+                "step5Narrative": "",
+                "step6Narrative": "",
+                "step7Narrative": "",
+                "step8Narrative": "",
+                "step9Narrative": "",
+                "step10Narrative": "",
+                "q4BonusSkill": "none",
+                "q5BonusApproach": "none"
+            }
+        },
+        "doll": {
+            "templates": [
+                "approaches",
+                "social",
+                "skills",
+                "conflict",
+                "harm",
+                "ew",
+                "advancement",
+                "disciplines",
+                "narrative"
+            ],
+            "identity": {
+                "frame": "",
+                "manufacturer": "",
+                "model": "",
+                "name_origin": ""
+            },
             "twelve_questions": {
                 "step1Narrative": "",
                 "step2Narrative": "",
@@ -223,7 +249,6 @@
         },
         "npc": {
             "templates": [
-                "identity",
                 "approaches",
                 "social",
                 "conflict",
@@ -243,10 +268,13 @@
         },
         "vehicle": {
             "templates": [
-                "identity",
                 "narrative"
             ],
             "vehicle_type": "",
+            "identity": {
+                "manufacturer": "",
+                "model": ""
+            },
             "armor_value": 0,
             "damage_threshold": 0,
             "current_damage": {

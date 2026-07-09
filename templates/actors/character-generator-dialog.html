@@ -8,10 +8,20 @@
             <div class="form-fields">
                 <select name="buildType">
                     <option value="human" {{#if isHuman}}selected{{/if}}>{{localize 'gfl5r.identity.human'}}</option>
-                    <option value="t-doll" {{#if isTDoll}}selected{{/if}}>{{localize 'gfl5r.identity.t-doll'}}</option>
+                    <option value="doll" {{#if isDoll}}selected{{/if}}>{{localize 'gfl5r.identity.doll'}}</option>
                 </select>
             </div>
         </div>
+
+        {{!-- Transhuman checkbox (only for human builds) --}}
+        {{#if isHuman}}
+        <div class="form-group">
+            <label>{{localize 'gfl5r.identity.transhuman'}}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="human.isTranshuman" {{#if isTranshuman}}checked{{/if}} />
+            </div>
+        </div>
+        {{/if}}
 
         {{!-- Name --}}
         <div class="form-group">
@@ -58,11 +68,11 @@
         </div>
 
         {{else}}
-        {{!-- T-DOLL BUILD --}}
+        {{!-- DOLL BUILD --}}
         <div class="form-group">
             <label>{{localize 'gfl5r.identity.frame'}}</label>
             <div class="form-fields">
-                <select name="tdoll.frame">
+                <select name="doll.frame">
                     <option value="">Choose...</option>
                     {{#each frames}}
                     <option value="{{this.key}}">{{this.manufacturer}} {{this.model}}</option>
@@ -74,7 +84,7 @@
         <div class="form-group">
             <label>{{localize 'gfl5r.identity.name_origin'}}</label>
             <div class="form-fields">
-                <select name="tdoll.nameOrigin">
+                <select name="doll.nameOrigin">
                     <option value="human">Human Name (+5 Humanity)</option>
                     <option value="callsign">Callsign (+5 Fame)</option>
                     <option value="weapon">Weapon Designation (+1 Firearms, -5 Humanity)</option>
@@ -124,14 +134,14 @@
         <div class="form-group">
             <label>Discipline (UUID)</label>
             <div class="form-fields">
-                <input type="text" class="cg-item-drop" data-drop-type="discipline" name="{{#if isHuman}}discipline{{else}}tdoll.discipline{{/if}}" placeholder="Drag a discipline here or paste UUID" />
+                <input type="text" class="cg-item-drop" data-drop-type="discipline" name="{{#if isHuman}}human.discipline{{else}}doll.discipline{{/if}}" placeholder="Drag a discipline here or paste UUID" />
             </div>
         </div>
 
         <div class="form-group">
             <label>Starting Technique (UUID)</label>
             <div class="form-fields">
-                <input type="text" class="cg-item-drop" data-drop-type="starting-technique" data-discipline-field="{{#if isHuman}}discipline{{else}}tdoll.discipline{{/if}}" name="{{#if isHuman}}startingTechnique{{else}}tdoll.startingTechnique{{/if}}" placeholder="Drag a rank 1 technique from this discipline here or paste UUID" />
+                <input type="text" class="cg-item-drop" data-drop-type="starting-technique" data-discipline-field="{{#if isHuman}}human.discipline{{else}}doll.discipline{{/if}}" name="{{#if isHuman}}human.startingTechnique{{else}}doll.startingTechnique{{/if}}" placeholder="Drag a rank 1 technique from this discipline here or paste UUID" />
             </div>
         </div>
 
@@ -174,7 +184,7 @@
         <div class="form-group">
             <label>Name Meaning</label>
             <div class="form-fields">
-                <input type="text" name="nameMeaning" placeholder="Why this name?" />
+                <input type="text" name="human.nameMeaning" placeholder="Why this name?" />
             </div>
         </div>
         {{/if}}

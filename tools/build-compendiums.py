@@ -542,14 +542,8 @@ def build_vehicle_actor(name: str, data: dict) -> dict:
         "img": _vehicle_image_path(data.get("image", "")),
         "system": {
             "identity": {
-                "characterType": "",
-                "age": "",
-                "nationality": "",
-                "background": "",
-                "frame": "",
                 "manufacturer": "",
                 "model": data.get("type", ""),
-                "name_origin": "",
             },
             "narrative": {
                 "notes": "",
@@ -951,16 +945,6 @@ def build_npc_actor(name: str, data: dict, narrative_sources: dict) -> dict:
         "type": "npc",
         "img": _npc_image_path(data.get("image", "")),
         "system": {
-            "identity": {
-                "characterType": character_type,
-                "age": "",
-                "nationality": "",
-                "background": "",
-                "frame": "",
-                "manufacturer": "",
-                "model": npc_type,
-                "name_origin": "",
-            },
             "approaches": {
                 "power": power,
                 "precision": precision,

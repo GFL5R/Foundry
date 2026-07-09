@@ -8,7 +8,7 @@ export class ActorGfl5r extends Actor {
     static async create(docData, options = {}) {
         // Replace default image
         if (docData.img === undefined) {
-            const iconMap = { character: "commander", npc: "doll", vehicle: "vehicle" };
+            const iconMap = { human: "commander", doll: "doll", npc: "doll", vehicle: "vehicle" };
             const iconName = iconMap[docData.type] || docData.type;
             docData.img = `${CONFIG.gfl5r.paths.assets}icons/actors/${iconName}.svg`;
         }
@@ -16,7 +16,8 @@ export class ActorGfl5r extends Actor {
         // Token defaults
         docData.prototypeToken = docData.prototypeToken || {};
         switch (docData.type) {
-            case "character":
+            case "human":
+            case "doll":
                 foundry.utils.mergeObject(
                     docData.prototypeToken,
                     {
@@ -117,7 +118,7 @@ export class ActorGfl5r extends Actor {
 
             // Derive stats for PCs (NPCs set stats manually)
             if (this.isCharacter) {
-                ActorGfl5r.computeDerivedAttributes(system);
+                ActorGfl5r.computeDerivedAttributes(system, this.type);
             }
 
             const isCompromised = this.statuses.has("compromised");
@@ -142,9 +143,8 @@ export class ActorGfl5r extends Actor {
                 );
             }
 
-            // Compute Collapse max (humans and transhumans): sum of all approaches × 5
-            const collapseTypes = ["human", "transhuman"];
-            if (collapseTypes.includes(system.identity?.characterType) && system.collapse) {
+            // Compute Collapse max (humans, including transhumans): sum of all approaches × 5
+            if (this.isHuman && system.collapse) {
                 const app = system.approaches;
                 system.collapse.max = (
                     Number(app.power) + Number(app.precision) + Number(app.swiftness) +
@@ -171,15 +171,14 @@ export class ActorGfl5r extends Actor {
      * Endurance: humans and transhumans (×2), T-Dolls (×3).
      * @param {Object} system
      */
-    static computeDerivedAttributes(system) {
+    static computeDerivedAttributes(system, actorType) {
         const app = system.approaches;
         const power = Number(app.power);
         const precision = Number(app.precision);
         const swiftness = Number(app.swiftness);
         const resilience = Number(app.resilience);
 
-        const charType = system.identity?.characterType;
-        const enduranceMultiplier = charType === "t-doll" ? 3 : 2;
+        const enduranceMultiplier = actorType === "doll" ? 3 : 2;
 
         system.endurance = (power + resilience) * enduranceMultiplier;
         system.composure = (resilience + swiftness) * 2;
@@ -225,11 +224,19 @@ export class ActorGfl5r extends Actor {
     }
 
     get isCharacterType() {
-        return ["character", "npc"].includes(this.type);
+        return ["human", "doll", "npc"].includes(this.type);
     }
 
     get isCharacter() {
-        return this.type === "character";
+        return ["human", "doll"].includes(this.type);
+    }
+
+    get isHuman() {
+        return this.type === "human";
+    }
+
+    get isDoll() {
+        return this.type === "doll";
     }
 
     get isNpc() {
@@ -245,16 +252,8 @@ export class ActorGfl5r extends Actor {
         return this.isNpc && this.system.threat_level !== "minion";
     }
 
-    get isHuman() {
-        return this.isCharacterType && this.system.identity?.characterType === "human";
-    }
-
-    get isTDoll() {
-        return this.isCharacterType && this.system.identity?.characterType === "t-doll";
-    }
-
     get isTranshuman() {
-        return this.isCharacterType && this.system.identity?.characterType === "transhuman";
+        return this.isHuman && this.system.identity?.is_transhuman;
     }
 
     get hasPlayerOwnerActive() {

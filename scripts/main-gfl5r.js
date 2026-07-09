@@ -123,8 +123,8 @@ Hooks.once("init", async () => {
     // Actors
     fdc.Actors.unregisterSheet("core", fav1s.ActorSheet);
     fdc.Actors.registerSheet(GFL5R.namespace, CharacterSheetGfl5r, {
-        types: ["character"],
-        label: "TYPES.Actor.character",
+        types: ["human", "doll"],
+        label: "TYPES.Actor.human",
         makeDefault: true,
     });
     fdc.Actors.registerSheet(GFL5R.namespace, NpcSheetGfl5r, {

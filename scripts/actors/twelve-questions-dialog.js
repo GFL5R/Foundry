@@ -68,8 +68,9 @@ export class TwelveQuestionsDialog extends FormApplication {
 
     /** Provide template data */
     async getData(options = null) {
-        const isHuman = this.data.characterType === "human";
-        const isTranshuman = this.data.characterType === "transhuman";
+        const isDoll = this.actor.type === "doll";
+        const isHuman = this.actor.type === "human";
+        const isTranshuman = isHuman && this.data.identity?.is_transhuman;
         const skillsList = game.gfl5r.HelpersGfl5r.getSkillsList(true);
 
         return {
@@ -81,7 +82,7 @@ export class TwelveQuestionsDialog extends FormApplication {
                 errors: this.summary.errors.join(", "),
             },
             isHuman,
-            isTDoll: !isHuman && !isTranshuman,
+            isDoll,
             isTranshuman,
             nationalities: HUMAN_NATIONALITIES,
             backgrounds: HUMAN_BACKGROUNDS,

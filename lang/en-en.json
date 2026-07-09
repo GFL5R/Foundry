@@ -34,7 +34,8 @@
     },
     "TYPES": {
         "Actor": {
-            "character": "Character",
+            "human": "Human",
+            "doll": "Doll",
             "npc": "NPC",
             "vehicle": "Vehicle"
         },

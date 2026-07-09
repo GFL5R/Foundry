@@ -8,7 +8,7 @@
         {{!-- Identity --}}
         <h2>{{localize 'gfl5r.identity.title'}}</h2>
         <ul>
-            <li>{{localize 'gfl5r.identity.character_type'}} : {{data.system.identity.characterType}}</li>
+            <li>{{localize 'gfl5r.identity.character_type'}} : {{#ifCond actor.type '==' 'human'}}{{localize 'gfl5r.identity.human'}}{{else}}{{#ifCond actor.type '==' 'doll'}}{{localize 'gfl5r.identity.doll'}}{{else}}{{actor.type}}{{/ifCond}}{{/ifCond}}</li>
             {{#if data.system.identity.nationality}}<li>{{localize 'gfl5r.identity.nationality'}} : {{data.system.identity.nationality}}</li>{{/if}}
             {{#if data.system.identity.background}}<li>{{localize 'gfl5r.identity.background'}} : {{data.system.identity.background}}</li>{{/if}}
             {{#if data.system.identity.frame}}<li>{{localize 'gfl5r.identity.frame'}} : {{data.system.identity.frame}}</li>{{/if}}
