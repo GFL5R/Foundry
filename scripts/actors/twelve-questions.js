@@ -53,8 +53,8 @@ export class TwelveQuestions {
             "step7.anxiety",
         ],
         tdoll: [
-            "step2.discipline",
-            "step3.modules",
+            "step2.modules",
+            "step3.discipline",
             "step4.advantage",
             "step5.disadvantage",
             "step6.passion",
@@ -75,6 +75,7 @@ export class TwelveQuestions {
      */
     data = {
         generated: false,
+        moduleBudget: 60000,
 
         // Narrative text fields for each question
         step1Narrative: "",
@@ -121,15 +122,14 @@ export class TwelveQuestions {
             selection: "",
         },
         step2: {
-            // Human: background key; T-Doll: discipline (item array)
+            // Human: background key; Doll: modules (item array, multi)
             selection: "",
-            discipline: [],
+            modules: [],
         },
         step3: {
-            // Human: discipline (item array); T-Doll: modules (item array)
+            // Human: discipline + starting technique; Doll: discipline (item array)
             discipline: [],
             startingTechnique: [],
-            modules: [],
         },
         step4: {
             // Advantage (item array, single)
@@ -283,11 +283,11 @@ export class TwelveQuestions {
             errors.push("Select a background");
         }
 
-        // Discipline required
-        if ((isHuman || isTranshuman) && this.data.step3.discipline.length === 0) {
+        // Discipline required (human: step3, doll: step3)
+        if (isHuman && this.data.step3.discipline.length === 0) {
             errors.push("Select a discipline");
         }
-        if (!isHuman && !isTranshuman && this.data.step2.discipline.length === 0) {
+        if (!isHuman && this.data.step3.discipline.length === 0) {
             errors.push("Select a weapon discipline");
         }
 
@@ -300,6 +300,8 @@ export class TwelveQuestions {
         if (!this.data.step11.name) {
             errors.push("Enter a character name");
         }
+
+        // Doll module budget validation (validate at generate time with cache)
 
         // Summary of approach assignments
         const summary = {};
@@ -409,8 +411,8 @@ export class TwelveQuestions {
         } else {
             await generator.applyDollBuild({
                 frameKey: this.data.step1.selection,
-                disciplineUuid: this._getFirstItemUuid(cache, "step2.discipline"),
-                moduleUuids: this._getItemUuids(cache, "step3.modules"),
+                disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
+                moduleUuids: this._getItemUuids(cache, "step2.modules"),
                 advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),
                 disadvantageUuid: this._getFirstItemUuid(cache, "step5.disadvantage"),
                 passionUuid: this._getFirstItemUuid(cache, "step6.passion"),

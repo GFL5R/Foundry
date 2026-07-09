@@ -203,25 +203,15 @@ export class TwelveQuestionsDialog extends FormApplication {
      * Validate that a dropped item is the correct type for the step.
      */
     _validateDropType(stepKey, item) {
-        // Discipline drop zones
-        if (stepKey === "step3.discipline" || stepKey === "step2.discipline") {
+        // Discipline drop zone (human step3, doll step3)
+        if (stepKey === "step3.discipline") {
             if (item.type !== "discipline") return { allowed: false };
-
-            // T-Doll weapon discipline validation: only weapon-named disciplines
-            if (stepKey === "step2.discipline") {
-                const weaponNames = [
-                    "Knives", "Swords", "Pistols", "Submachine Guns",
-                    "Shotguns", "Assault Rifles", "Battle Rifles", "Snipers", "Machine Guns",
-                ];
-                if (!weaponNames.includes(item.name)) {
-                    return {
-                        allowed: false,
-                        message: game.i18n.localize("gfl5r.twelve_questions.errors.weapon_discipline_only"),
-                    };
-                }
-            }
-
             return { allowed: true };
+        }
+
+        // Module drop zone (doll step2)
+        if (stepKey === "step2.modules") {
+            return { allowed: item.type === "module" };
         }
 
         // Human starting technique drop zone (requires selected discipline)
@@ -241,11 +231,6 @@ export class TwelveQuestionsDialog extends FormApplication {
                 disciplineItem,
                 currentRank: 1,
             });
-        }
-
-        // Module drop zone (T-Doll / transhuman)
-        if (stepKey === "step3.modules") {
-            return { allowed: item.type === "module" };
         }
 
         // Narrative drop zones
@@ -311,7 +296,7 @@ export class TwelveQuestionsDialog extends FormApplication {
 
         // For single-item slots, replace; for multi-item slots, append
         const singleSlots = [
-            "step3.discipline", "step2.discipline",
+            "step3.discipline",
             "step3.startingTechnique",
             "step4.advantage", "step5.disadvantage",
             "step6.passion", "step7.anxiety",
@@ -327,8 +312,23 @@ export class TwelveQuestionsDialog extends FormApplication {
                 foundry.utils.setProperty(this.data, "step3.startingTechnique", []);
                 foundry.utils.setProperty(this.cache, "step3.startingTechnique", []);
             }
+        } else if (stepKey === "step2.modules") {
+            // Multi-slot modules with budget check
+            const moduleCost = parseInt(item.system?.cost || item.cost) || 0;
+            const currentBudget = this.data.moduleBudget;
+            if (currentBudget - moduleCost < 0) {
+                ui.notifications?.warn(`Not enough URNC! This module costs ${moduleCost} URNC, but only ${currentBudget} URNC remains.`);
+                return;
+            }
+            if (!list.includes(itemRef)) {
+                list.push(itemRef);
+                this.data.moduleBudget = currentBudget - moduleCost;
+                const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
+                cached.push(item);
+                foundry.utils.setProperty(this.cache, stepKey, cached);
+            }
         } else {
-            // Multi-slot (modules)
+            // Multi-slot (other)
             if (!list.includes(itemRef)) {
                 list.push(itemRef);
                 const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
@@ -346,7 +346,18 @@ export class TwelveQuestionsDialog extends FormApplication {
         if (!Array.isArray(list)) return;
 
         const idx = list.findIndex(ref => ref === itemId || ref.endsWith?.(itemId));
-        if (idx >= 0) list.splice(idx, 1);
+        if (idx < 0) return;
+
+        // Refund module budget if deleting from step2.modules
+        if (stepKey === "step2.modules") {
+            const cached = foundry.utils.getProperty(this.cache, stepKey);
+            if (Array.isArray(cached) && cached[idx]) {
+                const moduleCost = parseInt(cached[idx].system?.cost) || 0;
+                this.data.moduleBudget = (this.data.moduleBudget || 60000) + moduleCost;
+            }
+        }
+
+        list.splice(idx, 1);
 
         const cached = foundry.utils.getProperty(this.cache, stepKey);
         if (Array.isArray(cached)) {
@@ -364,10 +375,9 @@ export class TwelveQuestionsDialog extends FormApplication {
         this.cache = {};
 
         const itemArrayKeys = [
-            "step2.discipline",
+            "step2.modules",
             "step3.discipline",
             "step3.startingTechnique",
-            "step3.modules",
             "step4.advantage",
             "step5.disadvantage",
             "step6.passion",
