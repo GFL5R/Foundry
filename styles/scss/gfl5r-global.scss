@@ -89,11 +89,34 @@ textarea {
     }
 }
 select {
-    background: rgba(255, 255, 255, 0.07);
+    background: $bg-panel;
     border: 1px solid $border-color;
     color: $white;
     border-radius: 2px;
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-family: $font-body;
+    font-size: 0.85rem;
+    cursor: url("../assets/cursors/pointer.webp"), pointer;
+    height: 1.75rem;
+    line-height: 1.4;
+    appearance: auto;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 6px $yellow-glow-strong;
+        border-color: $yellow-dim;
+    }
+
+    &[disabled] {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    option {
+        background: $bg-panel-alt;
+        color: $white;
+        padding: 0.15rem 0.3rem;
+    }
 }
 input[type="number"] {
     text-align: center;
