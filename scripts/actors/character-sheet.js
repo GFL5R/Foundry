@@ -400,21 +400,6 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
     _updateObject(event, formData) {
         const currentData = this.object.system;
 
-        const isHuman = this.actor.isHuman;
-        const isDoll = this.actor.isDoll;
-        if (isDoll) {
-            const frameKey = formData["system.identity.frame"] ?? currentData.identity?.frame;
-            const frame = TDOLL_FRAMES.find((f) => f.key === frameKey);
-            if (frame) {
-                formData["system.identity.manufacturer"] = frame.manufacturer;
-                formData["system.identity.model"] = frame.model;
-            }
-        } else if (isHuman) {
-            // Clear manufacturer/model for humans
-            formData["system.identity.manufacturer"] = "";
-            formData["system.identity.model"] = "";
-        }
-
         formData["system.focus"] = currentData.focus;
         formData["system.vigilance"] = currentData.vigilance;
         formData["system.endurance"] = currentData.endurance;

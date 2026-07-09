@@ -36,22 +36,6 @@
             {{/each}}
         </select>
     </div>
-    <div class="identity-field">
-        <span class="identity-field__label">{{localize 'gfl5r.identity.manufacturer'}}</span>
-        <input type="text" name="system.identity.manufacturer" value="{{data.system.identity.manufacturer}}" {{^if data.editable}}disabled{{/if}}/>
-    </div>
-    <div class="identity-field">
-        <span class="identity-field__label">{{localize 'gfl5r.identity.model'}}</span>
-        <input type="text" name="system.identity.model" value="{{data.system.identity.model}}" {{^if data.editable}}disabled{{/if}}/>
-    </div>
-    <div class="identity-field">
-        <span class="identity-field__label">{{localize 'gfl5r.identity.name_origin'}}</span>
-        <select name="system.identity.name_origin" {{^if data.editable}}disabled{{/if}}>
-            <option value="human" {{#ifCond data.system.identity.name_origin '==' 'human'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.name_origin_human'}}</option>
-            <option value="callsign" {{#ifCond data.system.identity.name_origin '==' 'callsign'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.name_origin_callsign'}}</option>
-            <option value="weapon" {{#ifCond data.system.identity.name_origin '==' 'weapon'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.name_origin_weapon'}}</option>
-            <option value="weird" {{#ifCond data.system.identity.name_origin '==' 'weird'}}selected{{/ifCond}}>{{localize 'gfl5r.identity.name_origin_weird'}}</option>
-        </select>
-    </div>
+
     {{/ifCond}}
 </div>
