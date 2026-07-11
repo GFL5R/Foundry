@@ -5,7 +5,7 @@
     "url": "https://github.com/GFL5R/Foundry",
     "manifest": "https://github.com/GFL5R/Foundry/releases/latest/download/system.json",
     "download": "https://github.com/GFL5R/Foundry/releases/download/v0.8.0/gfl5r.zip",
-    "version": "0.8.0"
+    "version": "0.8.0",
     "compatibility": {
         "minimum": "13",
         "verified": "14",
