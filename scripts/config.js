@@ -242,7 +242,7 @@ GFL5R.techniques.set("combat", { type: "core", displayInTypes: true });
 GFL5R.techniques.set("command", { type: "core", displayInTypes: true });
 GFL5R.techniques.set("conditioning", { type: "core", displayInTypes: true });
 GFL5R.techniques.set("electronic_warfare", { type: "core", displayInTypes: true });
-GFL5R.techniques.set("remolding", { type: "core", displayInTypes: true });
+GFL5R.techniques.set("remoulding", { type: "core", displayInTypes: true });
 GFL5R.techniques.set("science", { type: "core", displayInTypes: true });
 GFL5R.techniques.set("social", { type: "core", displayInTypes: true });
 GFL5R.techniques.set("street", { type: "core", displayInTypes: true });
@@ -324,7 +324,7 @@ GFL5R.symbols.set("(combat)", { class: "i_combat", label: "gfl5r.techniques.comb
 GFL5R.symbols.set("(command)", { class: "i_command", label: "gfl5r.techniques.command" });
 GFL5R.symbols.set("(conditioning)", { class: "i_conditioning", label: "gfl5r.techniques.conditioning" });
 GFL5R.symbols.set("(ew)", { class: "i_electronic_warfare", label: "gfl5r.techniques.electronic_warfare" });
-GFL5R.symbols.set("(remolding)", { class: "i_remolding", label: "gfl5r.techniques.remolding" });
+GFL5R.symbols.set("(remoulding)", { class: "i_remoulding", label: "gfl5r.techniques.remoulding" });
 GFL5R.symbols.set("(science)", { class: "i_science", label: "gfl5r.techniques.science" });
 GFL5R.symbols.set("(social)", { class: "i_social", label: "gfl5r.techniques.social" });
 GFL5R.symbols.set("(street)", { class: "i_street", label: "gfl5r.techniques.street" });

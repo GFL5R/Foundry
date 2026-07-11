@@ -1,5 +1,5 @@
 /**
- * L5R Dice Roll n Keep dialog
+ * GFL5R Dice Roll n Keep dialog
  * @extends {FormApplication}
  */
 export class RollnKeepDialog extends FormApplication {
@@ -626,13 +626,13 @@ export class RollnKeepDialog extends FormApplication {
                     }
                     return res;
                 });
-                term.l5rSummary();
+                term.gfl5rSummary();
             }
             return term;
         });
 
         // Recompute summary
-        roll.l5rSummary();
+        roll.gfl5rSummary();
 
         // Add roll & history to message
         this.roll = roll;

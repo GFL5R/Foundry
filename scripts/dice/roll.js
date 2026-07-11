@@ -6,7 +6,7 @@ export class RollGfl5r extends Roll {
     static TOOLTIP_TEMPLATE = "dice/tooltip.html";
 
     /**
-     * Specific data for L5R
+     * Specific data for GFL5R
      */
     gfl5r = {
         actor: null,
@@ -104,17 +104,17 @@ export class RollGfl5r extends Roll {
         }
 
         // Compute summary
-        this.l5rSummary();
+        this.gfl5rSummary();
 
         return this;
     }
 
     /**
-     * Summarise the total of success, strife... for L5R dices for the current roll
+     * Summarise the total of success, strife... for GFL5R dices for the current roll
      *
      * @private
      */
-    l5rSummary() {
+    gfl5rSummary() {
         const summary = this.gfl5r.summary;
 
         // Reset totals
@@ -124,11 +124,11 @@ export class RollGfl5r extends Roll {
         summary.strife = 0;
         summary.totalSuccess = 0;
 
-        // Current terms - L5R Summary
-        this.terms.forEach((term) => this._l5rTermSummary(term));
+        // Current terms - GFL5R Summary
+        this.terms.forEach((term) => this._gfl5rTermSummary(term));
 
-        // Check inner L5R rolls - L5R Summary
-        this._dice.forEach((term) => this._l5rTermSummary(term));
+        // Check inner GFL5R rolls - GFL5R Summary
+        this._dice.forEach((term) => this._gfl5rTermSummary(term));
 
         // Store final outputs
         this.gfl5r.dicesTypes.std = this.dice.some(
@@ -161,12 +161,12 @@ export class RollGfl5r extends Roll {
     }
 
     /**
-     * Summarise the total of success, strife... for L5R dices for the current term
+     * Summarise the total of success, strife... for GFL5R dices for the current term
      *
      * @param term
      * @private
      */
-    _l5rTermSummary(term) {
+    _gfl5rTermSummary(term) {
         if (!(term instanceof game.gfl5r.Gfl5rBaseDie)) {
             return;
         }
@@ -182,7 +182,7 @@ export class RollGfl5r extends Roll {
      * @override
      */
     get total() {
-        // Return null to trigger the L5R template.
+        // Return null to trigger the GFL5R template.
         // This beak inline roll, but as we need RnK to really resolve the roll, this is acceptable...
         if (this.gfl5r.dicesTypes.gfl5r) {
             return null;
@@ -199,7 +199,7 @@ export class RollGfl5r extends Roll {
             total = this._total;
         }
 
-        // Add L5R summary
+        // Add GFL5R summary
         // if (this.gfl5r.dicesTypes.gfl5r) {
         //     const summary = this.gfl5r.summary;
         //     total +=

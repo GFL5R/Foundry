@@ -5,12 +5,12 @@ export default class HooksGfl5r {
      * Do initialization
      */
     static async init() {
-        // L5R conditions
+        // GFL5R conditions
         if (game.settings.get(CONFIG.gfl5r.namespace, "show-all-status-effects")) {
-            // Add L5R conditions to foundry conditions (don't restrict users)
+            // Add GFL5R conditions to foundry conditions (don't restrict users)
             CONFIG.statusEffects.push(...CONFIG.gfl5r.conditions);
         } else {
-            // L5R conditions only
+            // GFL5R conditions only
             CONFIG.statusEffects = CONFIG.gfl5r.conditions;
         }
     }
@@ -285,7 +285,7 @@ export default class HooksGfl5r {
     }
 
     /**
-     * DiceSoNice - Add L5R DicePresets
+     * DiceSoNice - Add GFL5R DicePresets
      */
     static diceSoNiceReady(dice3d) {
         const texturePath = `${CONFIG.gfl5r.paths.assets}dices/default/3d/`;
@@ -295,10 +295,10 @@ export default class HooksGfl5r {
         //     name: "Legend of the Five Rings 5E"
         // }, "force");
 
-        // Rings
+        // Approaches
         dice3d.addDicePreset(
             {
-                name: "L5R Ring Dice",
+                name: "GFL5R Approach Dice",
                 type: "da",
                 labels: Object.keys(game.gfl5r.ApproachDie.FACES).map(
                     (e) => `${texturePath}${game.gfl5r.ApproachDie.FACES[e].image.replace("approach_", "")}.png`
@@ -315,12 +315,12 @@ export default class HooksGfl5r {
         // Skills
         dice3d.addDicePreset(
             {
-                name: "L5R Skill Dice",
+                name: "GFL5R Skill Dice",
                 type: "ds",
-                labels: Object.keys(game.gfl5r.AbilityDie.FACES).map(
+                labels: Object.keys(game.gfl5r.SkillDie.FACES).map(
                     (e) => `${texturePath}${game.gfl5r.AbilityDie.FACES[e].image.replace("skill_", "")}.png`
                 ),
-                bumpMaps: Object.keys(game.gfl5r.AbilityDie.FACES).map(
+                bumpMaps: Object.keys(game.gfl5r.SkillDie.FACES).map(
                     (e) => `${texturePath}${game.gfl5r.AbilityDie.FACES[e].image.replace("skill_", "")}_bm.png`
                 ),
                 colorset: "white",

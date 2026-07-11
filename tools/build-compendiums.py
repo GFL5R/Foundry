@@ -170,34 +170,60 @@ def adapt_techniques(webapp_data: dict) -> dict[str, dict]:
 
     Returns a dict mapping type-slug → {name: entry_data, …}.
 
-    Pseudo-entries with name "Activation:" are skipped.
-    Webapp entries have no `description` field; we use `activation` as a
-    plain-text substitute (the Foundry sheet can render it).
+    The webapp stores entries in **paired format**: every technique entry
+    (with flavor, rank, approach, skill) is immediately followed by an
+    "Activation:" pseudo-entry (with activation text and opportunities).
+    We pair them here, just as TechniquesPage.vue does.
     """
     result = {}
     for type_slug, entries in webapp_data.items():
         by_name = {}
-        for entry in entries:
-            if entry.get("name") == "Activation:":
-                continue  # pseudo-entry for opportunity lists
-            name = entry.get("name", "")
+        # Walk in pairs: technique + Activation: pseudo-entry
+        for i in range(0, len(entries), 2):
+            tech = entries[i]
+            act = entries[i + 1] if i + 1 < len(entries) else None
+
+            if tech.get("name") == "Activation:":
+                continue  # safety: skip if we land on one out of sync
+
+            name = tech.get("name", "")
             if not name:
                 continue
-            # Compose a minimal description from the activation text
-            activation_text = (entry.get("activation") or "").strip()
-            desc = f"<p>{activation_text}</p>" if activation_text else ""
+
+            # Activation text lives on the technique entry itself (e.g. remoulding
+            # techniques have their activation rules here). Opportunities live on the
+            # "Activation:" partner entry.
+            activation_text = (tech.get("activation") or "").strip()
+            opportunities = (act.get("opportunities") or []) if act else []
+            opportunities = [o for o in opportunities if o != "---"]
+
+            # Compose a rich description: flavor (as italic), then activation
+            # text (as a paragraph), then opportunities (as a list).
+            desc_parts = []
+            flavor = (tech.get("flavor") or "").strip()
+            if flavor:
+                desc_parts.append(f"<p><em>{flavor}</em></p>")
+            if activation_text:
+                # Convert newlines to <br> for Foundry HTML rendering
+                act_html = activation_text.replace("\n\n", "</p><p>").replace("\n", "<br>")
+                desc_parts.append(f"<p>{act_html}</p>")
+            if opportunities:
+                items = "".join(f"<li>{op}</li>" for op in opportunities)
+                desc_parts.append(f"<h3>Opportunities</h3><ul>{items}</ul>")
+
+            desc = "\n".join(desc_parts) if desc_parts else ""
 
             # Extract TN from activation text for difficulty
             m = _TN_RE.search(activation_text)
             difficulty = int(m.group(1)) if m else 0
 
             by_name[name] = {
-                "rank": entry.get("rank", 1),
-                "approach": entry.get("approach", ""),
-                "skill": entry.get("skill", ""),
-                "flavor": entry.get("flavor", ""),
+                "rank": tech.get("rank", 1),
+                "approach": tech.get("approach", ""),
+                "skill": tech.get("skill", ""),
+                "flavor": tech.get("flavor", ""),
                 "description": desc,
-                "activation": entry.get("activation", "passive"),
+                "activation": activation_text if activation_text else "passive",
                 "difficulty": difficulty,
             }
         if by_name:

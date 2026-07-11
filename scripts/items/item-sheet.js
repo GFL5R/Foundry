@@ -19,7 +19,7 @@ export class ItemSheetGfl5r extends BaseItemSheetGfl5r {
     async getData(options = {}) {
         const sheetData = await super.getData(options);
 
-        sheetData.data.ringsList = game.gfl5r.HelpersGfl5r.getRingsList();
+        sheetData.data.approachesList = game.gfl5r.HelpersGfl5r.getApproachesList();
 
         // Prepare Properties (id/name => object)
         await this._prepareProperties(sheetData);

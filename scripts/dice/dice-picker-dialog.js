@@ -1,5 +1,5 @@
 /**
- * L5R Dice picker dialog
+ * GFL5R Dice picker dialog
  * @extends {FormApplication}
  */
 export class DicePickerDialog extends FormApplication {
@@ -397,7 +397,7 @@ export class DicePickerDialog extends FormApplication {
     async getData(options = null) {
         return {
             ...(await super.getData(options)),
-            ringsList: game.gfl5r.HelpersGfl5r.getRingsList(this._actor),
+            approachesList: game.gfl5r.HelpersGfl5r.getApproachesList(this._actor),
             data: this.object,
             actor: this._actor,
             useCategory: this.useCategory,

@@ -236,7 +236,7 @@
             "command": "Command",
             "conditioning": "Conditioning",
             "electronic_warfare": "Electronic Warfare",
-            "remolding": "Remolding",
+            "remoulding": "Remoulding",
             "science": "Science",
             "social": "Social",
             "street": "Street",
@@ -350,7 +350,7 @@
                 "flash_training": "Flash Training",
                 "ew_augmentation": "EW Augmentation",
                 "frame_augmentation": "Frame Augmentation",
-                "remolding": "Remolding"
+                "remoulding": "Remoulding"
             }
         },
         "peculiarities": {

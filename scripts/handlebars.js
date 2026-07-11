@@ -112,7 +112,7 @@ export const RegisterHandlebars = function () {
 
     /**
      * Utility conditional, usable in nested expression
-     * {{#ifCond (ifCond advancement.type '==' 'technique') '||' (ifCond item.system.technique_type '==' 'kata')}}
+     * {{#ifCond (ifCond advancement.type '==' 'technique') '||' (ifCond item.system.technique_type '==' 'combat')}}
      * {{#ifCond '["distinction","passion"]' 'includes' item.system.peculiarity_type}}
      */
     Handlebars.registerHelper("ifCond", function (a, operator, b, options) {

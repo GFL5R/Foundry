@@ -1,5 +1,5 @@
 /**
- * L5R Socket Handler
+ * GFL5R Socket Handler
  */
 export class SocketHandlerGfl5r {
     /**

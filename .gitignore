@@ -17,3 +17,6 @@ Thumbs.db
 
 # Editor
 *.swp
+
+# CSS source maps
+*.css.map

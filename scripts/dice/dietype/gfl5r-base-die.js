@@ -93,7 +93,7 @@ export class Gfl5rBaseDie extends foundry.dice.terms.DiceTerm {
         this._evaluateModifiers();
 
         // Combine all results
-        this.l5rSummary();
+        this.gfl5rSummary();
 
         // Return the evaluated term
         this._evaluated = true;
@@ -103,9 +103,9 @@ export class Gfl5rBaseDie extends foundry.dice.terms.DiceTerm {
     }
 
     /**
-     * Summarise the total of success, strife... for L5R dices for the current Die
+     * Summarise the total of success, strife... for GFL5R dices for the current Die
      */
-    l5rSummary() {
+    gfl5rSummary() {
         this.gfl5r = { success: 0, explosive: 0, opportunity: 0, strife: 0 };
         this.results.forEach((term) => {
             const face = this.constructor.FACES[term.result];

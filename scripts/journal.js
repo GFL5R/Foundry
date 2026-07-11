@@ -1,5 +1,5 @@
 /**
- * Extends the JournalEntity to process special things from L5R.
+ * Extends the JournalEntity to process special things for GFL5R.
  */
 export class JournalGfl5r extends JournalEntry {
     /**

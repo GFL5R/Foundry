@@ -27,7 +27,7 @@ export class PeculiaritySheetGfl5r extends ItemSheetGfl5r {
         }));
 
         // Approaches list for the approach selector
-        sheetData.data.approachesList = game.gfl5r.HelpersGfl5r.getRingsList();
+        sheetData.data.approachesList = game.gfl5r.HelpersGfl5r.getApproachesList();
 
         return sheetData;
     }

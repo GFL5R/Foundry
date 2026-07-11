@@ -1,5 +1,5 @@
 /**
- * Extends the actor to process special things from L5R.
+ * Extends the actor to process special things for GFL5R.
  */
 export class CombatGfl5r extends Combat {
     // game.combat.settings.resource = "fatigue.value"; // nope :/
@@ -178,18 +178,18 @@ export class CombatGfl5r extends Combat {
      * @private
      */
     _sortCombatants(a, b) {
-        // if tie : sort by honor, less honorable first
+        // if tie: sort by fame, more famous first
         if (a.initiative === b.initiative) {
             // skip if no actor or if armies
             if (!a.actor || !b.actor || a.actor.isArmy || b.actor.isArmy) {
                 return 0;
             }
 
-            // if tie again : Character > Adversary > Minion
-            if (a.actor.system.social.honor === b.actor.system.social.honor) {
+            // if tie again: Character > Adversary > Minion
+            if (a.actor.system.social.fame === b.actor.system.social.fame) {
                 return CombatGfl5r._getWeightByActorType(a.actor) - CombatGfl5r._getWeightByActorType(b.actor);
             }
-            return a.actor.system.social.honor - b.actor.system.social.honor;
+            return b.actor.system.social.fame - a.actor.system.social.fame;
         }
         return b.initiative - a.initiative;
     }

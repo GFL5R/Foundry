@@ -17,7 +17,7 @@ export class BaseSheetGfl5r extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Add buttons to L5R specific bar
+     * Add buttons to GFL5R specific bar
      * @return {{label: string, class: string, icon: string, onclick: Function|null}[]}
      */
     _getGfl5rHeaderButtons() {

@@ -23,7 +23,7 @@ export class TechniqueSheetGfl5r extends ItemSheetGfl5r {
         }));
 
         // Approaches list for the approach selector
-        sheetData.data.approachesList = game.gfl5r.HelpersGfl5r.getRingsList();
+        sheetData.data.approachesList = game.gfl5r.HelpersGfl5r.getApproachesList();
 
         // Build display labels (read-only). Handles null, single value, or array.
         const toLabel = (val, list) => {

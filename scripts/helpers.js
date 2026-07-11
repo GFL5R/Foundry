@@ -1,15 +1,15 @@
 import { Gfl5rPopupManager } from './misc/gfl5r-popup-manager.js';
 
 /**
- * Extends the actor to process special things from L5R.
+ * Extends the actor to process special things for GFL5R.
  */
 export class HelpersGfl5r {
     /**
-     * Get Rings/Element for List / Select
+     * Get Approaches for List / Select
      * @param {Actor|null} actor
      * @return {{id: string, label: *, value}[]}
      */
-    static getRingsList(actor = null) {
+    static getApproachesList(actor = null) {
         return CONFIG.gfl5r.stances.map((e) => ({
             id: e,
             label: game.i18n.localize(`gfl5r.rings.${e}`),

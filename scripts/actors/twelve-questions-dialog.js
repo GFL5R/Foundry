@@ -88,7 +88,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             nationalities: HUMAN_NATIONALITIES,
             backgrounds: HUMAN_BACKGROUNDS,
             frames: TDOLL_FRAMES,
-            approachesList: game.gfl5r.HelpersGfl5r.getRingsList(),
+            approachesList: game.gfl5r.HelpersGfl5r.getApproachesList(),
             skillsList,
             skillsListFlat: game.gfl5r.HelpersGfl5r.getSkillsList(false),
             disciplineSkills,
