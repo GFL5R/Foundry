@@ -190,10 +190,13 @@ def adapt_techniques(webapp_data: dict) -> dict[str, dict]:
             if not name:
                 continue
 
-            # Activation text lives on the technique entry itself (e.g. remoulding
-            # techniques have their activation rules here). Opportunities live on the
-            # "Activation:" partner entry.
+            # Activation text lives on the "Activation:" partner entry for most
+            # technique types. Remoulding entries additionally carry their own copy on
+            # the technique entry; fall back to the partner's activation text when the
+            # technique entry's own field is empty.
             activation_text = (tech.get("activation") or "").strip()
+            if not activation_text and act:
+                activation_text = (act.get("activation") or "").strip()
             opportunities = (act.get("opportunities") or []) if act else []
             opportunities = [o for o in opportunities if o != "---"]
 
