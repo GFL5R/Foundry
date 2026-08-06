@@ -192,6 +192,14 @@
                     margin-bottom: 0.25rem;
                 }
             }
+            /* Quantity/weight/rarity/cost boxes (item-value.html) hold longer
+               values and get clipped at the default 2rem width; widen to ~3x. */
+            input[name="system.quantity"],
+            input[name="system.weight"],
+            input[name="system.rarity"],
+            input[name="system.price"] {
+                width: 6rem;
+            }
             input[name="system.zeni"] {
                 width: 7rem;
                 float: right;

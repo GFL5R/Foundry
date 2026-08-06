@@ -339,6 +339,7 @@
             "grip": "1-Handed",
             "threat": 0,
             "signature": 0,
+            "rarity": "common",
             "qualities": [],
             "price": 0,
             "equipped": false,
@@ -350,6 +351,7 @@
             "signature": 0,
             "protection": 0,
             "price": 0,
+            "rarity": "common",
             "equipped": false
         },
         "narrative": {
@@ -385,6 +387,7 @@
             "templates": ["basics"],
             "module_type": "Frame Augmentation",
             "cost": 0,
+            "price": 0,
             "approach": null,
             "skill": null,
             "modifies": {}

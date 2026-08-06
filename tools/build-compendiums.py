@@ -372,6 +372,7 @@ def build_weapon_item(name: str, data: dict) -> dict:
             "signature": data.get("signature", 0),
             "qualities": data.get("qualities", []),
             "price": data.get("price", 0),
+            "rarity": data.get("rarity", "common"),
             "equipped": False,
             "readied": False,
         },
@@ -501,6 +502,7 @@ def build_module_item(name: str, data: dict) -> dict:
             "description": data.get("description", ""),
             "module_type": data.get("type", "Frame Augmentation"),
             "cost": data.get("cost", 0),
+            "price": data.get("price", data.get("cost", 0)),
             "approach": _normalize_approach(data.get("approach") or ""),
             "skill": _normalize_skill(data.get("skill") or ""),
             "modifies": data.get("modifies", {}),
@@ -520,6 +522,7 @@ def build_armor_item(name: str, data: dict) -> dict:
             "signature": data.get("signature", 0),
             "protection": data.get("protection", 0),
             "price": data.get("price", data.get("cost", 0)),
+            "rarity": data.get("rarity", "common"),
             "equipped": False,
         },
     }
