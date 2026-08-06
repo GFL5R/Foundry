@@ -111,7 +111,7 @@
                     <li class="discipline-tech-entry">
                         <img src="{{tech.img}}" width="20" height="20" />
                         <span class="item-name gfl5r-tooltip {{#if tech.system.skill}}dice-picker-tech{{/if}}" data-item-id="{{tech.itemId}}">{{tech.name}}</span>
-                        {{#if ../../../data.editable}}
+                        {{#if ../../data.editable}}
                         <i class="discipline-tech-remove fas fa-times" data-tech-id="{{tech.itemId}}" title="{{localize 'gfl5r.disciplines.remove_technique'}}"></i>
                         {{/if}}
                     </li>

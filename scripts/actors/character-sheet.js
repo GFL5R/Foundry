@@ -774,7 +774,11 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
 
         const el = $(event.currentTarget);
         const slotKey = el.closest(".discipline-card").data("slot");
-        const techId = el.data("tech-id");
+        // Read the id from the DOM attribute directly. jQuery's .data() reads
+        // from its internal cache (populated lazily); a cloned/re-rendered node
+        // can miss that cache, making .data() return undefined. The DOM
+        // attribute is the source of truth and always reflects tech.itemId.
+        const techId = el.attr("data-tech-id") || el.data("tech-id");
         if (!slotKey || !techId) return;
 
         const slot = this.actor.system.disciplines?.[slotKey];
