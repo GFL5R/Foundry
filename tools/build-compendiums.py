@@ -612,7 +612,7 @@ def build_item(name: str, data: dict) -> dict:
             "description": data.get("description", ""),
             "quantity": 1,
             "weight": data.get("weight", 0),
-            "price": data.get("price", 0),
+            "price": data.get("price", data.get("cost", 0)),
             "rarity": data.get("rarity", "common"),
             "equipped": False,
         },
