@@ -188,6 +188,26 @@
                         {{/ifCond}}
                     </div>
 
+                    <h3>{{localize 'gfl5r.twelve_questions.starting_weapon_title'}}</h3>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.choose_starting_weapon'}}{{#if startingWeaponGrant}} {{localize 'gfl5r.twelve_questions.grant_default'}}: <strong>{{startingWeaponGrant.categoryLabel}}</strong> {{localize 'gfl5r.twelve_questions.up_to'}} <strong>{{startingWeaponGrant.maxPrice}}</strong> URNC.{{/if}} <em>{{localize 'gfl5r.twelve_questions.starting_weapon_note'}}</em></p>
+                    <div class="tq-drop-zone" data-step="step3.startingWeapon">
+                        <ul class="tq-item-list">
+                            {{#each cache.step3.startingWeapon}}
+                            <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                                <img src="{{this.img}}" width="24" height="24" />
+                                <span class="tq-item-name">{{this.name}}</span>
+                                <span class="tq-item-detail">{{this.system.category}}, {{this.system.price}} URNC</span>
+                                <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{#ifCond cache.step3.startingWeapon.length '<' 1}}
+                        <div class="tq-dropbox">
+                            <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_starting_weapon'}}
+                        </div>
+                        {{/ifCond}}
+                    </div>
+
                     <h3>{{localize 'gfl5r.twelve_questions.starting_technique_title'}}</h3>
                     <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.choose_starting_technique'}}</p>
                     <div class="tq-drop-zone" data-step="step3.startingTechnique">
@@ -233,6 +253,26 @@
                         {{#ifCond cache.step3.discipline.length '<' 1}}
                         <div class="tq-dropbox">
                             <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_discipline'}}
+                        </div>
+                        {{/ifCond}}
+                    </div>
+
+                    <h3>{{localize 'gfl5r.twelve_questions.starting_weapon_title'}}</h3>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.choose_starting_weapon'}}{{#if startingWeaponGrant}} {{localize 'gfl5r.twelve_questions.grant_default'}}: <strong>{{startingWeaponGrant.categoryLabel}}</strong> {{localize 'gfl5r.twelve_questions.up_to'}} <strong>{{startingWeaponGrant.maxPrice}}</strong> URNC.{{/if}} <em>{{localize 'gfl5r.twelve_questions.starting_weapon_note'}}</em></p>
+                    <div class="tq-drop-zone" data-step="step3.startingWeapon">
+                        <ul class="tq-item-list">
+                            {{#each cache.step3.startingWeapon}}
+                            <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                                <img src="{{this.img}}" width="24" height="24" />
+                                <span class="tq-item-name">{{this.name}}</span>
+                                <span class="tq-item-detail">{{this.system.category}}, {{this.system.price}} URNC</span>
+                                <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{#ifCond cache.step3.startingWeapon.length '<' 1}}
+                        <div class="tq-dropbox">
+                            <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.drop_starting_weapon'}}
                         </div>
                         {{/ifCond}}
                     </div>

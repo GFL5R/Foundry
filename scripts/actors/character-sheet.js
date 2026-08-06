@@ -317,9 +317,10 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
     }
 
     /**
-     * Cumulative XP cost to reach the given approach rank from the free baseline of 1.
+     * Cumulative XP cost to reach the given approach rank from rank 0.
      * Each rank N costs N × approachCostMultiplier, so cumulative = mult × N(N+1)/2.
-     * Subtract the cost of rank 1 (which is free) to get net XP spent.
+     * Callers subtract the character's free baseline (approaches_free, rank 1
+     * by default) so creation-granted ranks are never charged.
      * @param {number} rank
      * @returns {number}
      */
@@ -358,12 +359,15 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
                 CharacterSheetGfl5r.cumulativeSkillXp(free);
         }
 
-        // Include cumulative XP cost of all approach ranks above the free baseline of 1
+        // Include cumulative XP cost of all approach ranks above their free
+        // baseline (ranks granted at character creation; rank 1 if unrecorded)
         const approaches = sheetData.data.system.approaches || {};
-        for (const rank of Object.values(approaches)) {
+        const approachesFree = sheetData.data.system.approaches_free || {};
+        for (const [id, rank] of Object.entries(approaches)) {
+            const free = parseInt(approachesFree[id]) || 1;
             sheetData.data.system.xp_spent +=
                 CharacterSheetGfl5r.cumulativeApproachXp(parseInt(rank) || 1) -
-                CharacterSheetGfl5r.cumulativeApproachXp(1);
+                CharacterSheetGfl5r.cumulativeApproachXp(free);
         }
     }
 
@@ -505,9 +509,10 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
         if (!approachId || !mod) return;
 
         const currentRank = parseInt(this.actor.system.approaches?.[approachId]) || 1;
+        const freeRank = parseInt(this.actor.system.approaches_free?.[approachId]) || 1;
         const newRank = currentRank + mod;
 
-        if (newRank < 1 || newRank > 9) return;
+        if (newRank < freeRank || newRank > 9) return;
 
         // XP check when incrementing
         if (mod > 0) {

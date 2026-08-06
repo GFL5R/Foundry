@@ -341,6 +341,7 @@ GFL5R.weaponCategories.set("AR", { label: "gfl5r.weapons.categories.ar", skill: 
 GFL5R.weaponCategories.set("BR", { label: "gfl5r.weapons.categories.br", skill: "firearms" });
 GFL5R.weaponCategories.set("RF", { label: "gfl5r.weapons.categories.rf", skill: "firearms" });
 GFL5R.weaponCategories.set("MG", { label: "gfl5r.weapons.categories.mg", skill: "firearms" });
+GFL5R.weaponCategories.set("SHD", { label: "gfl5r.weapons.categories.shd", skill: "exotic_weapons" });
 
 // *** Weapon Qualities ***
 GFL5R.weaponQualities = [

@@ -59,7 +59,9 @@ export const BACKGROUND_GEAR = {
 }
 
 // ---------------------------------------------------------------------------
-// Discipline → { category: string, maxPrice: number } | null
+// Discipline → { category: string, maxPrice: number }
+// Fallback only: the canonical grant lives on the discipline item itself
+// (system.starting_weapon). Used when the item carries no grant data.
 // ---------------------------------------------------------------------------
 export const DISCIPLINE_WEAPON_GRANTS = {
   // Commander disciplines
@@ -71,7 +73,7 @@ export const DISCIPLINE_WEAPON_GRANTS = {
   "Commander":          { category: "HG",  maxPrice: 1700 },
   "Black Hat":          { category: "HG",  maxPrice: 1700 },
   "Spider":             { category: "HG",  maxPrice: 1700 },
-  "Knuckle Dragger":    null,
+  "Knuckle Dragger":    { category: "HG",  maxPrice: 1700 },
   "Analyst":            { category: "HG",  maxPrice: 1700 },
   "Field Medic":        { category: "HG",  maxPrice: 1700 },
   "Grease Monkey":      { category: "HG",  maxPrice: 1700 },

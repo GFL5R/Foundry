@@ -47,6 +47,7 @@ export class TwelveQuestions {
         human: [
             "step3.discipline",
             "step3.startingTechnique",
+            "step3.startingWeapon",
             "step4.advantage",
             "step5.disadvantage",
             "step6.passion",
@@ -55,6 +56,7 @@ export class TwelveQuestions {
         tdoll: [
             "step2.modules",
             "step3.discipline",
+            "step3.startingWeapon",
             "step3.techniques",
             "step4.advantage",
             "step5.disadvantage",
@@ -64,6 +66,7 @@ export class TwelveQuestions {
         transhuman: [
             "step3.discipline",
             "step3.startingTechnique",
+            "step3.startingWeapon",
             "step4.advantage",
             "step5.disadvantage",
             "step6.passion",
@@ -130,8 +133,11 @@ export class TwelveQuestions {
         },
         step3: {
             // Human: discipline + starting technique; Doll: discipline + techniques + skill XP
+            // startingWeapon: optional dropped weapon (both types); empty means
+            // the discipline's default weapon grant is used.
             discipline: [],
             startingTechnique: [],
+            startingWeapon: [],
             techniques: [],
             xpBudget: 16,
             xpSpent: 0,
@@ -357,6 +363,7 @@ export class TwelveQuestions {
                 backgroundKey: this.data.step2.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
                 startingTechniqueUuid: this._getFirstItemUuid(cache, "step3.startingTechnique"),
+                startingWeaponUuid: this._getFirstItemUuid(cache, "step3.startingWeapon"),
                 advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),
                 disadvantageUuid: this._getFirstItemUuid(cache, "step5.disadvantage"),
                 passionUuid: this._getFirstItemUuid(cache, "step6.passion"),
@@ -388,6 +395,7 @@ export class TwelveQuestions {
                 backgroundKey: this.data.step2.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
                 startingTechniqueUuid: this._getFirstItemUuid(cache, "step3.startingTechnique"),
+                startingWeaponUuid: this._getFirstItemUuid(cache, "step3.startingWeapon"),
                 advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),
                 disadvantageUuid: this._getFirstItemUuid(cache, "step5.disadvantage"),
                 passionUuid: this._getFirstItemUuid(cache, "step6.passion"),
@@ -415,6 +423,7 @@ export class TwelveQuestions {
             await generator.applyDollBuild({
                 frameKey: this.data.step1.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
+                startingWeaponUuid: this._getFirstItemUuid(cache, "step3.startingWeapon"),
                 techniqueUuids: this._getItemUuids(cache, "step3.techniques"),
                 moduleUuids: this._getItemUuids(cache, "step2.modules"),
                 advantageUuid: this._getFirstItemUuid(cache, "step4.advantage"),

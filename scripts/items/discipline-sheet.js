@@ -41,6 +41,12 @@ export class DisciplineSheetGfl5r extends BaseItemSheetGfl5r {
             .sort(([a], [b]) => Number(a) - Number(b))
             .map(([rank, techs]) => ({ rank: Number(rank), techniques: techs }));
 
+        // Weapon category options for the starting weapon grant
+        sheetData.data.weaponCategories = Array.from(CONFIG.gfl5r.weaponCategories.entries()).map(([id, info]) => ({
+            id,
+            label: game.i18n.localize(info.label),
+        }));
+
         return sheetData;
     }
 }

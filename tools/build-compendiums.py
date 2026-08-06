@@ -477,6 +477,10 @@ def build_discipline_item(name: str, data: dict, perks: dict, capstones: dict, a
             "flavor": data.get("flavor", ""),
             "description": "",
             "associated_skills": data.get("skills", []),
+            "starting_weapon": {
+                "category": data.get("starting_weapon", {}).get("category", ""),
+                "max_price": data.get("starting_weapon", {}).get("max_price", 0),
+            },
             "perk": {
                 "name": perk_name,
                 "flavor": perk_data.get("flavor", ""),

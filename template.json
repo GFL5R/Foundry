@@ -9,6 +9,13 @@
                     "swiftness": 1,
                     "resilience": 1,
                     "fortune": 1
+                },
+                "approaches_free": {
+                    "power": 1,
+                    "precision": 1,
+                    "swiftness": 1,
+                    "resilience": 1,
+                    "fortune": 1
                 }
             },
             "social": {
@@ -371,6 +378,10 @@
         "discipline": {
             "templates": ["basics"],
             "associated_skills": [],
+            "starting_weapon": {
+                "category": "",
+                "max_price": 0
+            },
             "perk": {
                 "name": "",
                 "flavor": "",

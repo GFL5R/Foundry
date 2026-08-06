@@ -1,5 +1,6 @@
 import { TwelveQuestions } from "./twelve-questions.js";
 import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, TDOLL_FRAMES } from "./character-builder-data.js";
+import { DISCIPLINE_WEAPON_GRANTS } from "./starting-equipment.js";
 
 /**
  * GFL5R Twelve Questions Dialog
@@ -94,6 +95,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             skillsListFlat: game.gfl5r.HelpersGfl5r.getSkillsList(false),
             q4Skills,
             disciplineSkills,
+            startingWeaponGrant: this._computeStartingWeaponGrant(),
             xpRemaining: (this.data?.step3?.xpBudget || 16) - (this.data?.step3?.xpSpent || 0),
         };
     }
@@ -351,6 +353,21 @@ export class TwelveQuestionsDialog extends FormApplication {
             return { allowed: item.type === "module" };
         }
 
+        // Starting weapon drop zone (optional, both character types)
+        if (stepKey === "step3.startingWeapon") {
+            if (item.type !== "weaponry") return { allowed: false };
+
+            const disciplineItem = foundry.utils.getProperty(this.cache, "step3.discipline")?.[0] || null;
+            if (!disciplineItem) {
+                return {
+                    allowed: false,
+                    message: game.i18n.localize("gfl5r.disciplines.warning.assign_discipline_first"),
+                };
+            }
+
+            return this._validateWeaponForDiscipline({ weaponItem: item, disciplineItem });
+        }
+
         // Human starting technique drop zone (requires selected discipline)
         if (stepKey === "step3.startingTechnique") {
             if (item.type !== "technique") return { allowed: false };
@@ -455,6 +472,67 @@ export class TwelveQuestionsDialog extends FormApplication {
     }
 
     /**
+     * Resolve the starting-weapon grant of the selected discipline:
+     * the item's own starting_weapon data first, then the legacy
+     * DISCIPLINE_WEAPON_GRANTS lookup by name.
+     * @returns {{ category: string, categoryLabel: string, maxPrice: number } | null}
+     */
+    _computeStartingWeaponGrant() {
+        const disciplineItem = foundry.utils.getProperty(this.cache, "step3.discipline")?.[0];
+        if (!disciplineItem) return null;
+
+        let grant = disciplineItem.system?.starting_weapon;
+        if (!grant?.category) grant = DISCIPLINE_WEAPON_GRANTS[disciplineItem.name] || null;
+        if (!grant?.category) return null;
+
+        const catInfo = CONFIG.gfl5r.weaponCategories.get(grant.category);
+        return {
+            category: grant.category,
+            categoryLabel: catInfo ? game.i18n.localize(catInfo.label) : grant.category,
+            maxPrice: parseInt(grant.max_price ?? grant.maxPrice) || 0,
+        };
+    }
+
+    /**
+     * Validate a dropped weapon against the selected discipline's grant
+     * (category must match, price must fit the budget).
+     */
+    _validateWeaponForDiscipline({ weaponItem, disciplineItem }) {
+        let grant = disciplineItem.system?.starting_weapon;
+        if (!grant?.category) grant = DISCIPLINE_WEAPON_GRANTS[disciplineItem.name] || null;
+        if (!grant?.category) return { allowed: true };
+
+        if (weaponItem.system?.category !== grant.category) {
+            const catInfo = CONFIG.gfl5r.weaponCategories.get(grant.category);
+            const categoryLabel = catInfo ? game.i18n.localize(catInfo.label) : grant.category;
+            return {
+                allowed: false,
+                message: game.i18n.format("gfl5r.disciplines.warning.weapon_wrong_category", {
+                    weapon: weaponItem.name,
+                    discipline: disciplineItem.name,
+                    category: categoryLabel,
+                }),
+            };
+        }
+
+        const price = parseInt(weaponItem.system?.price) || 0;
+        const maxPrice = parseInt(grant.max_price ?? grant.maxPrice) || 0;
+        if (maxPrice > 0 && price > maxPrice) {
+            return {
+                allowed: false,
+                message: game.i18n.format("gfl5r.disciplines.warning.weapon_over_budget", {
+                    weapon: weaponItem.name,
+                    discipline: disciplineItem.name,
+                    price,
+                    maxPrice,
+                }),
+            };
+        }
+
+        return { allowed: true };
+    }
+
+    /**
      * Add an item to the data and cache.
      */
     _addOwnedItem(item, stepKey) {
@@ -468,6 +546,7 @@ export class TwelveQuestionsDialog extends FormApplication {
         const singleSlots = [
             "step3.discipline",
             "step3.startingTechnique",
+            "step3.startingWeapon",
             "step4.advantage", "step5.disadvantage",
             "step6.passion", "step7.anxiety",
         ];
@@ -481,6 +560,8 @@ export class TwelveQuestionsDialog extends FormApplication {
             if (stepKey === "step3.discipline") {
                 foundry.utils.setProperty(this.data, "step3.startingTechnique", []);
                 foundry.utils.setProperty(this.cache, "step3.startingTechnique", []);
+                foundry.utils.setProperty(this.data, "step3.startingWeapon", []);
+                foundry.utils.setProperty(this.cache, "step3.startingWeapon", []);
                 foundry.utils.setProperty(this.data, "step3.techniques", []);
                 foundry.utils.setProperty(this.cache, "step3.techniques", []);
                 foundry.utils.setProperty(this.data, "step3.xpSpent", 0);
@@ -583,6 +664,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             "step2.modules",
             "step3.discipline",
             "step3.startingTechnique",
+            "step3.startingWeapon",
             "step3.techniques",
             "step4.advantage",
             "step5.disadvantage",

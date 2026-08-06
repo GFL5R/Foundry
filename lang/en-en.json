@@ -214,6 +214,8 @@
             "perk": "Perk",
             "capstone": "Capstone",
             "associated_skills": "Associated Skills",
+            "starting_weapon": "Starting Weapon",
+            "starting_weapon_note": "Character creation only. Picking up additional disciplines during play does not grant additional weapons.",
             "techniques": "Techniques",
             "xp_to_rank": "XP to Rank",
             "remove_technique": "Remove from discipline",
@@ -226,7 +228,9 @@
             "warning": {
                 "assign_discipline_first": "Assign a discipline before adding techniques.",
                 "invalid_technique_for_discipline": "{technique} is not a valid technique for the {discipline} discipline.",
-                "rank_requirement_not_met": "{technique} requires discipline rank {requiredRank}. Current rank: {currentRank}."
+                "rank_requirement_not_met": "{technique} requires discipline rank {requiredRank}. Current rank: {currentRank}.",
+                "weapon_wrong_category": "{weapon} does not fit the {discipline} weapon grant. Choose a weapon from the {category} category.",
+                "weapon_over_budget": "{weapon} costs {price} URNC, above the {discipline} weapon budget of {maxPrice} URNC."
             }
         },
         "techniques": {
@@ -316,7 +320,8 @@
                 "ar": "Assault Rifles",
                 "br": "Battle Rifles",
                 "rf": "Rifles",
-                "mg": "Machine Guns"
+                "mg": "Machine Guns",
+                "shd": "Shields"
             }
         },
         "armor": {
@@ -614,6 +619,12 @@
             "drop_discipline": "Drop a discipline here",
             "starting_technique_title": "Starting Technique (Rank 1)",
             "drop_starting_technique": "Drop a starting technique here",
+            "starting_weapon_title": "Starting Weapon (Optional)",
+            "choose_starting_weapon": "Drop a weapon to choose what you carry into your first mission, or leave this empty to take your discipline's default.",
+            "drop_starting_weapon": "Drop a starting weapon here",
+            "grant_default": "Discipline grant",
+            "up_to": "up to",
+            "starting_weapon_note": "Character creation only. Picking up additional disciplines during play does not grant additional weapons.",
             "drop_module": "Drop a module here",
             "drop_advantage": "Drop an advantage here",
             "drop_disadvantage": "Drop a disadvantage here",

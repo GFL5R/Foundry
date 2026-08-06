@@ -28,6 +28,7 @@ export class CharacterGenerator {
     async applyHumanBuild({
         isTranshuman = false,
         nationalityKey, backgroundKey, disciplineUuid, startingTechniqueUuid = "",
+        startingWeaponUuid = "",
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
@@ -108,7 +109,10 @@ export class CharacterGenerator {
         // Grant starting equipment
         await this._grantNationalityGear(nationalityKey);
         await this._grantBackgroundGear(backgroundKey);
-        await this._grantDisciplineWeapon(disciplineResult?.label || "");
+        await this._grantDisciplineWeapon({
+            disciplineItem: disciplineResult?.disciplineItem || null,
+            startingWeaponUuid,
+        });
 
         // Update actor
         const updates = {
@@ -122,6 +126,9 @@ export class CharacterGenerator {
         };
         for (const [k, v] of Object.entries(approaches)) {
             updates[`system.approaches.${k}`] = v;
+            // Creation-granted approach ranks are free; record the baseline
+            // so they are not counted as spent XP.
+            updates[`system.approaches_free.${k}`] = v;
         }
         // Reset all skill_free baselines, then set the granted ones
         for (const k of Object.keys(this.actor.system.skills_free || {})) {
@@ -152,6 +159,7 @@ export class CharacterGenerator {
      */
     async applyTranshumanBuild({
         nationalityKey, backgroundKey, disciplineUuid, startingTechniqueUuid = "",
+        startingWeaponUuid = "",
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
@@ -200,6 +208,14 @@ export class CharacterGenerator {
             ensureSkill(q4BonusSkill, 1);
         }
 
+        // View of Dolls bonus
+        let humanityBonus = 0;
+        if (viewOfDolls === "favor") {
+            humanityBonus = 5;
+        } else if (viewOfDolls === "tools" && viewDollsSkill && viewDollsSkill !== "none") {
+            ensureSkill(viewDollsSkill, 1);
+        }
+
         // Apply discipline
         const disciplineResult = await this._applyDiscipline(disciplineUuid);
         if (disciplineResult.associatedSkills) {
@@ -224,7 +240,10 @@ export class CharacterGenerator {
         // Grant starting equipment
         await this._grantNationalityGear(nationalityKey);
         await this._grantBackgroundGear(backgroundKey);
-        await this._grantDisciplineWeapon(disciplineResult?.label || "");
+        await this._grantDisciplineWeapon({
+            disciplineItem: disciplineResult?.disciplineItem || null,
+            startingWeaponUuid,
+        });
 
         // Update actor
         const updates = {
@@ -238,6 +257,9 @@ export class CharacterGenerator {
         };
         for (const [k, v] of Object.entries(approaches)) {
             updates[`system.approaches.${k}`] = v;
+            // Creation-granted approach ranks are free; record the baseline
+            // so they are not counted as spent XP.
+            updates[`system.approaches_free.${k}`] = v;
         }
         // Reset all skill_free baselines, then set the granted ones
         for (const k of Object.keys(this.actor.system.skills_free || {})) {
@@ -265,7 +287,7 @@ export class CharacterGenerator {
      * Apply T-Doll character creation to the actor
      */
     async applyDollBuild({
-        frameKey, disciplineUuid, techniqueUuids = [], moduleUuids = [],
+        frameKey, disciplineUuid, startingWeaponUuid = "", techniqueUuids = [], moduleUuids = [],
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         nameOrigin = "human",
         goal = "", storyEnd = "", name = "", metCommander = "",
@@ -386,7 +408,10 @@ export class CharacterGenerator {
         await this._createNarrativeItem(anxietyUuid, "anxiety");
 
         // Grant starting equipment (T-Dolls get discipline weapon only)
-        await this._grantDisciplineWeapon(disciplineResult?.label || "");
+        await this._grantDisciplineWeapon({
+            disciplineItem: disciplineResult?.disciplineItem || null,
+            startingWeaponUuid,
+        });
 
         // Update actor
         const updates = {
@@ -403,6 +428,9 @@ export class CharacterGenerator {
         };
         for (const [k, v] of Object.entries(approaches)) {
             updates[`system.approaches.${k}`] = v;
+            // Frame and module approach ranks are free at creation; record
+            // the baseline so they are not counted as spent XP.
+            updates[`system.approaches_free.${k}`] = v;
         }
         // Reset all skill_free baselines, then set the granted ones
         for (const k of Object.keys(this.actor.system.skills_free || {})) {
@@ -733,12 +761,34 @@ export class CharacterGenerator {
     }
 
     /**
-     * Grant a weapon matching the discipline's grant (category + maxPrice).
-     * Searches the gfl5r-weapons compendium for the best fit.
+     * Grant the starting weapon: the player's dropped weapon if one was
+     * chosen at character creation, otherwise the best fit from the
+     * discipline's weapon grant (item data first, then the legacy name
+     * lookup). Every discipline grants a weapon, so no character finishes
+     * creation unarmed.
+     *
+     * @param {Object} options
+     * @param {Item|null} options.disciplineItem - The applied discipline item.
+     * @param {string} options.startingWeaponUuid - UUID of the weapon the player dropped.
      */
-    async _grantDisciplineWeapon(disciplineTitle) {
-        const grant = DISCIPLINE_WEAPON_GRANTS[disciplineTitle];
-        if (!grant) return;
+    async _grantDisciplineWeapon({ disciplineItem = null, startingWeaponUuid = "" }) {
+        let grant = disciplineItem?.system?.starting_weapon;
+        if (!grant?.category) grant = DISCIPLINE_WEAPON_GRANTS[disciplineItem?.name || ""] || null;
+        if (!grant?.category) grant = { category: "HG", maxPrice: 1700 };
+
+        // A player-chosen weapon wins (already validated against the grant
+        // when it was dropped).
+        if (startingWeaponUuid) {
+            try {
+                const weapon = await fromUuid(startingWeaponUuid);
+                if (weapon && weapon.type === "weaponry") {
+                    await this.actor.createEmbeddedDocuments("Item", [weapon.toObject()]);
+                    return;
+                }
+            } catch (err) {
+                console.warn("GFL5R | Failed to grant chosen starting weapon", startingWeaponUuid, err);
+            }
+        }
 
         try {
             const pack = game.packs.get("gfl5r.gfl5r-weapons");
@@ -752,12 +802,11 @@ export class CharacterGenerator {
             if (candidates.length) {
                 const doc = await pack.getDocument(candidates[0]._id);
                 if (doc) {
-                    const itemData = doc.toObject();
-                    await this.actor.createEmbeddedDocuments("Item", [itemData]);
+                    await this.actor.createEmbeddedDocuments("Item", [doc.toObject()]);
                 }
             }
         } catch (err) {
-            console.warn("GFL5R | Failed to grant discipline weapon", disciplineTitle, err);
+            console.warn("GFL5R | Failed to grant discipline weapon", disciplineItem?.name, err);
         }
     }
 
