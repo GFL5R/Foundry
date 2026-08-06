@@ -54,7 +54,7 @@
                     <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.human.q1.narrative'}}</em></p>
                     <div class="form-group">
                         <div class="form-fields">
-                            <textarea name="step1Narrative" rows="3" placeholder="Describe your childhood...">{{data.step1Narrative}}</textarea>
+                            <textarea name="step1Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_childhood'}}">{{data.step1Narrative}}</textarea>
                         </div>
                     </div>
 
@@ -76,7 +76,7 @@
                     <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.human.q2.narrative'}}</em></p>
                     <div class="form-group">
                         <div class="form-fields">
-                            <textarea name="step2Narrative" rows="3" placeholder="Describe your professional history...">{{data.step2Narrative}}</textarea>
+                            <textarea name="step2Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_professional_history'}}">{{data.step2Narrative}}</textarea>
                         </div>
                     </div>
 
@@ -98,7 +98,7 @@
                     <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.tdoll.q1.narrative'}}</em></p>
                     <div class="form-group">
                         <div class="form-fields">
-                            <textarea name="step1Narrative" rows="3" placeholder="Describe your first awakening...">{{data.step1Narrative}}</textarea>
+                            <textarea name="step1Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_first_awakening'}}">{{data.step1Narrative}}</textarea>
                         </div>
                     </div>
 
@@ -152,7 +152,7 @@
                     <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.tdoll.q2.narrative'}}</em></p>
                     <div class="form-group">
                         <div class="form-fields">
-                            <textarea name="step2Narrative" rows="3" placeholder="Describe the situations that led to your current spec sheet...">{{data.step2Narrative}}</textarea>
+                            <textarea name="step2Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_spec_sheet'}}">{{data.step2Narrative}}</textarea>
                         </div>
                     </div>
                 {{/if}}
@@ -189,7 +189,7 @@
                     </div>
 
                     <h3>{{localize 'gfl5r.twelve_questions.starting_technique_title'}}</h3>
-                    <p class="tq-flavor">Choose one starting technique from your selected discipline.</p>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.choose_starting_technique'}}</p>
                     <div class="tq-drop-zone" data-step="step3.startingTechnique">
                         <ul class="tq-item-list">
                             {{#each cache.step3.startingTechnique}}
@@ -210,7 +210,7 @@
                     <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.human.q3.narrative'}}</em></p>
                     <div class="form-group">
                         <div class="form-fields">
-                            <textarea name="step3Narrative" rows="3" placeholder="Describe your mentor...">{{data.step3Narrative}}</textarea>
+                            <textarea name="step3Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_mentor'}}">{{data.step3Narrative}}</textarea>
                         </div>
                     </div>
 
@@ -238,13 +238,13 @@
                     </div>
 
                     {{#if disciplineSkills.length}}
-                    <h3>Discipline Skills</h3>
-                    <p class="tq-flavor">Each discipline skill starts at Rank 1 for free. Spend XP to raise them further (cost = new rank &times; 2).</p>
+                    <h3>{{localize 'gfl5r.twelve_questions.discipline_skills'}}</h3>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.discipline_skills_hint'}}</p>
                     <div class="tq-skill-grid">
                         {{#each disciplineSkills}}
                         <div class="tq-skill-row">
                             <span class="tq-skill-name">{{this.name}}</span>
-                            <span class="tq-skill-rank">Rank {{this.totalRank}}</span>
+                            <span class="tq-skill-rank">{{localize 'gfl5r.twelve_questions.rank'}} {{this.totalRank}}</span>
                             <div class="tq-skill-controls">
                                 <button type="button" class="tq-skill-btn tq-skill-minus" data-skill="{{this.id}}" data-delta="-1" {{#unless this.canRemove}}disabled{{/unless}}><i class="fas fa-minus"></i></button>
                                 <button type="button" class="tq-skill-btn tq-skill-plus" data-skill="{{this.id}}" data-delta="+1" {{#unless this.canAfford}}disabled{{/unless}}><i class="fas fa-plus"></i></button>
@@ -256,8 +256,8 @@
                     {{/if}}
 
                     {{#if cache.step3.discipline.length}}
-                    <h3>Techniques <span class="tq-xp-cost">(3 XP each)</span></h3>
-                    <p class="tq-flavor">Drag techniques from your discipline here to learn them.</p>
+                    <h3>{{localize 'gfl5r.twelve_questions.techniques_xp'}}</h3>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.techniques_drag_hint'}}</p>
                     <div class="tq-drop-zone" data-step="step3.techniques">
                         <ul class="tq-item-list">
                             {{#each cache.step3.techniques}}
@@ -278,7 +278,7 @@
                     <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.tdoll.q3.narrative'}}</em></p>
                     <div class="form-group">
                         <div class="form-fields">
-                            <textarea name="step3Narrative" rows="3" placeholder="Describe your relationship with your weapon imprint...">{{data.step3Narrative}}</textarea>
+                            <textarea name="step3Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_weapon_imprint'}}">{{data.step3Narrative}}</textarea>
                         </div>
                     </div>
                 {{/if}}
@@ -297,14 +297,14 @@
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q4.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q4.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
                     <div class="form-fields">
-                        <textarea name="step4Narrative" rows="3" placeholder="Describe your reason to fight...">{{data.step4Narrative}}</textarea>
+                        <textarea name="step4Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_reason_to_fight'}}">{{data.step4Narrative}}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Bonus Skill (+1)</label>
+                    <label>{{localize 'gfl5r.twelve_questions.bonus_skill'}}</label>
                     <div class="form-fields">
                         <select name="step4.bonusSkill">
-                            <option value="none" {{#ifCond data.step4.bonusSkill '==' 'none'}}selected{{/ifCond}}>None</option>
+                            <option value="none" {{#ifCond data.step4.bonusSkill '==' 'none'}}selected{{/ifCond}}>{{localize 'gfl5r.twelve_questions.option_none'}}</option>
                             {{#each q4Skills}}<option value="{{this.id}}" {{#ifCond ../data.step4.bonusSkill '==' this.id}}selected{{/ifCond}}>{{this.label}}</option>{{/each}}
                         </select>
                     </div>
@@ -315,13 +315,13 @@
                 <p class="tq-flavor">{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q5.flavor'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q5.flavor'}}{{/if}}</p>
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q5.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q5.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
-                    <div class="form-fields"><textarea name="step5Narrative" rows="3" placeholder="Describe your exit condition...">{{data.step5Narrative}}</textarea></div>
+                    <div class="form-fields"><textarea name="step5Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.placeholder_exit_condition'}}">{{data.step5Narrative}}</textarea></div>
                 </div>
                 <div class="form-group">
-                    <label>Bonus Approach (+1)</label>
+                    <label>{{localize 'gfl5r.twelve_questions.bonus_approach'}}</label>
                     <div class="form-fields">
                         <select name="step5.bonusApproach">
-                            <option value="none" {{#ifCond data.step5.bonusApproach '==' 'none'}}selected{{/ifCond}}>None</option>
+                            <option value="none" {{#ifCond data.step5.bonusApproach '==' 'none'}}selected{{/ifCond}}>{{localize 'gfl5r.twelve_questions.option_none'}}</option>
                             {{#each approachesList}}<option value="{{this.id}}" {{#ifCond ../data.step5.bonusApproach '==' this.id}}selected{{/ifCond}}>{{this.label}}</option>{{/each}}
                         </select>
                     </div>
@@ -372,7 +372,7 @@
                 {{/if}}
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q6.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q6.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
-                    <div class="form-fields"><textarea name="step6Narrative" rows="3" placeholder="{{#if isHuman}}Describe your relationship to Dolls...{{else}}Describe your relationship to humans...{{/if}}">{{data.step6Narrative}}</textarea></div>
+                    <div class="form-fields"><textarea name="step6Narrative" rows="3" placeholder="{{#if isHuman}}{{localize 'gfl5r.twelve_questions.placeholder_rel_dolls'}}{{else}}{{localize 'gfl5r.twelve_questions.placeholder_rel_humans'}}{{/if}}">{{data.step6Narrative}}</textarea></div>
                 </div>
                 <div class="tq-nav-buttons">
                     <button class="tq-prev" type="button"><i class="fas fa-arrow-left"></i> {{localize 'gfl5r.twelve_questions.prev'}}</button>
@@ -403,7 +403,7 @@
                 </div>
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q7.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q7.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
-                    <div class="form-fields"><textarea name="step7Narrative" rows="3" placeholder="{{#if isHuman}}Describe your defining moment...{{else}}Describe this achievement...{{/if}}">{{data.step7Narrative}}</textarea></div>
+                    <div class="form-fields"><textarea name="step7Narrative" rows="3" placeholder="{{#if isHuman}}{{localize 'gfl5r.twelve_questions.placeholder_defining_moment'}}{{else}}{{localize 'gfl5r.twelve_questions.placeholder_achievement'}}{{/if}}">{{data.step7Narrative}}</textarea></div>
                 </div>
                 {{!-- Q8: What holds you back? / What is your malfunction? → Disadvantage --}}
                 <h2>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q8.title'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q8.title'}}{{/if}}</h2>
@@ -414,7 +414,7 @@
                 </div>
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q8.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q8.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
-                    <div class="form-fields"><textarea name="step8Narrative" rows="3" placeholder="{{#if isHuman}}Describe your flaw...{{else}}Describe your malfunction...{{/if}}">{{data.step8Narrative}}</textarea></div>
+                    <div class="form-fields"><textarea name="step8Narrative" rows="3" placeholder="{{#if isHuman}}{{localize 'gfl5r.twelve_questions.placeholder_flaw'}}{{else}}{{localize 'gfl5r.twelve_questions.placeholder_malfunction'}}{{/if}}">{{data.step8Narrative}}</textarea></div>
                 </div>
 
                 {{!-- Q9: What gets you through the day? / What makes you different? → Passion --}}
@@ -426,7 +426,7 @@
                 </div>
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q9.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q9.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
-                    <div class="form-fields"><textarea name="step9Narrative" rows="3" placeholder="{{#if isHuman}}Describe what gets you through the day...{{else}}Describe what makes you different...{{/if}}">{{data.step9Narrative}}</textarea></div>
+                    <div class="form-fields"><textarea name="step9Narrative" rows="3" placeholder="{{#if isHuman}}{{localize 'gfl5r.twelve_questions.placeholder_through_day'}}{{else}}{{localize 'gfl5r.twelve_questions.placeholder_makes_different'}}{{/if}}">{{data.step9Narrative}}</textarea></div>
                 </div>
 
                 {{!-- Q10: What keeps you up at night? / What are you most afraid of? → Anxiety --}}
@@ -438,7 +438,7 @@
                 </div>
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q10.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q10.narrative'}}{{/if}}</em></p>
                 <div class="form-group">
-                    <div class="form-fields"><textarea name="step10Narrative" rows="3" placeholder="{{#if isHuman}}Describe what keeps you up at night...{{else}}Describe your deepest fear...{{/if}}">{{data.step10Narrative}}</textarea></div>
+                    <div class="form-fields"><textarea name="step10Narrative" rows="3" placeholder="{{#if isHuman}}{{localize 'gfl5r.twelve_questions.placeholder_night'}}{{else}}{{localize 'gfl5r.twelve_questions.placeholder_deepest_fear'}}{{/if}}">{{data.step10Narrative}}</textarea></div>
                 </div>
 
                 <div class="tq-nav-buttons">
