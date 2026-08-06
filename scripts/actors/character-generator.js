@@ -334,6 +334,18 @@ export class CharacterGenerator {
             }
         }
 
+        // Apply modules from Q3 (step2.modules): create module items and
+        // apply their approach/skill rank bonuses to the doll's stats.
+        if (moduleUuids && moduleUuids.length > 0) {
+            const { approachBonuses, skillBonuses } = await this._applyModules(moduleUuids);
+            for (const approachId of approachBonuses) {
+                approaches[approachId] = (approaches[approachId] || 0) + 1;
+            }
+            for (const skillId of skillBonuses) {
+                skills[skillId] = (skills[skillId] || 0) + 1;
+            }
+        }
+
         // Name origin bonuses
         let humanityBonus = 0;
         let fameBonus = 0;
@@ -545,6 +557,47 @@ export class CharacterGenerator {
         } catch (err) {
             console.warn("GFL5R | Failed to apply starting technique", startingTechniqueUuid, err);
         }
+    }
+
+    /**
+     * Create module items on the actor from their UUIDs and return the stat
+     * bonuses they confer.
+     *
+     * Each module contributes either an approach bonus (+1) or a skill bonus
+     * (+1), stored as `system.approach` / `system.skill` on the compiled item
+     * (normalized ids, e.g. "power" / "hand_to_hand").
+     *
+     * @param {string[]} moduleUuids - UUIDs of the selected modules.
+     * @returns {Promise<{approachBonuses: string[], skillBonuses: string[]}>}
+     */
+    async _applyModules(moduleUuids) {
+        const approachBonuses = [];
+        const skillBonuses = [];
+
+        for (const uuid of moduleUuids) {
+            if (!uuid) continue;
+
+            try {
+                const moduleItem = await fromUuid(uuid);
+                if (!moduleItem || moduleItem.type !== "module") {
+                    console.warn("GFL5R | Module UUID did not resolve to a module item", uuid);
+                    continue;
+                }
+
+                // Create the module item on the actor.
+                const itemData = moduleItem.toObject();
+                await this.actor.createEmbeddedDocuments("Item", [itemData]);
+
+                const approachId = moduleItem.system?.approach;
+                const skillId = moduleItem.system?.skill;
+                if (approachId) approachBonuses.push(String(approachId).toLowerCase());
+                if (skillId) skillBonuses.push(String(skillId).toLowerCase().replace(/[\s\-]+/g, "_"));
+            } catch (err) {
+                console.warn("GFL5R | Failed to apply module", uuid, err);
+            }
+        }
+
+        return { approachBonuses, skillBonuses };
     }
 
     /**
