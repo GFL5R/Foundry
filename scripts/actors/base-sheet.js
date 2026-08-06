@@ -153,18 +153,25 @@ export class BaseSheetGfl5r extends foundry.appv1.sheets.ActorSheet {
      * @return {Promise<void>}
      * @private
      */
-    async _createSubItem({ type }) {
+    async _createSubItem({ type, narrativeType = null }) {
         if (!type) {
             return;
         }
 
-        const created = await this.actor.createEmbeddedDocuments("Item", [
-            {
-                name: game.i18n.localize(`TYPES.Item.${type.toLowerCase()}`),
-                type: type,
-                img: `${CONFIG.gfl5r.paths.assets}icons/items/${type}.svg`,
-            },
-        ]);
+        const itemData = {
+            name: game.i18n.localize(`TYPES.Item.${type.toLowerCase()}`),
+            type: type,
+            img: `${CONFIG.gfl5r.paths.assets}icons/items/${type}.svg`,
+        };
+        // Narrative items (advantages/disadvantages/passions/anxieties) carry a
+        // narrative_type that decides which sheet box they render in. Set it
+        // explicitly from the add button so the item is categorized correctly
+        // instead of falling back to template.json's default ("advantage").
+        if (type === "narrative" && narrativeType) {
+            itemData.system = { narrative_type: narrativeType };
+        }
+
+        const created = await this.actor.createEmbeddedDocuments("Item", [itemData]);
         if (created?.length < 1) {
             return;
         }
@@ -187,7 +194,8 @@ export class BaseSheetGfl5r extends foundry.appv1.sheets.ActorSheet {
             return;
         }
 
-        return this._createSubItem({ type });
+        const narrativeType = $(event.currentTarget).data("narrative-type") || null;
+        return this._createSubItem({ type, narrativeType });
     }
 
     /**
