@@ -283,6 +283,11 @@ export class CharacterGenerator {
             return;
         }
 
+        // Total XP the player spent at character creation on skills and
+        // techniques for this discipline slot. Foundation drives this so the
+        // discipline's spent-XP / rank progress matches what was paid.
+        const { xpSpent } = this._computeDollCreationXp(skillPurchases, techniqueUuids || []);
+
         // Clear existing items
         const allItemIds = this.actor.items.map(i => i.id);
         if (allItemIds.length) await this.actor.deleteEmbeddedDocuments("Item", allItemIds);
@@ -400,6 +405,13 @@ export class CharacterGenerator {
         // Q4/Q5 stored for reference
         updates["system.twelve_questions.q4BonusSkill"] = q4BonusSkill;
         updates["system.twelve_questions.q5BonusApproach"] = q5BonusApproach;
+
+        // Reflect the skill/technique XP spent at creation in the discipline
+        // slot so rank progress and the spent-XP readout are correct.
+        updates["system.disciplines.slot1.xpSpent"] = xpSpent;
+        const { currentRank, ranksCompleted } = this._rankFromXp(xpSpent);
+        updates["system.disciplines.slot1.currentRank"] = currentRank;
+        updates["system.disciplines.slot1.ranksCompleted"] = ranksCompleted;
 
         await this.actor.update(updates);
         ui.notifications?.info("T-Doll character creation applied.");
@@ -557,6 +569,56 @@ export class CharacterGenerator {
         } catch (err) {
             console.warn("GFL5R | Failed to apply starting technique", startingTechniqueUuid, err);
         }
+    }
+
+    /**
+     * Compute the XP the player spent at T-Doll character creation on skills
+     * and techniques for their (single) discipline slot.
+     *
+     * Techniques cost a flat CONFIG.gfl5r.xp.techniqueCost (3) each. Skills are
+     * bought beyond the free +1 rank; buying the nth additional rank costs
+     * (n + 1) × CONFIG.gfl5r.xp.skillCostMultiplier, matching the live
+     * costing in the 12-questions dialog.
+     *
+     * @param {Object} skillPurchases - Map of skillId -> purchased ranks.
+     * @param {string[]} techniqueUuids - UUIDs of the chosen techniques.
+     * @returns {{ xpSpent: number }}
+     */
+    _computeDollCreationXp(skillPurchases, techniqueUuids) {
+        const techCost = CONFIG.gfl5r.xp.techniqueCost;
+        const skillMult = CONFIG.gfl5r.xp.skillCostMultiplier;
+        const purchasesBySkill = skillPurchases || {};
+
+        let skillXp = 0;
+        for (const [skillId, purchased] of Object.entries(purchasesBySkill)) {
+            const ranks = Math.max(0, parseInt(purchased) || 0);
+            // Buying rank n+1 (the (n)th bought) costs (n + 1) × multiplier.
+            for (let n = 1; n <= ranks; n++) {
+                skillXp += (n + 1) * skillMult;
+            }
+        }
+
+        const techniqueXp = ((techniqueUuids || []).length) * techCost;
+        return { xpSpent: skillXp + techniqueXp };
+    }
+
+    /**
+     * Derive {currentRank, ranksCompleted} from cumulative discipline XP,
+     * mirroring CharacterSheetGfl5r.computeRankProgress using the same
+     * cumulative thresholds [16, 36, 60].
+     *
+     * @param {number} xpSpent - Cumulative XP spent in the slot.
+     * @returns {{ currentRank: number, ranksCompleted: number }}
+     */
+    _rankFromXp(xpSpent) {
+        const thresholds = [16, 36, 60];
+        let ranksCompleted = 0;
+        for (const threshold of thresholds) {
+            if ((xpSpent || 0) >= threshold) ranksCompleted++;
+            else break;
+        }
+        const currentRank = Math.min(ranksCompleted + 1, 3);
+        return { currentRank, ranksCompleted };
     }
 
     /**
