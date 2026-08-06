@@ -73,6 +73,7 @@ export class TwelveQuestionsDialog extends FormApplication {
         const isTranshuman = isHuman && this.data.identity?.is_transhuman;
         const skillsList = game.gfl5r.HelpersGfl5r.getSkillsList(true);
         const disciplineSkills = this._computeDisciplineSkills();
+        const q4Skills = this._computeQ4EligibleSkills();
 
         return {
             ...(await super.getData(options)),
@@ -91,6 +92,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             approachesList: game.gfl5r.HelpersGfl5r.getApproachesList(),
             skillsList,
             skillsListFlat: game.gfl5r.HelpersGfl5r.getSkillsList(false),
+            q4Skills,
             disciplineSkills,
             xpRemaining: (this.data?.step3?.xpBudget || 16) - (this.data?.step3?.xpSpent || 0),
         };
@@ -122,6 +124,8 @@ export class TwelveQuestionsDialog extends FormApplication {
             // Cost = (purchased + 2) × 2 for the next rank
             const costForNext = (purchased + 2) * 2;
             const canRemove = purchased > 0;
+            // Skills cap at rank 3 total (1 free + up to 2 purchased).
+            const atMaxRank = totalRank >= 3;
 
             const refundForRemove = (purchased + 1) * 2;
 
@@ -131,11 +135,39 @@ export class TwelveQuestionsDialog extends FormApplication {
                 purchased,
                 totalRank,
                 costForNext,
-                canAfford: (xpSpent + costForNext) <= xpBudget,
+                canAfford: !atMaxRank && (xpSpent + costForNext) <= xpBudget,
                 canRemove,
                 refundForRemove,
             };
         });
+    }
+
+    /**
+     * Skills eligible for the Q4 "Bonus Skill (+1)" dropdown.
+     * Excludes skills the character already has from frame/nationality,
+     * background, and the selected discipline so the bonus is not wasted on
+     * an already-known skill.
+     * @returns {Array<{id: string, label: string}>}
+     */
+    _computeQ4EligibleSkills() {
+        const flat = game.gfl5r.HelpersGfl5r.getSkillsList(false);
+        const excluded = new Set();
+
+        // Frame skills (dolls) with snake_case ids.
+        const frame = TDOLL_FRAMES.find(f => f.key === this.data?.step1?.selection);
+        (frame?.skills || []).forEach(sk => excluded.add(String(sk).toLowerCase()));
+
+        // Background skill (humans).
+        const background = HUMAN_BACKGROUNDS.find(b => b.key === this.data?.step2?.selection);
+        if (background?.skill) excluded.add(String(background.skill).toLowerCase());
+
+        // Discipline associated skills.
+        const disciplineItem = foundry.utils.getProperty(this.cache, "step3.discipline")?.[0];
+        (disciplineItem?.system?.associated_skills || []).forEach(sk => {
+            excluded.add(String(sk).toLowerCase().replace(/[\s\-]+/g, "_"));
+        });
+
+        return flat.filter(s => !excluded.has(String(s.id).toLowerCase()));
     }
 
     /** Shortcut for character type */
@@ -207,6 +239,15 @@ export class TwelveQuestionsDialog extends FormApplication {
 
             // Can't go below 0
             if (newVal < 0) return;
+
+            // Cap skills at rank 3 total. Each skill starts at rank 1 (free)
+            // from the discipline, so a maximum of 2 additional ranks may be
+            // purchased. This mirrors MAX_APPROACH_AT_CREATION for approaches.
+            const MAX_SKILL_RANK = 3;
+            if (newVal > MAX_SKILL_RANK - 1) {
+                ui.notifications?.warn(`Skills cannot exceed rank ${MAX_SKILL_RANK} at character creation.`);
+                return;
+            }
 
             // Calculate XP cost: each rank beyond the free +1 costs newRank × 2 XP
             // purchased counts additional ranks purchased; total rank = 1 + purchased

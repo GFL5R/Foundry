@@ -320,7 +320,9 @@ export class CharacterGenerator {
         // Apply skill purchases from Q3 XP spending (+1 per purchase, stacking on top of discipline +1)
         if (skillPurchases) {
             for (const [skillId, purchased] of Object.entries(skillPurchases)) {
-                skills[skillId] = (skills[skillId] || 0) + purchased;
+                // Skills cap at rank 3 total (discipline base 1 + up to 2 bought).
+                const capped = Math.min(Math.max(0, parseInt(purchased) || 0), 2);
+                skills[skillId] = (skills[skillId] || 0) + capped;
             }
         }
 
@@ -591,7 +593,9 @@ export class CharacterGenerator {
 
         let skillXp = 0;
         for (const [skillId, purchased] of Object.entries(purchasesBySkill)) {
-            const ranks = Math.max(0, parseInt(purchased) || 0);
+            // Skills cap at rank 3 total (discipline base 1 + up to 2 bought),
+            // matching the live dialog cap.
+            const ranks = Math.min(Math.max(0, parseInt(purchased) || 0), 2);
             // Buying rank n+1 (the (n)th bought) costs (n + 1) × multiplier.
             for (let n = 1; n <= ranks; n++) {
                 skillXp += (n + 1) * skillMult;

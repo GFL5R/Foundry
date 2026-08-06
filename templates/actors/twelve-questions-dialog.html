@@ -305,7 +305,7 @@
                     <div class="form-fields">
                         <select name="step4.bonusSkill">
                             <option value="none" {{#ifCond data.step4.bonusSkill '==' 'none'}}selected{{/ifCond}}>None</option>
-                            {{#each skillsListFlat}}<option value="{{this.id}}" {{#ifCond ../data.step4.bonusSkill '==' this.id}}selected{{/ifCond}}>{{this.label}}</option>{{/each}}
+                            {{#each q4Skills}}<option value="{{this.id}}" {{#ifCond ../data.step4.bonusSkill '==' this.id}}selected{{/ifCond}}>{{this.label}}</option>{{/each}}
                         </select>
                     </div>
                 </div>
