@@ -349,6 +349,26 @@
                     </div>
                 </div>
                 {{/ifCond}}
+                {{else}}
+                {{!-- Doll Q6: view of humans — positive/negative relationship --}}
+                <div class="form-group">
+                    <div class="form-fields">
+                        <select name="step8.viewOfHumans">
+                            <option value="positive" {{#ifCond data.step8.viewOfHumans '==' 'positive'}}selected{{/ifCond}}>{{localize 'gfl5r.twelve_questions.tdoll.q6.option_positive'}}</option>
+                            <option value="negative" {{#ifCond data.step8.viewOfHumans '==' 'negative'}}selected{{/ifCond}}>{{localize 'gfl5r.twelve_questions.tdoll.q6.option_negative'}}</option>
+                        </select>
+                    </div>
+                </div>
+                {{#ifCond data.step8.viewOfHumans '==' 'negative'}}
+                <div class="form-group">
+                    <div class="form-fields">
+                        <select name="step8.viewHumansSkill">
+                            <option value="none">{{localize 'gfl5r.twelve_questions.choose'}}</option>
+                            {{#each skillsListFlat}}<option value="{{this.id}}" {{#ifCond this.id '==' ../data.step8.viewHumansSkill}}selected{{/ifCond}}>{{this.label}}</option>{{/each}}
+                        </select>
+                    </div>
+                </div>
+                {{/ifCond}}
                 {{/if}}
                 <p class="tq-flavor"><em>{{#if isHuman}}{{localize 'gfl5r.twelve_questions.human.q6.narrative'}}{{else}}{{localize 'gfl5r.twelve_questions.tdoll.q6.narrative'}}{{/if}}</em></p>
                 <div class="form-group">

@@ -161,6 +161,8 @@ export class TwelveQuestions {
             // Transhuman: (shared with modules via step3.modules)
             viewOfDolls: "favor",
             viewDollsSkill: "none",
+            viewOfHumans: "positive",
+            viewHumansSkill: "none",
             metCommander: "",
         },
         step9: {
@@ -422,6 +424,8 @@ export class TwelveQuestions {
                 nameOrigin: this.data.step10.nameOrigin,
                 goal: this.data.step9.personalGoal,
                 metCommander: this.data.step8.metCommander,
+                viewOfHumans: this.data.step8.viewOfHumans,
+                viewHumansSkill: this.data.step8.viewHumansSkill,
                 storyEnd: this.data.step12.storyEnd,
                 name: this.data.step11.name,
                 skillPurchases: this.data.step3.skillPurchases || {},

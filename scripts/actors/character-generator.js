@@ -269,6 +269,7 @@ export class CharacterGenerator {
         advantageUuid, disadvantageUuid, passionUuid, anxietyUuid,
         nameOrigin = "human",
         goal = "", storyEnd = "", name = "", metCommander = "",
+        viewOfHumans = "positive", viewHumansSkill = "none",
         skillPurchases = {},
         q4BonusSkill = "none", q5BonusApproach = "none",
         step1Narrative = "", step2Narrative = "", step3Narrative = "",
@@ -364,6 +365,18 @@ export class CharacterGenerator {
                 humanityBonus = -5;
                 break;
             case "weird": fameBonus = -5; break;
+        }
+
+        // Q6: What are Humans? (doll) — a positive relationship grants +5
+        // Humanity; a negative relationship grants +1 to any skill currently
+        // at rank 0 (at creation, all un-granted skills are rank 0).
+        if (viewOfHumans === "negative") {
+            const sk = String(viewHumansSkill || "none");
+            if (sk && sk !== "none") {
+                skills[sk] = (skills[sk] || 0) + 1;
+            }
+        } else {
+            humanityBonus += 5;
         }
 
         // Create narrative items

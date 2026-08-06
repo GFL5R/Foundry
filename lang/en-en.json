@@ -691,7 +691,9 @@
                 "q6": {
                     "title": "Question 6: What are Humans?",
                     "flavor": "You exist alongside creatures of flesh and blood who give you orders, fight beside you, patch your chassis, and sometimes forget you're more than hardware. Name one human you know and describe what they are to you.",
-                    "narrative": "Name one human you know and describe what they are to you."
+                    "narrative": "Name one human you know and describe what they are to you.",
+                    "option_positive": "Positive",
+                    "option_negative": "Negative"
                 },
                 "q7": {
                     "title": "Question 7: What is your greatest achievement so far?",
