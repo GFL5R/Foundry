@@ -33,6 +33,10 @@ export class CharacterGenerator {
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
         q4BonusSkill = "none", q5BonusApproach = "none",
+        goingSolo = false,
+        secondDisciplineUuid = "", secondTechniqueUuid = "",
+        soloAdvantageUuid = "", soloPassionUuid = "",
+        soloItemUuids = [],
         step1Narrative = "", step2Narrative = "", step3Narrative = "",
         step4Narrative = "", step5Narrative = "", step6Narrative = "",
         step7Narrative = "", step8Narrative = "", step9Narrative = "",
@@ -100,6 +104,19 @@ export class CharacterGenerator {
             currentRank: 1,
         });
 
+        // Going Solo variant: second discipline, additional advantage, passion & equipment
+        if (goingSolo) {
+            const solo = await this._applyGoingSolo({
+                secondDisciplineUuid,
+                secondTechniqueUuid,
+                soloAdvantageUuid,
+                soloPassionUuid,
+                soloItemUuids,
+            });
+            (solo.skills || []).forEach(sk => { skills[sk] = (skills[sk] || 0) + 1; });
+            (solo.approaches || []).forEach(a => { approaches[a] = (approaches[a] || 0) + 1; });
+        }
+
         // Create narrative items
         await this._createNarrativeItem(advantageUuid, "advantage");
         await this._createNarrativeItem(disadvantageUuid, "disadvantage");
@@ -164,6 +181,10 @@ export class CharacterGenerator {
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
         q4BonusSkill = "none", q5BonusApproach = "none",
+        goingSolo = false,
+        secondDisciplineUuid = "", secondTechniqueUuid = "",
+        soloAdvantageUuid = "", soloPassionUuid = "",
+        soloItemUuids = [],
         step1Narrative = "", step2Narrative = "", step3Narrative = "",
         step4Narrative = "", step5Narrative = "", step6Narrative = "",
         step7Narrative = "", step8Narrative = "", step9Narrative = "",
@@ -231,6 +252,19 @@ export class CharacterGenerator {
             currentRank: 1,
         });
 
+        // Going Solo variant: second discipline, additional advantage, passion & equipment
+        if (goingSolo) {
+            const solo = await this._applyGoingSolo({
+                secondDisciplineUuid,
+                secondTechniqueUuid,
+                soloAdvantageUuid,
+                soloPassionUuid,
+                soloItemUuids,
+            });
+            (solo.skills || []).forEach(sk => { skills[sk] = (skills[sk] || 0) + 1; });
+            (solo.approaches || []).forEach(a => { approaches[a] = (approaches[a] || 0) + 1; });
+        }
+
         // Create narrative items
         await this._createNarrativeItem(advantageUuid, "advantage");
         await this._createNarrativeItem(disadvantageUuid, "disadvantage");
@@ -294,6 +328,10 @@ export class CharacterGenerator {
         viewOfHumans = "positive", viewHumansSkill = "none",
         skillPurchases = {},
         q4BonusSkill = "none", q5BonusApproach = "none",
+        goingSolo = false,
+        secondDisciplineUuid = "", secondTechniqueUuid = "",
+        soloAdvantageUuid = "", soloPassionUuid = "",
+        soloItemUuids = [],
         step1Narrative = "", step2Narrative = "", step3Narrative = "",
         step4Narrative = "", step5Narrative = "", step6Narrative = "",
         step7Narrative = "", step8Narrative = "", step9Narrative = "",
@@ -401,6 +439,19 @@ export class CharacterGenerator {
             humanityBonus += 5;
         }
 
+        // Going Solo variant: second discipline, additional advantage, passion & equipment
+        if (goingSolo) {
+            const solo = await this._applyGoingSolo({
+                secondDisciplineUuid,
+                secondTechniqueUuid,
+                soloAdvantageUuid,
+                soloPassionUuid,
+                soloItemUuids,
+            });
+            (solo.skills || []).forEach(sk => { skills[sk] = (skills[sk] || 0) + 1; });
+            (solo.approaches || []).forEach(a => { approaches[a] = (approaches[a] || 0) + 1; });
+        }
+
         // Create narrative items
         await this._createNarrativeItem(advantageUuid, "advantage");
         await this._createNarrativeItem(disadvantageUuid, "disadvantage");
@@ -462,9 +513,11 @@ export class CharacterGenerator {
 
     /**
      * Apply a discipline from UUID, creating the item on the actor
-     * @returns {{ label: string, associatedSkills: string[] }}
+     * @param {string} uuid
+     * @param {string} slotKey - Discipline slot to fill (slot1-slot5)
+     * @returns {{ label: string, associatedSkills: string[], disciplineItem: Item|null }}
      */
-    async _applyDiscipline(uuid) {
+    async _applyDiscipline(uuid, slotKey = "slot1") {
         if (!uuid) return { label: "", associatedSkills: [], disciplineItem: null };
 
         try {
@@ -503,16 +556,16 @@ export class CharacterGenerator {
                 perkId = perkCreated?.id || null;
             }
 
-            // Set discipline in slot1
+            // Set discipline in the requested slot
             await this.actor.update({
-                "system.disciplines.slot1.disciplineId": created?.id || null,
-                "system.disciplines.slot1.perkId": perkId,
-                "system.disciplines.slot1.capstoneId": null,
-                "system.disciplines.slot1.unlockCost": 0,
-                "system.disciplines.slot1.xpSpent": 0,
-                "system.disciplines.slot1.currentRank": 1,
-                "system.disciplines.slot1.ranksCompleted": 0,
-                "system.disciplines.slot1.techniquesLearned": [],
+                [`system.disciplines.${slotKey}.disciplineId`]: created?.id || null,
+                [`system.disciplines.${slotKey}.perkId`]: perkId,
+                [`system.disciplines.${slotKey}.capstoneId`]: null,
+                [`system.disciplines.${slotKey}.unlockCost`]: 0,
+                [`system.disciplines.${slotKey}.xpSpent`]: 0,
+                [`system.disciplines.${slotKey}.currentRank`]: 1,
+                [`system.disciplines.${slotKey}.ranksCompleted`]: 0,
+                [`system.disciplines.${slotKey}.techniquesLearned`]: [],
             });
 
             return { label: created?.name || source.name, associatedSkills, disciplineItem: created || null };
@@ -520,6 +573,61 @@ export class CharacterGenerator {
             console.warn("GFL5R | Failed to apply discipline", uuid, err);
             return { label: "", associatedSkills: [], disciplineItem: null };
         }
+    }
+
+    /**
+     * Apply the Going Solo variant rewards (Q13-Q16): a second discipline in
+     * slot2 (with its perk and one rank 1 technique), an additional advantage,
+     * an additional passion, and the 30k-credit equipment budget.
+     * @param {Object} options
+     * @returns {Promise<{skills: string[], approaches: string[]}>}
+     */
+    async _applyGoingSolo({
+        secondDisciplineUuid = "",
+        secondTechniqueUuid = "",
+        soloAdvantageUuid = "",
+        soloPassionUuid = "",
+        soloItemUuids = [],
+    }) {
+        const skills = [];
+        const approaches = [];
+
+        if (secondDisciplineUuid) {
+            const result = await this._applyDiscipline(secondDisciplineUuid, "slot2");
+            skills.push(...result.associatedSkills);
+
+            await this._applyStartingTechnique({
+                disciplineSlotKey: "slot2",
+                disciplineItem: result.disciplineItem,
+                startingTechniqueUuid: secondTechniqueUuid,
+                currentRank: 1,
+            });
+        }
+
+        await this._createNarrativeItem(soloAdvantageUuid, "advantage");
+        await this._createNarrativeItem(soloPassionUuid, "passion");
+
+        // Equipment budget items (weapons, armor, items, modules).
+        // Modules confer their approach/skill bonuses like the T-Doll Q2 drop.
+        if (soloItemUuids?.length) {
+            for (const uuid of soloItemUuids) {
+                try {
+                    const source = await fromUuid(uuid);
+                    if (!source) continue;
+                    await this.actor.createEmbeddedDocuments("Item", [source.toObject()]);
+                    if (source.type === "module") {
+                        const approachId = source.system?.approach;
+                        const skillId = source.system?.skill;
+                        if (approachId) approaches.push(String(approachId).toLowerCase());
+                        if (skillId) skills.push(String(skillId).toLowerCase().replace(/[\s\-]+/g, "_"));
+                    }
+                } catch (err) {
+                    console.warn("GFL5R | Failed to apply going-solo equipment", uuid, err);
+                }
+            }
+        }
+
+        return { skills, approaches };
     }
 
     /**

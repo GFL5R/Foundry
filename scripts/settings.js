@@ -35,6 +35,15 @@ export const RegisterSettings = function () {
         requiresReload: true,
     });
 
+    game.settings.register(CONFIG.gfl5r.namespace, "going-solo-enabled", {
+        name: "SETTINGS.GoingSolo.Title",
+        hint: "SETTINGS.GoingSolo.Hint",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+    });
+
     /* ------------------------------------ */
     /* Client preferences                   */
     /* ------------------------------------ */

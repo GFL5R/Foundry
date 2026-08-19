@@ -81,6 +81,7 @@ export class TwelveQuestions {
         generated: false,
         characterType: "",
         moduleBudget: 60000,
+        soloBudget: 30000,
 
         // Narrative text fields for each question
         step1Narrative: "",
@@ -189,6 +190,30 @@ export class TwelveQuestions {
             // Story end (text)
             storyEnd: "",
         },
+
+        // ---- Optional Going Solo variant (Q13-Q16) ----
+        goingSolo: false,
+        step13: {
+            // Second discipline (single) + one rank 1 technique
+            discipline: [],
+            technique: [],
+        },
+        step14: {
+            // Additional advantage (single)
+            advantage: [],
+        },
+        step15: {
+            // Additional passion (single)
+            passion: [],
+        },
+        step16: {
+            // Equipment budget (weapons/armor/items/modules, multi)
+            items: [],
+        },
+        step13Narrative: "",
+        step14Narrative: "",
+        step15Narrative: "",
+        step16Narrative: "",
     };
 
     /**
@@ -312,6 +337,22 @@ export class TwelveQuestions {
             errors.push(`XP spent (${this.data.step3.xpSpent}) exceeds budget (${this.data.step3.xpBudget || 16})`);
         }
 
+        // Going Solo variant (Q13-Q16) — required when enabled
+        if (this.data.goingSolo) {
+            if (this.data.step13.discipline.length === 0) {
+                errors.push("Select a second discipline");
+            }
+            if (this.data.step13.technique.length === 0) {
+                errors.push("Select a rank 1 technique from your second discipline");
+            }
+            if (this.data.step14.advantage.length === 0) {
+                errors.push("Select an additional advantage");
+            }
+            if (this.data.step15.passion.length === 0) {
+                errors.push("Select an additional passion");
+            }
+        }
+
         // Summary of approach assignments
         const summary = {};
         if (isHuman) {
@@ -356,9 +397,20 @@ export class TwelveQuestions {
         const isHuman = this.data.characterType === "human";
         const isTranshuman = false;
 
+        // Optional Going Solo variant rewards (Q13-Q16)
+        const goingSoloParams = {
+            goingSolo: this.data.goingSolo,
+            secondDisciplineUuid: this._getFirstItemUuid(cache, "step13.discipline"),
+            secondTechniqueUuid: this._getFirstItemUuid(cache, "step13.technique"),
+            soloAdvantageUuid: this._getFirstItemUuid(cache, "step14.advantage"),
+            soloPassionUuid: this._getFirstItemUuid(cache, "step15.passion"),
+            soloItemUuids: this._getItemUuids(cache, "step16.items"),
+        };
+
         if (isHuman) {
             await generator.applyHumanBuild({
                 isTranshuman: false,
+                ...goingSoloParams,
                 nationalityKey: this.data.step1.selection,
                 backgroundKey: this.data.step2.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
@@ -391,6 +443,7 @@ export class TwelveQuestions {
             // Transhuman uses the same build as human
             await generator.applyHumanBuild({
                 isTranshuman: true,
+                ...goingSoloParams,
                 nationalityKey: this.data.step1.selection,
                 backgroundKey: this.data.step2.selection,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
@@ -422,6 +475,7 @@ export class TwelveQuestions {
         } else {
             await generator.applyDollBuild({
                 frameKey: this.data.step1.selection,
+                ...goingSoloParams,
                 disciplineUuid: this._getFirstItemUuid(cache, "step3.discipline"),
                 startingWeaponUuid: this._getFirstItemUuid(cache, "step3.startingWeapon"),
                 techniqueUuids: this._getItemUuids(cache, "step3.techniques"),

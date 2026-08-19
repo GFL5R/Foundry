@@ -7,6 +7,9 @@
             <a class="item" data-tab="part3" title="{{localize 'gfl5r.twelve_questions.nav.traits'}}">III</a>
             <a class="item" data-tab="part4" title="{{localize 'gfl5r.twelve_questions.nav.worldview'}}">IV</a>
             <a class="item" data-tab="part5" title="{{localize 'gfl5r.twelve_questions.nav.identity'}}">V</a>
+            {{#if data.goingSolo}}
+            <a class="item" data-tab="part6" title="{{localize 'gfl5r.twelve_questions.going_solo.nav'}}">VI</a>
+            {{/if}}
         </nav>
 
         <section class="sheet-body">
@@ -27,6 +30,16 @@
                     <p>{{localize 'gfl5r.twelve_questions.tdoll_intro'}}</p>
                     {{/if}}
                 </div>
+
+                {{#if goingSoloAvailable}}
+                <div class="form-group tq-going-solo">
+                    <label class="checkbox">
+                        <input type="checkbox" name="goingSolo" {{#if data.goingSolo}}checked{{/if}} />
+                        {{localize 'gfl5r.twelve_questions.going_solo.toggle'}}
+                    </label>
+                    <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.going_solo.hint'}}</p>
+                </div>
+                {{/if}}
 
                 <button class="tq-next" type="button">
                     {{localize 'gfl5r.twelve_questions.next'}} <i class="fas fa-arrow-right"></i>
@@ -531,6 +544,133 @@
                     <button id="tq-generate" type="button" class="tq-generate"><i class="fas fa-user-plus"></i> {{localize 'gfl5r.twelve_questions.generate'}}</button>
                 </div>
             </article>
+
+            {{!-- ==================== PART 6: GOING SOLO (Q13-Q16) ==================== --}}
+            {{#if data.goingSolo}}
+            <article class="tab tq-part" data-group="primary" data-tab="part6">
+                <h1>{{localize 'gfl5r.twelve_questions.going_solo.nav'}}</h1>
+                <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.going_solo.intro'}}</p>
+
+                {{!-- Q13: Second discipline + rank 1 technique --}}
+                <h2>{{localize 'gfl5r.twelve_questions.going_solo.q13.title'}}</h2>
+                <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.going_solo.q13.flavor'}}</p>
+                <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.going_solo.second_discipline_note'}}</em></p>
+                <div class="tq-drop-zone" data-step="step13.discipline">
+                    <ul class="tq-item-list">
+                        {{#each cache.step13.discipline}}
+                        <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                            <img src="{{this.img}}" width="24" height="24" />
+                            <span class="tq-item-name">{{this.name}}</span>
+                            {{#if this.system.perk.name}}<span class="tq-item-detail">{{this.system.perk.name}}</span>{{/if}}
+                            <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{#ifCond cache.step13.discipline.length '<' 1}}
+                    <div class="tq-dropbox"><i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.going_solo.drop_second_discipline'}}</div>
+                    {{/ifCond}}
+                </div>
+                <h3>{{localize 'gfl5r.twelve_questions.going_solo.solo_technique'}}</h3>
+                <div class="tq-drop-zone" data-step="step13.technique">
+                    <ul class="tq-item-list">
+                        {{#each cache.step13.technique}}
+                        <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                            <img src="{{this.img}}" width="24" height="24" />
+                            <span class="tq-item-name">{{this.name}}</span>
+                            <span class="tq-item-detail">{{localize 'gfl5r.global.rank'}} {{this.system.rank_required}}</span>
+                            <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{#ifCond cache.step13.technique.length '<' 1}}
+                    <div class="tq-dropbox"><i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.going_solo.drop_solo_technique'}}</div>
+                    {{/ifCond}}
+                </div>
+                <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.going_solo.q13.narrative'}}</em></p>
+                <div class="form-group">
+                    <div class="form-fields">
+                        <textarea name="step13Narrative" rows="3">{{data.step13Narrative}}</textarea>
+                    </div>
+                </div>
+
+                {{!-- Q14: Additional advantage --}}
+                <h2>{{localize 'gfl5r.twelve_questions.going_solo.q14.title'}}</h2>
+                <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.going_solo.q14.flavor'}}</p>
+                <div class="tq-drop-zone" data-step="step14.advantage">
+                    <ul class="tq-item-list">
+                        {{#each cache.step14.advantage}}
+                        <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                            <img src="{{this.img}}" width="24" height="24" />
+                            <span class="tq-item-name">{{this.name}}</span>
+                            <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{#ifCond cache.step14.advantage.length '<' 1}}
+                    <div class="tq-dropbox"><i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.going_solo.drop_solo_advantage'}}</div>
+                    {{/ifCond}}
+                </div>
+                <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.going_solo.q14.narrative'}}</em></p>
+                <div class="form-group">
+                    <div class="form-fields"><textarea name="step14Narrative" rows="3">{{data.step14Narrative}}</textarea></div>
+                </div>
+
+                {{!-- Q15: Additional passion --}}
+                <h2>{{localize 'gfl5r.twelve_questions.going_solo.q15.title'}}</h2>
+                <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.going_solo.q15.flavor'}}</p>
+                {{#if isDoll}}<p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.going_solo.doll_passion_note'}}</em></p>{{/if}}
+                <div class="tq-drop-zone" data-step="step15.passion">
+                    <ul class="tq-item-list">
+                        {{#each cache.step15.passion}}
+                        <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                            <img src="{{this.img}}" width="24" height="24" />
+                            <span class="tq-item-name">{{this.name}}</span>
+                            <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{#ifCond cache.step15.passion.length '<' 1}}
+                    <div class="tq-dropbox"><i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.going_solo.drop_solo_passion'}}</div>
+                    {{/ifCond}}
+                </div>
+                <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.going_solo.q15.narrative'}}</em></p>
+                <div class="form-group">
+                    <div class="form-fields"><textarea name="step15Narrative" rows="3">{{data.step15Narrative}}</textarea></div>
+                </div>
+
+                {{!-- Q16: Equipment budget --}}
+                <h2>{{localize 'gfl5r.twelve_questions.going_solo.q16.title'}}</h2>
+                <p class="tq-flavor">{{localize 'gfl5r.twelve_questions.going_solo.q16.flavor'}} You have <strong>{{data.soloBudget}} CR</strong> to spend.</p>
+                <div class="tq-drop-zone" data-step="step16.items">
+                    <ul class="tq-item-list">
+                        {{#each cache.step16.items}}
+                        <li class="tq-item" data-item-id="{{this.uuid}}" draggable="true">
+                            <img src="{{this.img}}" width="24" height="24" />
+                            <span class="tq-item-name">{{this.name}}</span>
+                            {{#ifCond this.type '==' 'module'}}
+                            <span class="tq-item-detail">{{this.system.cost}} CR</span>
+                            {{else}}
+                            <span class="tq-item-detail">{{this.system.price}} CR</span>
+                            {{/ifCond}}
+                            <a class="tq-item-delete" title="{{localize 'gfl5r.global.delete'}}"><i class="fas fa-times"></i></a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    <div class="tq-dropbox">
+                        <i class="fas fa-arrow-down"></i> {{localize 'gfl5r.twelve_questions.going_solo.drop_equipment'}}
+                    </div>
+                </div>
+                <p class="tq-flavor"><em>{{localize 'gfl5r.twelve_questions.going_solo.equipment_note'}}</em></p>
+                <div class="form-group">
+                    <div class="form-fields"><textarea name="step16Narrative" rows="3" placeholder="{{localize 'gfl5r.twelve_questions.going_solo.placeholder_equipment'}}">{{data.step16Narrative}}</textarea></div>
+                </div>
+
+                <div class="tq-nav-buttons">
+                    <button class="tq-prev" type="button"><i class="fas fa-arrow-left"></i> {{localize 'gfl5r.twelve_questions.prev'}}</button>
+                    <button type="button" class="tq-generate"><i class="fas fa-user-plus"></i> {{localize 'gfl5r.twelve_questions.generate'}}</button>
+                </div>
+            </article>
+            {{/if}}
 
         </section>
     </div>

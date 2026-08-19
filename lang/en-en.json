@@ -27,6 +27,10 @@
             "Title": "Show all Status Effects",
             "Hint": "If unchecked (default), only GFL5R conditions are shown."
         },
+        "GoingSolo": {
+            "Title": "Enable Going Solo rules",
+            "Hint": "When enabled, the character creation dialogue offers the optional Going Solo variant (an extra discipline, advantage, passion, and equipment budget). This is hard mode and is no replacement for two characters."
+        },
         "CustomItemsHeight": {
             "Title": "Custom items window height",
             "Hint": "Adjust the height of item sheet windows (in pixels)"
@@ -776,6 +780,42 @@
                 "flavor": "This question has no mechanical bearing. But you should keep it in mind, your DM certainly will...",
                 "narrative": "This question has no mechanical bearing. But you should keep it in mind, your DM certainly will...",
                 "placeholder": "How do you see your story ending?"
+            },
+            "going_solo": {
+                "nav": "Going Solo",
+                "toggle": "Going Solo",
+                "hint": "Enable the optional Going Solo variant rules for this character. These grants shore up a single character but are no replacement for two characters worth of action economy and health pools.",
+                "intro": "You operate without a partner. Answer these four additional questions to close the gaps that would otherwise get you killed.",
+                "drop_second_discipline": "Drop a second discipline here",
+                "second_discipline_note": "You gain +1 to each of its associated skills, its Discipline Perk, and one rank 1 technique of your choice. It grants no additional XP or weapons.",
+                "solo_technique": "Rank 1 Technique",
+                "drop_solo_technique": "Drop a rank 1 technique here",
+                "drop_solo_advantage": "Drop an additional advantage here",
+                "drop_solo_passion": "Drop an additional passion here",
+                "drop_equipment": "Drop weapons, armor, items, or modules here",
+                "equipment_note": "Use it or lose it. Describe one piece of equipment with a story behind it.",
+                "placeholder_equipment": "Describe your equipment and the story behind one piece...",
+                "doll_passion_note": "T-Dolls without an Olfactory Unit may not select Passions related to food, drink, scent, or taste.",
+                "q13": {
+                    "title": "Question 13: What skills have you learned that others leave to their dolls?",
+                    "flavor": "Without a partner, the role your doll would have filled sits empty until you fill it yourself. Select a second discipline to cover the gap you stepped into.",
+                    "narrative": "Describe the gap you stepped into and the hard lessons that came with it."
+                },
+                "q14": {
+                    "title": "Question 14: What do people notice about you first?",
+                    "flavor": "Everyone who lasts in this line of work has something that sets them apart. Select one additional advantage that suits your answer.",
+                    "narrative": "Describe the trait that defines you before you have to prove anything."
+                },
+                "q15": {
+                    "title": "Question 15: What occupies your mind when the guns are silent?",
+                    "flavor": "Something other than survival lives in the space between jobs. Select one additional passion that suits your answer.",
+                    "narrative": "Describe how this pursuit anchors you."
+                },
+                "q16": {
+                    "title": "Question 16: How did you afford all this?",
+                    "flavor": "Going without a partner freed up significant resources.",
+                    "narrative": "Spend up to 30,000 Credits on weapons, armor, items, or modules. This budget does not carry over."
+                }
             }
         },
         "tactical_grid": {

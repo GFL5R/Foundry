@@ -87,6 +87,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             isHuman,
             isDoll,
             isTranshuman,
+            goingSoloAvailable: game.settings.get(CONFIG.gfl5r.namespace, "going-solo-enabled"),
             nationalities: HUMAN_NATIONALITIES,
             backgrounds: HUMAN_BACKGROUNDS,
             frames: TDOLL_FRAMES,
@@ -215,6 +216,13 @@ export class TwelveQuestionsDialog extends FormApplication {
 
         if (!this.isEditable) return;
 
+        // Going Solo toggle (handled directly — checkbox state is absent from formData when unchecked)
+        html.find("input[name='goingSolo']").on("change", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            this._updateObject(event, { goingSolo: event.currentTarget.checked });
+        });
+
         // Delete a drag-dropped element
         html.find(".tq-item-delete").on("click", (event) => {
             event.preventDefault();
@@ -287,7 +295,7 @@ export class TwelveQuestionsDialog extends FormApplication {
         });
 
         // Generate button
-        html.find("#tq-generate").on("click", async (event) => {
+        html.find(".tq-generate").on("click", async (event) => {
             event.preventDefault();
             event.stopPropagation();
 
@@ -434,6 +442,36 @@ export class TwelveQuestionsDialog extends FormApplication {
             return { allowed: item.type === "narrative" && item.system.narrative_type === "anxiety" };
         }
 
+        // Going Solo (Q13-Q16) drop zones
+        if (stepKey === "step13.discipline") {
+            return { allowed: item.type === "discipline" };
+        }
+        if (stepKey === "step13.technique") {
+            if (item.type !== "technique") return { allowed: false };
+            const soloDiscipline = foundry.utils.getProperty(this.cache, "step13.discipline")?.[0] || null;
+            if (!soloDiscipline) {
+                return {
+                    allowed: false,
+                    message: game.i18n.localize("gfl5r.disciplines.warning.assign_discipline_first"),
+                };
+            }
+            return this._validateTechniqueForDiscipline({
+                techniqueItem: item,
+                disciplineItem: soloDiscipline,
+                currentRank: 1,
+            });
+        }
+        if (stepKey === "step14.advantage") {
+            return { allowed: item.type === "narrative" && item.system.narrative_type === "advantage" };
+        }
+        if (stepKey === "step15.passion") {
+            return { allowed: item.type === "narrative" && item.system.narrative_type === "passion" };
+        }
+        if (stepKey === "step16.items") {
+            const allowed = ["weaponry", "armor", "item", "module"].includes(item.type);
+            return { allowed, message: allowed ? undefined : "Only weapons, armor, items, or modules can be added here." };
+        }
+
         return { allowed: false };
     }
 
@@ -533,6 +571,19 @@ export class TwelveQuestionsDialog extends FormApplication {
     }
 
     /**
+     * Credit cost of an item for the Going Solo equipment budget.
+     * Modules use their `cost` field (matching Q2); everything else uses `price`.
+     * @param {Item} item
+     * @returns {number}
+     */
+    _getItemCredits(item) {
+        if (item.type === "module") {
+            return parseInt(item.system?.cost ?? item.system?.price ?? 0) || 0;
+        }
+        return parseInt(item.system?.price ?? 0) || 0;
+    }
+
+    /**
      * Add an item to the data and cache.
      */
     _addOwnedItem(item, stepKey) {
@@ -549,6 +600,10 @@ export class TwelveQuestionsDialog extends FormApplication {
             "step3.startingWeapon",
             "step4.advantage", "step5.disadvantage",
             "step6.passion", "step7.anxiety",
+            "step13.discipline",
+            "step13.technique",
+            "step14.advantage",
+            "step15.passion",
         ];
 
         const itemRef = item.uuid || item.id;
@@ -567,6 +622,11 @@ export class TwelveQuestionsDialog extends FormApplication {
                 foundry.utils.setProperty(this.data, "step3.xpSpent", 0);
                 foundry.utils.setProperty(this.data, "step3.skillPurchases", {});
             }
+
+            if (stepKey === "step13.discipline") {
+                foundry.utils.setProperty(this.data, "step13.technique", []);
+                foundry.utils.setProperty(this.cache, "step13.technique", []);
+            }
         } else if (stepKey === "step2.modules") {
             // Multi-slot modules with budget check
             const moduleCost = parseInt(item.system?.cost || item.cost) || 0;
@@ -578,6 +638,21 @@ export class TwelveQuestionsDialog extends FormApplication {
             if (!list.includes(itemRef)) {
                 list.push(itemRef);
                 this.data.moduleBudget = currentBudget - moduleCost;
+                const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
+                cached.push(item);
+                foundry.utils.setProperty(this.cache, stepKey, cached);
+            }
+        } else if (stepKey === "step16.items") {
+            // Multi-slot Going Solo equipment with 30k credit budget check
+            const itemCredits = this._getItemCredits(item);
+            const currentBudget = this.data.soloBudget ?? 30000;
+            if (currentBudget - itemCredits < 0) {
+                ui.notifications?.warn(`Not enough credits! This costs ${itemCredits} CR, but only ${currentBudget} CR remains.`);
+                return;
+            }
+            if (!list.includes(itemRef)) {
+                list.push(itemRef);
+                this.data.soloBudget = currentBudget - itemCredits;
                 const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
                 cached.push(item);
                 foundry.utils.setProperty(this.cache, stepKey, cached);
@@ -628,6 +703,14 @@ export class TwelveQuestionsDialog extends FormApplication {
             }
         }
 
+        // Refund credits if deleting from step16.items
+        if (stepKey === "step16.items") {
+            const cached = foundry.utils.getProperty(this.cache, stepKey);
+            if (Array.isArray(cached) && cached[idx]) {
+                this.data.soloBudget = (this.data.soloBudget ?? 30000) + this._getItemCredits(cached[idx]);
+            }
+        }
+
         // Refund XP if deleting from step3.techniques
         if (stepKey === "step3.techniques") {
             this.data.step3.xpSpent = Math.max(0, (this.data.step3?.xpSpent || 0) - 3);
@@ -643,6 +726,12 @@ export class TwelveQuestionsDialog extends FormApplication {
             foundry.utils.setProperty(this.cache, "step3.techniques", []);
             foundry.utils.setProperty(this.data, "step3.xpSpent", 0);
             foundry.utils.setProperty(this.data, "step3.skillPurchases", {});
+        }
+
+        // If deleting the second discipline, clear its technique
+        if (stepKey === "step13.discipline") {
+            foundry.utils.setProperty(this.data, "step13.technique", []);
+            foundry.utils.setProperty(this.cache, "step13.technique", []);
         }
 
         const cached = foundry.utils.getProperty(this.cache, stepKey);
@@ -670,6 +759,11 @@ export class TwelveQuestionsDialog extends FormApplication {
             "step5.disadvantage",
             "step6.passion",
             "step7.anxiety",
+            "step13.discipline",
+            "step13.technique",
+            "step14.advantage",
+            "step15.passion",
+            "step16.items",
         ];
 
         for (const key of itemArrayKeys) {

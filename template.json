@@ -218,7 +218,12 @@
                 "step9Narrative": "",
                 "step10Narrative": "",
                 "q4BonusSkill": "none",
-                "q5BonusApproach": "none"
+                "q5BonusApproach": "none",
+                "goingSolo": false,
+                "step13Narrative": "",
+                "step14Narrative": "",
+                "step15Narrative": "",
+                "step16Narrative": ""
             }
         },
         "doll": {
@@ -251,7 +256,12 @@
                 "step9Narrative": "",
                 "step10Narrative": "",
                 "q4BonusSkill": "none",
-                "q5BonusApproach": "none"
+                "q5BonusApproach": "none",
+                "goingSolo": false,
+                "step13Narrative": "",
+                "step14Narrative": "",
+                "step15Narrative": "",
+                "step16Narrative": ""
             }
         },
         "npc": {
