@@ -61,7 +61,7 @@ export class SocketHandlerGfl5r {
     }
 
     /**
-     * Refresh an app by his "id", not "appId" (ex "gfl5r-twenty-questions-dialog-kZHczAFghMNYFRWe", not "65")
+     * Refresh an app by his "id", not "appId" (ex "gfl5r-twelve-questions-dialog-kZHczAFghMNYFRWe", not "65")
      *
      * Usage : game.gfl5r.sockets.refreshAppId(appId);
      *
