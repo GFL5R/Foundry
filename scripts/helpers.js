@@ -27,7 +27,7 @@ export class HelpersGfl5r {
             return Array.from(CONFIG.gfl5r.skills).map(([id, cat]) => ({
                 id: id,
                 cat: cat,
-                label: game.i18n.localize(`gfl5r.skills.${cat}.${id}`),
+                label: game.i18n.localize(`gfl5r.skills.${id}`),
             }));
         }
 
@@ -39,7 +39,7 @@ export class HelpersGfl5r {
             skills[cat].push({
                 id: id,
                 cat: cat,
-                label: game.i18n.localize(`gfl5r.skills.${cat}.${id}`),
+                label: game.i18n.localize(`gfl5r.skills.${id}`),
             });
         });
         return skills;
