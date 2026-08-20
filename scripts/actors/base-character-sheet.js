@@ -602,6 +602,21 @@ export class BaseCharacterSheetGfl5r extends BaseSheetGfl5r {
     }
 
     /**
+     * Get the skill id of the actor's readied (or equipped) weapon, if any.
+     * Used as a fallback for techniques whose skill is empty or a placeholder.
+     * @private
+     */
+    _getReadiedWeaponSkill() {
+        const weapon =
+            this.actor.items.find((item) => item.type === "weaponry" && !!item.system.equipped && !!item.system.readied) ||
+            this.actor.items.find((item) => item.type === "weaponry" && !!item.system.equipped);
+        if (!weapon) {
+            return null;
+        }
+        return this._getWeaponInfos(weapon.id)?.skill || null;
+    }
+
+    /**
      * Open the dice-picker for this skill
      * @param {Event} event
      * @private
@@ -656,16 +671,24 @@ export class BaseCharacterSheetGfl5r extends BaseSheetGfl5r {
 
         // Required for tech in titles, search in sub items
         const item = await game.gfl5r.HelpersGfl5r.getEmbedItemByEvent(event, this.actor);
-        if (!item || item.type !== "technique" || !item.system.skill) {
+        if (!item || item.type !== "technique") {
             return;
         }
 
         const itemData = item.system;
+
+        // Techniques with an empty or placeholder skill ("—" compiled to "_")
+        // roll with the actor's readied weapon skill instead.
+        let skillsList = (itemData.skill || "").trim();
+        if (!skillsList || /^[-\u2013\u2014_]+$/.test(skillsList)) {
+            skillsList = this._getReadiedWeaponSkill() || "";
+        }
+
         new game.gfl5r.DicePickerDialog({
             actor: this.actor,
             approachId: itemData.approach || null,
             difficulty: itemData.difficulty || null,
-            skillsList: itemData.skill || null,
+            skillsList: skillsList || null,
             itemUuid: item.uuid,
         }).render(true);
     }

@@ -92,13 +92,32 @@ def array_to_dict(arr: list, key_field: str = "name") -> dict:
 # ---------------------------------------------------------------------------
 # Field normalizers
 # ---------------------------------------------------------------------------
+_PLACEHOLDER_RE = re.compile(r"^[\s\-\u2013\u2014_]*$")
+
+
+def _is_placeholder(value) -> bool:
+    """True for empty values and typographic placeholders such as "—".
+
+    Source data uses the em-dash "—" to mean "not fixed" (e.g. a technique
+    that rolls with the attacking weapon's skill). These must normalize to
+    "" so downstream code treats them as no-value instead of a bogus id
+    like "_".
+    """
+    if value is None:
+        return True
+    if isinstance(value, list):
+        value = value[0] if value else None
+    return bool(_PLACEHOLDER_RE.match(str(value)))
+
+
 def _normalize_approach(value) -> str:
     """Normalize an approach value to a lowercase id matching CONFIG.gfl5r.stances.
 
     Source JSON uses title case ("Fortune"); some entries are a list of
-    approaches (keep the first); some are None/null.
+    approaches (keep the first); some are None/null or the "—" placeholder
+    (meaning no fixed approach).
     """
-    if not value:
+    if _is_placeholder(value):
         return ""
     if isinstance(value, list):
         value = value[0] if value else ""
@@ -111,9 +130,13 @@ def _normalize_skill(value) -> str:
 
     Webapp JSON uses display labels ("Hand-to-Hand", "Exotic Weapons").
     The Foundry skills map keys on snake_case lowercase ("hand_to_hand").
+    Placeholder values ("—", "") normalize to "" so the sheet can fall back
+    to the readied weapon's skill.
     """
-    if not value:
+    if _is_placeholder(value):
         return ""
+    if isinstance(value, list):
+        value = value[0] if value else ""
     return str(value).strip().lower().replace("-", "_").replace(" ", "_")
 
 

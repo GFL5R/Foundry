@@ -142,9 +142,10 @@ export class DicePickerDialog extends FormApplication {
             }
         });
 
-        // Ring
-        if (options.ringId) {
-            this.ringId = options.ringId;
+        // Ring / approach (callers may pass the technique approach as "approachId")
+        const approachOption = options.ringId || options.approachId;
+        if (approachOption) {
+            this.ringId = approachOption;
         }
 
         // SkillList
@@ -846,6 +847,11 @@ export class DicePickerDialog extends FormApplication {
         const unqSkillList = new Set();
         skillList.split(",").forEach((s) => {
             s = s.trim();
+
+            // Skip empty or placeholder tokens ("—", "-", "_" from legacy builds)
+            if (!s || /^[-\u2013\u2014_]+$/.test(s)) {
+                return;
+            }
 
             if (CONFIG.gfl5r.skills.has(s)) {
                 unqSkillList.add(this.useCategory ? CONFIG.gfl5r.skills.get(s) : s);
