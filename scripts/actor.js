@@ -122,6 +122,7 @@ export class ActorGfl5r extends Actor {
             }
 
             const isCompromised = this.statuses.has("compromised");
+            const isAfflicted = this.statuses.has("afflicted");
 
             // Attribute bars
             system.fatigue.max = system.endurance;
@@ -130,6 +131,8 @@ export class ActorGfl5r extends Actor {
 
             // If compromised, vigilance = 1
             system.is_compromised = isCompromised;
+            // Templates check this combined flag to render vigilance as 1
+            system.is_afflicted_or_compromised = isCompromised || isAfflicted;
 
             // Clamp fortune points
             if (system.fortune_points.value > system.fortune_points.max) {
@@ -191,6 +194,110 @@ export class ActorGfl5r extends Actor {
         system.composure = system.composure + (Number(modifiers?.composure) || 0);
         system.focus = system.focus + (Number(modifiers?.focus) || 0);
         system.vigilance = system.vigilance + (Number(modifiers?.vigilance) || 0);
+    }
+
+    /**
+     * Build a localized HTML breakdown of how a computed attribute is derived.
+     * Single source of truth for the hover tooltips: reads the same derived
+     * values and approach inputs as prepareData()/computeDerivedAttributes()
+     * rather than re-implementing the math.
+     * @param {"focus"|"vigilance"|"fatigue"|"strife"|"fortune_points"} key
+     * @returns {string|null} HTML string, or null when not a computed character.
+     */
+    getDerivedAttributeBreakdown(key) {
+        if (!this.isCharacter) {
+            return null;
+        }
+
+        const system = this.system;
+        const app = system.approaches || {};
+        const mods = system.modifiers?.character || {};
+        const num = (v) => Number(v) || 0;
+        const fmt = (id, data = {}) => game.i18n.format(id, data);
+
+        const power = num(app.power);
+        const precision = num(app.precision);
+        const swiftness = num(app.swiftness);
+        const resilience = num(app.resilience);
+        const fortune = num(app.fortune);
+
+        const rows = [];
+        const line = (html) => rows.push(`<li>${html}</li>`);
+        let title = "";
+
+        switch (key) {
+            case "focus": {
+                title = fmt("gfl5r.attributes.focus");
+                line(fmt("gfl5r.attributes.breakdown.formula_focus", { power, precision }));
+                const mod = num(mods.focus);
+                if (mod) {
+                    line(fmt("gfl5r.attributes.breakdown.modifier", { mod }));
+                }
+                line(fmt("gfl5r.attributes.breakdown.result", { total: num(system.focus) }));
+                break;
+            }
+            case "vigilance": {
+                title = fmt("gfl5r.attributes.vigilance");
+                if (system.is_afflicted_or_compromised) {
+                    line(fmt("gfl5r.attributes.breakdown.vigilance_compromised"));
+                    line(fmt("gfl5r.attributes.breakdown.result", { total: 1 }));
+                } else {
+                    line(fmt("gfl5r.attributes.breakdown.formula_vigilance", { precision, swiftness }));
+                    const mod = num(mods.vigilance);
+                    if (mod) {
+                        line(fmt("gfl5r.attributes.breakdown.modifier", { mod }));
+                    }
+                    line(fmt("gfl5r.attributes.breakdown.result", { total: num(system.vigilance) }));
+                }
+                break;
+            }
+            case "fatigue": {
+                title = fmt("gfl5r.attributes.fatigue");
+                const multiplier = this.isDoll ? 3 : 2;
+                line(fmt("gfl5r.attributes.breakdown.formula_endurance", {
+                    power,
+                    resilience,
+                    multiplier: fmt(this.isDoll
+                        ? "gfl5r.attributes.breakdown.multiplier_doll"
+                        : "gfl5r.attributes.breakdown.multiplier_other", { multiplier }),
+                }));
+                const mod = num(mods.endurance);
+                if (mod) {
+                    line(fmt("gfl5r.attributes.breakdown.modifier", { mod }));
+                }
+                line(fmt("gfl5r.attributes.breakdown.bar_max", {
+                    base: fmt("gfl5r.attributes.endurance"),
+                    total: num(system.endurance),
+                }));
+                break;
+            }
+            case "strife": {
+                title = fmt("gfl5r.attributes.strife");
+                line(fmt("gfl5r.attributes.breakdown.formula_composure", { resilience, swiftness }));
+                const mod = num(mods.composure);
+                if (mod) {
+                    line(fmt("gfl5r.attributes.breakdown.modifier", { mod }));
+                }
+                line(fmt("gfl5r.attributes.breakdown.bar_max", {
+                    base: fmt("gfl5r.attributes.composure"),
+                    total: num(system.composure),
+                }));
+                break;
+            }
+            case "fortune_points": {
+                title = fmt("gfl5r.conflict.fortune_points");
+                line(fmt("gfl5r.attributes.breakdown.formula_fortune", { fortune }));
+                line(fmt("gfl5r.attributes.breakdown.bar_max", {
+                    base: fmt("gfl5r.approaches.fortune"),
+                    total: num(system.fortune_points?.max),
+                }));
+                break;
+            }
+            default:
+                return null;
+        }
+
+        return `<div class="derived-attribute-breakdown"><header>${fmt("gfl5r.attributes.breakdown.title", { attribute: title })}</header><ul>${rows.join("")}</ul></div>`;
     }
 
     /**

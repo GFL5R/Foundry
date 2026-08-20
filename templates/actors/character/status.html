@@ -5,7 +5,7 @@
     <div class="discipline-card__corner discipline-card__corner--bl"></div>
     <div class="discipline-card__corner discipline-card__corner--br"></div>
     <div class="gfl-panel__header">
-        <span class="gfl-panel__label">{{localize 'gfl5r.attributes.endurance'}}</span>
+        <span class="gfl-panel__label gfl5r-derived-tooltip" data-attribute="fatigue">{{localize 'gfl5r.attributes.endurance'}}</span>
     </div>
     <div class="gfl-panel__body">
         <div class="status-bar endurance-bar" data-current="{{data.system.fatigue.value}}" data-max="{{data.system.endurance}}">
@@ -32,7 +32,7 @@
     <div class="discipline-card__corner discipline-card__corner--bl"></div>
     <div class="discipline-card__corner discipline-card__corner--br"></div>
     <div class="gfl-panel__header">
-        <span class="gfl-panel__label">{{localize 'gfl5r.attributes.composure'}}</span>
+        <span class="gfl-panel__label gfl5r-derived-tooltip" data-attribute="strife">{{localize 'gfl5r.attributes.composure'}}</span>
     </div>
     <div class="gfl-panel__body">
         <div class="status-bar composure-bar" data-current="{{data.system.strife.value}}" data-max="{{data.system.composure}}">
@@ -59,7 +59,7 @@
     <div class="discipline-card__corner discipline-card__corner--bl"></div>
     <div class="discipline-card__corner discipline-card__corner--br"></div>
     <div class="gfl-panel__header">
-        <span class="gfl-panel__label">{{localize 'gfl5r.conflict.fortune_points'}}</span>
+        <span class="gfl-panel__label gfl5r-derived-tooltip" data-attribute="fortune_points">{{localize 'gfl5r.conflict.fortune_points'}}</span>
     </div>
     <div class="gfl-panel__body">
         <div class="status-bar fortune-bar" data-current="{{data.system.fortune_points.value}}" data-max="{{data.system.fortune_points.max}}">

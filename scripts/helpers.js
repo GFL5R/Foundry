@@ -527,6 +527,22 @@ export class HelpersGfl5r {
             }
         );
 
+        // Computed-attribute derivation tooltips (character sheets only).
+        // commonListeners is shared with NPC sheets, which set these values
+        // manually, so guard on actor.isCharacter.
+        if (actor?.isCharacter) {
+            new Gfl5rPopupManager(
+                html.find(".gfl5r-derived-tooltip"),
+                async (event) => {
+                    const key = $(event.currentTarget).data("attribute");
+                    if (!key) {
+                        return null;
+                    }
+                    return actor.getDerivedAttributeBreakdown(key);
+                }
+            );
+        }
+
         // Open actor sheet
         html.find(".open-sheet-from-uuid").on("click", async (event) => {
             event.preventDefault();

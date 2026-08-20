@@ -86,7 +86,21 @@
             "fortification": "Fortification",
             "approach_limit": "Approach Limit",
             "fatigue": "Fatigue",
-            "strife": "Strife"
+            "strife": "Strife",
+            "breakdown": {
+                "title": "How {attribute} is computed",
+                "formula_focus": "Power ({power}) + Precision ({precision})",
+                "formula_vigilance": "ceil((Precision ({precision}) + Swiftness ({swiftness})) / 2), rounded up",
+                "formula_endurance": "(Power ({power}) + Resilience ({resilience})) x {multiplier}",
+                "formula_composure": "(Resilience ({resilience}) + Swiftness ({swiftness})) x 2",
+                "formula_fortune": "Fortune approach ({fortune})",
+                "multiplier_doll": "{multiplier} (T-Doll)",
+                "multiplier_other": "{multiplier}",
+                "modifier": "+ Modifier: {mod}",
+                "result": "Result: {total}",
+                "bar_max": "Bar maximum = {base}: {total}",
+                "vigilance_compromised": "Afflicted or Compromised - counts as 1"
+            }
         },
         "skills": {
             "title": "Skills",
