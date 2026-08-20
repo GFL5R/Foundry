@@ -25,12 +25,21 @@
     {{#if filtersToShow.approach}}
     <div class="flexrow gfl5r approach-filter">
         <label>{{localize 'gfl5r.approaches.title'}}:</label>
-        {{#each rings}}
+        {{#each approaches}}
         <i data-approach="{{this}}"
-           data-tooltip="{{localize (concat 'gfl5r.rings.' this)}}"
+           data-tooltip="{{localize (concat 'gfl5r.approaches.' this)}}"
            class="i_{{this}}"></i>
         {{/each}}
         <a data-clear style="display:none" data-tooltip="{{localize 'gfl5r.compendium.filter.clear'}}">×</a>
+    </div>
+    {{/if}}
+
+    {{#if sortOptions.length}}
+    <div class="flexrow gfl5r sort-filter">
+        <label>{{localize 'gfl5r.compendium.filter.sort'}}:</label>
+        <select name="filter-sort">
+            {{selectOptions sortOptions selected=activeSort localize=true}}
+        </select>
     </div>
     {{/if}}
 

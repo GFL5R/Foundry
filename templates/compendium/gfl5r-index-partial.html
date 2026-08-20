@@ -19,11 +19,11 @@
     {{/if}}
     <a class="entry-name ellipsis" data-action="activateEntry">{{ name }}</a>
     {{#with (lookup @root.entryFilterData _id)}}
-        {{#if (or approach rarity rank)}}
+        {{#if (or hasApproach hasRarity hasRank)}}
         <div class="gfl5r approach-rarity-rank" data-action="activateEntry">
-           {{#if approach}} <i class="i_{{approach}}"></i>{{/if}}
-            {{#if rarity}}<a>{{localize "gfl5r.sheets.rarity"}} {{rarity}}</a>{{/if}}
-            {{#if rank}}<a>{{localize "gfl5r.sheets.rank"}} {{rank}}</a>{{/if}}
+            {{#if hasApproach}}<i class="i_{{approach}}"></i>{{/if}}
+            {{#if hasRarity}}<a>{{localize "gfl5r.sheets.rarity"}} {{rarity}}</a>{{/if}}
+            {{#if hasRank}}<a>{{localize "gfl5r.sheets.rank"}} {{rank}}</a>{{/if}}
         </div>
         {{/if}}
     {{/with}}

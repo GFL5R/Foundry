@@ -310,7 +310,9 @@
             "filter": {
                 "clear": "Clear",
                 "rank": "Rank",
-                "rarity": "Rarity"
+                "rarity": "Rarity",
+                "cost": "Cost",
+                "sort": "Sort"
             }
         },
         "weapons": {

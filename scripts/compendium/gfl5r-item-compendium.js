@@ -4,7 +4,7 @@ const { Compendium } = foundry.applications.sidebar.apps;
 
 /**
  * Extended Compendium application for GFL5R.
- * Adds source/rank/ring/rarity filters to Item compendiums
+ * Adds source/rank/approach/rarity filters and name/cost/rarity/rank sorting to Item compendiums.
  * @extends {Compendium}
  */
 export class ItemCompendiumGfl5r extends Compendium {
@@ -20,7 +20,7 @@ export class ItemCompendiumGfl5r extends Compendium {
 
     /**
      * Our own entry partial which mirrors Foundry's index-partial.hbs structure
-     * and appends ring/rarity/rank badges using data from _prepareDirectoryContext.
+     * and appends approach/rarity/rank badges using data from _preparePartContext.
      *
      * NOTE: We intentionally duplicate Foundry's <li> structure here rather than
      * trying to include their partial, because their partial renders a complete <li>
@@ -52,7 +52,7 @@ export class ItemCompendiumGfl5r extends Compendium {
      * Which filter UI controls are worth showing.
      * Determined during _prepareContext by checking whether at least two
      * distinct values exist for each filterable property.
-     * @type {{ rank: boolean, rarity: boolean, source: boolean, ring: boolean }|null}
+     * @type {{ rank: boolean, rarity: boolean, source: boolean, approach: boolean, cost: boolean }|null}
      */
     #filtersToShow = null;
 
@@ -60,14 +60,20 @@ export class ItemCompendiumGfl5r extends Compendium {
      * Cached active filter values, read from the DOM once at the start of
      * each filter pass in #reapplyFilters and held for _onMatchSearchEntry
      * to consume per-entry without re-querying the DOM.
-     * @type {{ userFilter: string[], rankFilter: string[], ringFilter: string[], rarityFilter: string[] }}
+     * @type {{ userFilter: string[], rankFilter: string[], approachFilter: string[], rarityFilter: string[] }}
      */
     #activeFilters = {
         userFilter: [],
         rankFilter: [],
-        ringFilter: [],
+        approachFilter: [],
         rarityFilter: [],
     };
+
+    /**
+     * The active sort mode: one of "name", "cost", "rarity", "rank".
+     * @type {string}
+     */
+    #activeSort = "name";
 
     /**
      * Insert the filter part between header and directory by composing with
@@ -118,8 +124,15 @@ export class ItemCompendiumGfl5r extends Compendium {
             context.filtersToShow = this.#filtersToShow;
             context.ranks = [1, 2, 3, 4, 5];
             context.rarities = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            context.rings = ["fire", "water", "earth", "air", "void"];
+            context.approaches = CONFIG.gfl5r.stances;
             context.hideDisabledOptions = hideDisabledOptions;
+            context.activeSort = this.#activeSort;
+            context.sortOptions = [
+                { value: "name", label: "gfl5r.sheets.name" },
+                ...(this.#filtersToShow?.rank ? [{ value: "rank", label: "gfl5r.compendium.filter.rank" }] : []),
+                ...(this.#filtersToShow?.rarity ? [{ value: "rarity", label: "gfl5r.compendium.filter.rarity" }] : []),
+                ...(this.#filtersToShow?.cost ? [{ value: "cost", label: "gfl5r.compendium.filter.cost" }] : []),
+            ];
             context.showPlayerView = game.user.isGM && this.#unavailableSourceForPlayersSet.size > 0;
 
             // Source multiselect options — plain data for {{selectOptions}} in the template.
@@ -138,14 +151,20 @@ export class ItemCompendiumGfl5r extends Compendium {
 
         if (partId === "directory") {
             context.entryFilterData = Object.fromEntries(
-                [...this.collection.index.values()].map((entry) => [
-                    entry._id,
-                    {
-                        rank: entry.system?.rank,
-                        ring: entry.system?.ring,
-                        rarity: entry.system?.rarity,
-                    },
-                ])
+                [...this.collection.index.values()].map((entry) => {
+                    const approach = CONFIG.gfl5r.stances.includes(entry.system?.approach) ? entry.system.approach : null;
+                    return [
+                        entry._id,
+                        {
+                            rank: entry.system?.rank_required,
+                            approach,
+                            rarity: entry.system?.rarity,
+                            hasRank: entry.system?.rank_required != null,
+                            hasApproach: !!approach,
+                            hasRarity: entry.system?.rarity != null,
+                        },
+                    ];
+                })
             );
         }
 
@@ -161,13 +180,15 @@ export class ItemCompendiumGfl5r extends Compendium {
         if (options.parts.includes("filter")) {
             this.#bindButtonFilter(".rank-filter");
             this.#bindButtonFilter(".rarity-filter");
-            this.#bindButtonFilter(".ring-filter");
+            this.#bindButtonFilter(".approach-filter");
             this.#bindSourceFilter();
+            this.#bindSortFilter();
         }
 
-        // Reapply filters whenever the filter controls or the entry list changes.
+        // Reapply filters and sorting whenever the filter controls or the entry list changes.
         if (options.parts.some((p) => p === "filter" || p === "directory")) {
             this.#reapplyFilters();
+            this.#applySort();
         }
     }
 
@@ -182,8 +203,9 @@ export class ItemCompendiumGfl5r extends Compendium {
         if (partId === "filter") {
             state.selectedRanks = [...priorElement.querySelectorAll(".rank-filter .selected")].map((element) => element.dataset.rank);
             state.selectedRarities = [...priorElement.querySelectorAll(".rarity-filter .selected")].map((element) => element.dataset.rarity);
-            state.selectedRings = [...priorElement.querySelectorAll(".ring-filter .selected")].map((element) => element.dataset.ring);
+            state.selectedApproaches = [...priorElement.querySelectorAll(".approach-filter .selected")].map((element) => element.dataset.approach);
             state.sourceValue = priorElement.querySelector("gfl5r-multi-select")?.value;
+            state.sortValue = priorElement.querySelector("select[name=\"filter-sort\"]")?.value;
         }
     }
 
@@ -213,12 +235,12 @@ export class ItemCompendiumGfl5r extends Compendium {
                 rarityClear.style.display = state.selectedRarities?.length ? "" : "none";
             }
 
-            for (const ring of state.selectedRings ?? []) {
-                newElement.querySelector(`.ring-filter [data-ring="${ring}"]`)?.classList.add("selected");
+            for (const approach of state.selectedApproaches ?? []) {
+                newElement.querySelector(`.approach-filter [data-approach="${approach}"]`)?.classList.add("selected");
             }
-            const ringClear = newElement.querySelector(".ring-filter [data-clear]");
-            if (ringClear) {
-                ringClear.style.display = state.selectedRings?.length ? "" : "none";
+            const approachClear = newElement.querySelector(".approach-filter [data-clear]");
+            if (approachClear) {
+                approachClear.style.display = state.selectedApproaches?.length ? "" : "none";
             }
 
             if (state.sourceValue) {
@@ -226,6 +248,11 @@ export class ItemCompendiumGfl5r extends Compendium {
                 if (multiSelect) {
                     multiSelect.value = state.sourceValue;
                 }
+            }
+            const sortSelect = newElement.querySelector("select[name=\"filter-sort\"]");
+            if (sortSelect && state.sortValue) {
+                sortSelect.value = state.sortValue;
+                this.#activeSort = state.sortValue;
             }
         }
     }
@@ -276,7 +303,7 @@ export class ItemCompendiumGfl5r extends Compendium {
         this.#activeFilters = {
             userFilter: multiSelect?.value ?? [],
             rankFilter: collectSelected(".rank-filter", "rank"),
-            ringFilter: collectSelected(".ring-filter", "ring"),
+            approachFilter: collectSelected(".approach-filter", "approach"),
             rarityFilter: collectSelected(".rarity-filter", "rarity"),
         };
     }
@@ -294,7 +321,7 @@ export class ItemCompendiumGfl5r extends Compendium {
 
         const system = indexEntry.system;
         const lineSource = system?.source_reference?.source ?? null;
-        const { userFilter, rankFilter, ringFilter, rarityFilter } = this.#activeFilters;
+        const { userFilter, rankFilter, approachFilter, rarityFilter } = this.#activeFilters;
         let shouldShow = true;
 
         const sourceUnavailable =
@@ -311,13 +338,13 @@ export class ItemCompendiumGfl5r extends Compendium {
         }
 
         if (rankFilter.length) {
-            shouldShow &&= rankFilter.includes(String(system?.rank));
+            shouldShow &&= rankFilter.includes(String(system?.rank_required));
         }
         if (rarityFilter.length) {
             shouldShow &&= rarityFilter.includes(String(system?.rarity));
         }
-        if (ringFilter.length) {
-            shouldShow &&= ringFilter.includes(system?.ring);
+        if (approachFilter.length) {
+            shouldShow &&= approachFilter.includes(system?.approach);
         }
         if (userFilter.length) {
             shouldShow &&= userFilter.includes(lineSource);
@@ -327,15 +354,67 @@ export class ItemCompendiumGfl5r extends Compendium {
     }
 
     /**
+     * Sort the compendium index and reorder the rendered directory entries
+     * according to the active sort mode. Entries without a value for the
+     * sort field fall back to name comparison and are placed last.
+     * @private
+     */
+    #applySort() {
+        if (!this.element) {
+            return;
+        }
+        const collator = new Intl.Collator(game.i18n.lang, { sensitivity: "base" });
+
+        let sortValue;
+        switch (this.#activeSort) {
+            case "rank": sortValue = (system) => system?.rank_required; break;
+            case "rarity": sortValue = (system) => Number(system?.rarity); break;
+            case "cost": sortValue = (system) => Number(system?.price || system?.cost) || null; break;
+            default: sortValue = null; // "name" — plain alphabetical
+        }
+
+        const entries = [...this.collection.index.values()].sort((a, b) => {
+            if (sortValue) {
+                const valueA = sortValue(a.system);
+                const valueB = sortValue(b.system);
+                const missingA = valueA == null || Number.isNaN(valueA);
+                const missingB = valueB == null || Number.isNaN(valueB);
+                if (!missingA && !missingB && valueA !== valueB) {
+                    return valueA - valueB;
+                }
+                if (missingA !== missingB) {
+                    return missingA ? 1 : -1;
+                }
+            }
+            return collator.compare(a.name ?? "", b.name ?? "");
+        });
+
+        // Rebuild the index in sorted order so future renders keep this ordering.
+        for (const entry of entries) {
+            this.collection.index.delete(entry._id);
+            this.collection.index.set(entry._id, entry);
+        }
+
+        // Reorder the rendered entries to match, keeping entries inside their folder containers.
+        const order = new Map(entries.map((entry, index) => [entry._id, index]));
+        for (const list of this.element.querySelectorAll(".directory-list, .directory-list .subdirectory")) {
+            [...list.children]
+                .filter((item) => item.dataset.entryId)
+                .sort((a, b) => (order.get(a.dataset.entryId) ?? 0) - (order.get(b.dataset.entryId) ?? 0))
+                .forEach((item) => list.append(item));
+        }
+    }
+
+    /**
      * Iterate the compendium index to:
      *   1. Populate #sourcesInThisCompendium for source filter options
      *   2. Determine which filter controls have enough distinct values to show
-     * @returns {{ rank: boolean, rarity: boolean, source: boolean, ring: boolean }}
+     * @returns {{ rank: boolean, rarity: boolean, source: boolean, approach: boolean, cost: boolean }}
      * @private
      */
     #computeFilterVisibility() {
-        const filtersToShow = { rank: false, rarity: false, source: true, ring: false };
-        const firstSeen = { rank: null, rarity: null, ring: null };
+        const filtersToShow = { rank: false, rarity: false, source: true, approach: false, cost: false };
+        const firstSeen = { rank: null, rarity: null, approach: null, cost: null };
 
         const markIfDistinct = (prop, value) => {
             if (filtersToShow[prop] || value === undefined || value === null) {
@@ -353,14 +432,18 @@ export class ItemCompendiumGfl5r extends Compendium {
             if (!sys) {
                 continue;
             }
-            if (sys.rank !== undefined) {
-                markIfDistinct("rank", sys.rank);
+            if (sys.rank_required !== undefined) {
+                markIfDistinct("rank", sys.rank_required);
             }
-            if (sys.ring !== undefined) {
-                markIfDistinct("ring", sys.ring);
+            if (CONFIG.gfl5r.stances.includes(sys.approach)) {
+                markIfDistinct("approach", sys.approach);
             }
             if (sys.rarity !== undefined) {
                 markIfDistinct("rarity", sys.rarity);
+            }
+            const cost = Number(sys.price || sys.cost);
+            if (cost > 0) {
+                markIfDistinct("cost", cost);
             }
             if (sys.source_reference?.source !== undefined) {
                 this.#sourcesInThisCompendium.add(sys.source_reference.source);
@@ -455,6 +538,21 @@ export class ItemCompendiumGfl5r extends Compendium {
     }
 
     /**
+     * Wire up the change listener on the sort select.
+     * @private
+     */
+    #bindSortFilter() {
+        const select = this.element.querySelector("select[name=\"filter-sort\"]");
+        if (!select) {
+            return;
+        }
+        select.addEventListener("change", () => {
+            this.#activeSort = select.value;
+            this.#applySort();
+        });
+    }
+
+    /**
      * Handle the GM player-view button, selecting only the sources that are
      * both visible to players and present in this specific compendium.
      * @this {ItemCompendiumGfl5r}
@@ -483,9 +581,11 @@ export class ItemCompendiumGfl5r extends Compendium {
     static applyToPacks() {
         CONFIG.Item.compendiumIndexFields = [
             ...(CONFIG.Item.compendiumIndexFields ?? []),
-            "system.rank",
-            "system.ring",
+            "system.rank_required",
+            "system.approach",
             "system.rarity",
+            "system.price",
+            "system.cost",
             "system.source_reference.source",
         ];
 

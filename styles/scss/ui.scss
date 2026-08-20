@@ -272,7 +272,7 @@ button {
     min-width: 350px;
 
     .directory-item {
-        .ring-rarity-rank {
+        .approach-rarity-rank {
             display: flex;
             align-items: center;
             justify-content: end;
@@ -327,7 +327,7 @@ button {
         .number-filter a,
         .rank-filter a,
         .rarity-filter a,
-        .ring-filter i {
+        .approach-filter i {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -345,7 +345,7 @@ button {
 
         .rank-filter a,
         .rarity-filter a,
-        .ring-filter i {
+        .approach-filter i {
             @include gfl5r-selection-circle-state("selected", -4px);
         }
 
@@ -373,6 +373,11 @@ button {
 
         .source-filter gfl5r-multi-select {
             width: 100%;
+        }
+
+        .sort-filter select {
+            flex: 1;
+            max-width: calc(100% - 4.5rem);
         }
     }
 
