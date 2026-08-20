@@ -148,9 +148,26 @@ export const RegisterHandlebars = function () {
             case "||":
                 result = a || b;
                 break;
-            case "includes":
-                result = a && b && a.includes(b);
+            case "includes": {
+                if (!a || b === undefined || b === null) {
+                    result = false;
+                } else if (Array.isArray(a)) {
+                    // Real array (e.g. storeInfos) — Array.prototype.includes
+                    result = a.includes(b);
+                } else if (typeof a === "string" && a.trim().startsWith("[")) {
+                    // JSON-array string literal (e.g. '["advantage","passion"]')
+                    try {
+                        const parsed = JSON.parse(a);
+                        result = Array.isArray(parsed) && parsed.includes(b);
+                    } catch {
+                        // Malformed string literal — fall back to substring matching
+                        result = a.includes(b);
+                    }
+                } else {
+                    result = String(a).includes(String(b));
+                }
                 break;
+            }
             default:
                 break;
         }
