@@ -207,6 +207,7 @@
                 "is_transhuman": false
             },
             "twelve_questions": {
+                "moduleBudget": 60000,
                 "step1Narrative": "",
                 "step2Narrative": "",
                 "step3Narrative": "",
@@ -245,6 +246,7 @@
                 "name_origin": ""
             },
             "twelve_questions": {
+                "moduleBudget": 60000,
                 "step1Narrative": "",
                 "step2Narrative": "",
                 "step3Narrative": "",

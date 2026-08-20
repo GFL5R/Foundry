@@ -637,10 +637,10 @@ export class TwelveQuestionsDialog extends FormApplication {
             }
             if (!list.includes(itemRef)) {
                 list.push(itemRef);
-                this.data.moduleBudget = currentBudget - moduleCost;
                 const cached = foundry.utils.getProperty(this.cache, stepKey) || [];
                 cached.push(item);
                 foundry.utils.setProperty(this.cache, stepKey, cached);
+                this._recomputeModuleBudget();
             }
         } else if (stepKey === "step16.items") {
             // Multi-slot Going Solo equipment with 30k credit budget check
@@ -694,15 +694,6 @@ export class TwelveQuestionsDialog extends FormApplication {
         const idx = list.findIndex(ref => ref === itemId || ref.endsWith?.(itemId));
         if (idx < 0) return;
 
-        // Refund module budget if deleting from step2.modules
-        if (stepKey === "step2.modules") {
-            const cached = foundry.utils.getProperty(this.cache, stepKey);
-            if (Array.isArray(cached) && cached[idx]) {
-                const moduleCost = parseInt(cached[idx].system?.cost) || 0;
-                this.data.moduleBudget = (this.data.moduleBudget || 60000) + moduleCost;
-            }
-        }
-
         // Refund credits if deleting from step16.items
         if (stepKey === "step16.items") {
             const cached = foundry.utils.getProperty(this.cache, stepKey);
@@ -740,6 +731,11 @@ export class TwelveQuestionsDialog extends FormApplication {
                 i.id === itemId || i.uuid === itemId || i._id === itemId
             );
             if (cacheIdx >= 0) cached.splice(cacheIdx, 1);
+        }
+
+        // Recompute module budget from the remaining selected modules
+        if (stepKey === "step2.modules") {
+            this._recomputeModuleBudget();
         }
     }
 
@@ -788,6 +784,24 @@ export class TwelveQuestionsDialog extends FormApplication {
             }
             foundry.utils.setProperty(this.cache, key, resolved);
         }
+
+        // Re-derive the module budget from the resolved modules so it can
+        // never drift from the selection (e.g. stale 60k default on re-entry).
+        this._recomputeModuleBudget();
+    }
+
+    /**
+     * Recompute the T-Doll module budget deterministically as the baseline
+     * (60,000 URNC) minus the total cost of all currently selected modules.
+     * This replaces incremental +/- updates so the value can never drift
+     * from the selected module list, regardless of what was persisted.
+     */
+    _recomputeModuleBudget() {
+        const cached = foundry.utils.getProperty(this.cache, "step2.modules") || [];
+        const spent = cached.reduce(
+            (sum, item) => sum + (parseInt(item?.system?.cost || item?.cost) || 0), 0
+        );
+        this.data.moduleBudget = Math.max(0, 60000 - spent);
     }
 
     /**
