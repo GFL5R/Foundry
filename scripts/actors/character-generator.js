@@ -4,7 +4,7 @@
  * 4-step wizard: Identity -> Training -> Traits -> Motivation
  */
 
-import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, TDOLL_FRAMES } from "./character-builder-data.js";
+import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, HUMAN_NAME_MEANINGS, TDOLL_FRAMES } from "./character-builder-data.js";
 import { NATIONALITY_ITEMS, BACKGROUND_GEAR, DISCIPLINE_WEAPON_GRANTS } from "./starting-equipment.js";
 
 export class CharacterGenerator {
@@ -33,6 +33,7 @@ export class CharacterGenerator {
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
         q4BonusSkill = "none", q5BonusApproach = "none",
+        nameMeaningKey = "none",
         goingSolo = false,
         secondDisciplineUuid = "", secondTechniqueUuid = "",
         soloAdvantageUuid = "", soloPassionUuid = "",
@@ -69,6 +70,12 @@ export class CharacterGenerator {
         // Q5 bonus approach
         if (q5BonusApproach && q5BonusApproach !== "none") {
             approaches[q5BonusApproach] = (approaches[q5BonusApproach] || 1) + 1;
+        }
+
+        // Q11 name meaning → approach bonus
+        const nameMeaningEntry = HUMAN_NAME_MEANINGS.find(m => m.key === nameMeaningKey);
+        if (nameMeaningEntry) {
+            approaches[nameMeaningEntry.approach] = (approaches[nameMeaningEntry.approach] || 1) + 1;
         }
 
         // Build skills
@@ -161,9 +168,11 @@ export class CharacterGenerator {
         if (nameMeaning) updates["system.narrative.name_meaning"] = nameMeaning;
         if (storyEnd) updates["system.narrative.story_end"] = storyEnd;
 
-        // Q4/Q5 stored for reference
+        // Q4/Q5/Q11 stored for reference
         updates["system.twelve_questions.q4BonusSkill"] = q4BonusSkill;
         updates["system.twelve_questions.q5BonusApproach"] = q5BonusApproach;
+        updates["system.twelve_questions.q11NameMeaning"] = nameMeaningKey;
+
 
         await this.actor.update(updates);
         ui.notifications?.info("Human character creation applied.");
@@ -181,6 +190,7 @@ export class CharacterGenerator {
         viewOfDolls = "favor", viewDollsSkill = "",
         goal = "", nameMeaning = "", storyEnd = "", name = "",
         q4BonusSkill = "none", q5BonusApproach = "none",
+        nameMeaningKey = "none",
         goingSolo = false,
         secondDisciplineUuid = "", secondTechniqueUuid = "",
         soloAdvantageUuid = "", soloPassionUuid = "",
@@ -217,6 +227,12 @@ export class CharacterGenerator {
         // Q5 bonus approach
         if (q5BonusApproach && q5BonusApproach !== "none") {
             approaches[q5BonusApproach] = (approaches[q5BonusApproach] || 1) + 1;
+        }
+
+        // Q11 name meaning → approach bonus
+        const nameMeaningEntry = HUMAN_NAME_MEANINGS.find(m => m.key === nameMeaningKey);
+        if (nameMeaningEntry) {
+            approaches[nameMeaningEntry.approach] = (approaches[nameMeaningEntry.approach] || 1) + 1;
         }
 
         // Build skills
@@ -309,9 +325,11 @@ export class CharacterGenerator {
         if (nameMeaning) updates["system.narrative.name_meaning"] = nameMeaning;
         if (storyEnd) updates["system.narrative.story_end"] = storyEnd;
 
-        // Q4/Q5 stored for reference
+        // Q4/Q5/Q11 stored for reference
         updates["system.twelve_questions.q4BonusSkill"] = q4BonusSkill;
         updates["system.twelve_questions.q5BonusApproach"] = q5BonusApproach;
+        updates["system.twelve_questions.q11NameMeaning"] = nameMeaningKey;
+
 
         await this.actor.update(updates);
         ui.notifications?.info("Transhuman character creation applied.");

@@ -511,6 +511,24 @@
                 </div>
                 {{#if isHuman}}
                 <div class="form-group">
+                    <label>{{localize 'gfl5r.twelve_questions.name_meaning_bonus'}}</label>
+                    <div class="form-fields">
+                        <select name="step11.nameMeaningKey">
+                            <option value="none" {{#ifCond data.step11.nameMeaningKey '==' 'none'}}selected{{/ifCond}}>{{localize 'gfl5r.twelve_questions.option_none'}}</option>
+                            {{#each nameMeanings}}
+                            <option value="{{this.key}}" {{#ifCond ../data.step11.nameMeaningKey '==' this.key}}selected{{/ifCond}}>
+                                {{this.label}} (+1 {{localizeApproach this.approach}})
+                            </option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    {{#each nameMeanings}}
+                    {{#ifCond ../data.step11.nameMeaningKey '==' this.key}}
+                    <p class="tq-flavor"><em>{{this.meaning}}</em></p>
+                    {{/ifCond}}
+                    {{/each}}
+                </div>
+                <div class="form-group">
                     <label>{{localize 'gfl5r.narrative.name_meaning'}}</label>
                     <div class="form-fields"><textarea name="step10.nameMeaning" rows="2" placeholder="{{localize 'gfl5r.twelve_questions.human.q10.placeholder'}}">{{data.step10.nameMeaning}}</textarea></div>
                 </div>

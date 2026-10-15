@@ -4,7 +4,7 @@
  * Modeled after L5R5E's TwentyQuestions but adapted for the GFL5R 12-question flow.
  */
 
-import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, TDOLL_FRAMES } from "./character-builder-data.js";
+import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, HUMAN_NAME_MEANINGS, TDOLL_FRAMES } from "./character-builder-data.js";
 
 export class TwelveQuestions {
 
@@ -185,6 +185,8 @@ export class TwelveQuestions {
         step11: {
             // Name (text)
             name: "",
+            // Human: selected name meaning key (→ +1 to that meaning's approach)
+            nameMeaningKey: "none",
         },
         step12: {
             // Story end (text)
@@ -271,6 +273,7 @@ export class TwelveQuestions {
         this.data.step10Narrative = tq.step10Narrative || "";
         this.data.step4.bonusSkill = tq.q4BonusSkill || "none";
         this.data.step5.bonusApproach = tq.q5BonusApproach || "none";
+        this.data.step11.nameMeaningKey = tq.q11NameMeaning || "none";
 
         if (isHumanActor) {
             this.data.step1.selection = identity.nationality || "";
@@ -364,6 +367,15 @@ export class TwelveQuestions {
             if (bg) {
                 summary[bg.approach] = (summary[bg.approach] || 1) + 1;
             }
+            // Q5 bonus approach
+            if (this.data.step5.bonusApproach !== "none") {
+                summary[this.data.step5.bonusApproach] = (summary[this.data.step5.bonusApproach] || 1) + 1;
+            }
+            // Q11 name meaning → approach bonus
+            const nameMeaning = HUMAN_NAME_MEANINGS.find(m => m.key === this.data.step11.nameMeaningKey);
+            if (nameMeaning) {
+                summary[nameMeaning.approach] = (summary[nameMeaning.approach] || 1) + 1;
+            }
         } else {
             const frame = TDOLL_FRAMES.find(f => f.key === this.data.step1.selection);
             if (frame) {
@@ -428,6 +440,7 @@ export class TwelveQuestions {
                 name: this.data.step11.name,
                 q4BonusSkill: this.data.step4.bonusSkill,
                 q5BonusApproach: this.data.step5.bonusApproach,
+                nameMeaningKey: this.data.step11.nameMeaningKey,
                 step1Narrative: this.data.step1Narrative,
                 step2Narrative: this.data.step2Narrative,
                 step3Narrative: this.data.step3Narrative,
@@ -461,6 +474,7 @@ export class TwelveQuestions {
                 name: this.data.step11.name,
                 q4BonusSkill: this.data.step4.bonusSkill,
                 q5BonusApproach: this.data.step5.bonusApproach,
+                nameMeaningKey: this.data.step11.nameMeaningKey,
                 step1Narrative: this.data.step1Narrative,
                 step2Narrative: this.data.step2Narrative,
                 step3Narrative: this.data.step3Narrative,

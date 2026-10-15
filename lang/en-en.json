@@ -612,6 +612,7 @@
             "option_none": "None",
             "bonus_skill": "Bonus Skill (+1)",
             "bonus_approach": "Bonus Approach (+1)",
+            "name_meaning_bonus": "Name Meaning (+1 Approach)",
             "choose_starting_technique": "Choose one starting technique from your selected discipline.",
             "discipline_skills": "Discipline Skills",
             "discipline_skills_hint": "Each discipline skill starts at Rank 1 for free. Spend XP to raise them further (cost = new rank \u00d7 2).",

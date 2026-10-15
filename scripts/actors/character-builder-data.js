@@ -17,6 +17,39 @@ export const HUMAN_NATIONALITIES = [
     { key: "yellow-zone", label: "Yellow Zone Native", approaches: ["fortune", "power"] },
 ];
 
+/**
+ * Name meaning → approach table for human characters.
+ * Picking one of these meanings grants +1 to the associated approach at character creation.
+ * Each meaning is descriptive (the character picks the meaning that best fits them)
+ * rather than a strict etymology — names carry the weight you give them.
+ */
+export const HUMAN_NAME_MEANINGS = [
+    // Power
+    { key: "power-bearer", approach: "power", label: "Bearer of burdens", meaning: "A name that speaks of someone who carries weight others can't. Authority, responsibility, or a strength that answers when called." },
+    { key: "power-sword", approach: "power", label: "Iron resolve", meaning: "A name born from an unyielding will. What you decide, you do, and the world bends around that certainty." },
+    { key: "power-storm", approach: "power", label: "Storm given voice", meaning: "A name that arrives before you do, announcing itself. You are loud, direct, and harder to ignore than the weather." },
+
+    // Precision
+    { key: "precision-eye", approach: "precision", label: "The unblinking eye", meaning: "A name for someone who sees what others miss. Nothing gets by you, and you notice the details that win or lose the fight." },
+    { key: "precision-craft", approach: "precision", label: "Poised and exact", meaning: "A name for a steady hand and a careful mind. You do things once, and you do them right." },
+    { key: "precision-edge", approach: "precision", label: "The fine edge", meaning: "A name that speaks of precision over power. A scalpel where others bring a sledgehammer." },
+
+    // Swiftness
+    { key: "swift-wind", approach: "swiftness", label: "First to move", meaning: "A name given to whoever is already gone when the decision is made. You act before hesitation can set in." },
+    { key: "swift-ease", approach: "swiftness", label: "Made of motion", meaning: "A name that moves like you do. Quick to laugh, quick to react, quick to be somewhere else." },
+    { key: "swift-spark", approach: "swiftness", label: "The bright spark", meaning: "A name for a flash of sudden action and sudden thought, leaving the world scrambling to keep up." },
+
+    // Resilience
+    { key: "resilient-root", approach: "resilience", label: "Deep roots", meaning: "A name that wears well. You endure what breaks others, and you're still standing when the dust settles." },
+    { key: "resilient-stone", approach: "resilience", label: "The unmoved", meaning: "A name for someone the world keeps trying to move and keeps failing. Steady, solid, patient." },
+    { key: "resilient-oak", approach: "resilience", label: "Grown through hardship", meaning: "A name that means 'still here.' Every scar is part of the story the name tells." },
+
+    // Fortune
+    { key: "fortune-chance", approach: "fortune", label: "Luck's favorite", meaning: "A name that whispers of close calls and strange luck, of being in the right place at the right time." },
+    { key: "fortune-gift", approach: "fortune", label: "The blessed", meaning: "A name given with an open hand, for someone the world seems to smile on, or who smiles in spite of it." },
+    { key: "fortune-guide", approach: "fortune", label: "The guiding star", meaning: "A name that others follow. You have a knack for showing up when it matters and pointing the way." },
+];
+
 export const HUMAN_BACKGROUNDS = [
     { key: "military", label: "Military", approach: "resilience", skill: "tactics" },
     { key: "pmc-commander", label: "PMC Commander", approach: "power", skill: "command" },

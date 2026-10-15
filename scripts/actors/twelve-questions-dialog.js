@@ -1,5 +1,5 @@
 import { TwelveQuestions } from "./twelve-questions.js";
-import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, TDOLL_FRAMES } from "./character-builder-data.js";
+import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, HUMAN_NAME_MEANINGS, TDOLL_FRAMES } from "./character-builder-data.js";
 import { DISCIPLINE_WEAPON_GRANTS } from "./starting-equipment.js";
 
 /**
@@ -90,6 +90,7 @@ export class TwelveQuestionsDialog extends FormApplication {
             goingSoloAvailable: game.settings.get(CONFIG.gfl5r.namespace, "going-solo-enabled"),
             nationalities: HUMAN_NATIONALITIES,
             backgrounds: HUMAN_BACKGROUNDS,
+            nameMeanings: HUMAN_NAME_MEANINGS,
             frames: TDOLL_FRAMES,
             approachesList: game.gfl5r.HelpersGfl5r.getApproachesList(),
             skillsList,
