@@ -33,8 +33,14 @@ jobs:
 
           echo "Promoting release: $TAG (id=$RELEASE_ID)"
 
+          # Step 1: un-prerelease it first. Doing this and setting "latest" in the
+          # same PATCH silently drops the latest flag, because GitHub evaluates make_latest
+          # against a release that is still a prerelease (prereleases can't be Latest).
           gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
-            -f prerelease=false \
+            -f prerelease=false
+
+          # Step 2: now that it's a full release, explicitly mark it as Latest.
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
             -f make_latest=true
 
           echo "Successfully promoted $TAG to full release."
