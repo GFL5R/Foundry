@@ -757,16 +757,84 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
                 perkId = created?.[0]?.id || null;
             }
 
+            // Retroactive progression (wiki 04-advancement): skill ranks held
+            // above the free baseline and techniques already owned that this
+            // discipline lists count toward the new slot's rank progress, even
+            // though they were paid for before this discipline was picked.
+            const normalizeName = (value) => String(value || "").trim().toLowerCase();
+            let retroXp = 0;
+            const retroTechniqueIds = [];
+
+            const actorSkills = this.actor.system.skills || {};
+            const actorSkillsFree = this.actor.system.skills_free || {};
+            const associatedSkillIds = (ownedItem.system?.associated_skills || [])
+                .map((s) => CharacterSheetGfl5r.normalizeSkillName(s));
+            for (const skillId of associatedSkillIds) {
+                const rank = parseInt(actorSkills[skillId]) || 0;
+                const free = parseInt(actorSkillsFree[skillId]) || 0;
+                if (rank > free) {
+                    retroXp += CharacterSheetGfl5r.cumulativeSkillXp(rank)
+                        - CharacterSheetGfl5r.cumulativeSkillXp(free);
+                }
+            }
+
+            const listedTechniqueNames = new Set(
+                (ownedItem.system?.techniques || [])
+                    .map((entry) => (typeof entry === "string" ? entry : entry?.name))
+                    .filter(Boolean)
+                    .map(normalizeName)
+            );
+            if (listedTechniqueNames.size > 0) {
+                for (const tech of this.actor.items.filter((i) => i.type === "technique")) {
+                    // Perks and capstones are granted freely, never seeded
+                    if (["perk", "capstone"].includes(tech.system?.technique_type)) continue;
+                    if (!listedTechniqueNames.has(normalizeName(tech.name))) continue;
+                    retroTechniqueIds.push(tech.id);
+                    retroXp += CONFIG.gfl5r.xp.techniqueCost;
+                }
+            }
+
+            // The unlock cost counts toward rank 1 (wiki 04-advancement)
+            const seededXp = retroXp + unlockCost;
+            const seededProgress = CharacterSheetGfl5r.computeRankProgress(seededXp);
+
             await this.actor.update({
                 [`system.disciplines.${slotKey}.disciplineId`]: ownedItem.id,
                 [`system.disciplines.${slotKey}.perkId`]: perkId,
                 [`system.disciplines.${slotKey}.capstoneId`]: null,
                 [`system.disciplines.${slotKey}.unlockCost`]: unlockCost,
-                [`system.disciplines.${slotKey}.xpSpent`]: 0,
-                [`system.disciplines.${slotKey}.currentRank`]: 1,
-                [`system.disciplines.${slotKey}.ranksCompleted`]: 0,
-                [`system.disciplines.${slotKey}.techniquesLearned`]: [],
+                [`system.disciplines.${slotKey}.xpSpent`]: seededXp,
+                [`system.disciplines.${slotKey}.currentRank`]: seededProgress.currentRank,
+                [`system.disciplines.${slotKey}.ranksCompleted`]: seededProgress.ranksCompleted,
+                [`system.disciplines.${slotKey}.techniquesLearned`]: retroTechniqueIds,
             });
+
+            // Seeded XP can complete rank 3 outright — grant the capstone
+            if (seededProgress.ranksCompleted >= 3 && !slot.capstoneId) {
+                const capstoneData = ownedItem.system?.capstone;
+                if (capstoneData?.name) {
+                    const capstoneItemData = {
+                        name: capstoneData.name,
+                        type: "technique",
+                        img: `${CONFIG.gfl5r.paths.assets}icons/techs/capstone.svg`,
+                        system: {
+                            source_reference: { source: "GFL5R", page: 0 },
+                            flavor: capstoneData.flavor || "",
+                            description: capstoneData.description || "",
+                            xp_cost: 0,
+                            rank_required: 3,
+                            technique_type: "capstone",
+                            approach: "",
+                            skill: "",
+                            activation: "passive",
+                        },
+                    };
+                    const created = await this.actor.createEmbeddedDocuments("Item", [capstoneItemData]);
+                    await this.actor.update({
+                        [`system.disciplines.${slotKey}.capstoneId`]: created?.[0]?.id || null,
+                    });
+                }
+            }
         }
     }
 
