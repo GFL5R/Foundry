@@ -43,10 +43,33 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'EOF'
-          import json, pathlib
+          # Skip the patch bump when the pushed commits already changed the
+          # major or minor version (i.e. the version was bumped by hand).
+          # Compare against the sha before the push; fall back to HEAD~1 for
+          # workflow_dispatch runs, and to "bump" when there is no history.
+          BEFORE="${{ github.event.before }}"
+          if [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
+              && git cat-file -e "$BEFORE:system.json" 2>/dev/null; then
+            REF="$BEFORE"
+          elif git cat-file -e "HEAD~1:system.json" 2>/dev/null; then
+            REF="HEAD~1"
+          else
+            REF=""
+          fi
+          python - "$REF" <<'EOF'
+          import json, pathlib, subprocess, sys
+          ref = sys.argv[1] if len(sys.argv) > 1 else ""
           p = pathlib.Path("system.json")
           data = json.loads(p.read_text(encoding="utf-8"))
+          data["download"] = f"https://github.com/GFL5R/Foundry/releases/download/v{data['version']}/gfl5r.zip"
+          if ref:
+              old = json.loads(subprocess.check_output(["git", "show", f"{ref}:system.json"]))
+              old_major_minor = old["version"].split(".")[:2]
+              new_major_minor = data["version"].split(".")[:2]
+              if old_major_minor != new_major_minor:
+                  print(f"Major/minor already bumped ({old['version']} -> {data['version']}); skipping patch bump.")
+                  p.write_text(json.dumps(data, indent=4, ensure_ascii=False) + "\n", encoding="utf-8")
+                  sys.exit(0)
           major, minor, patch = data["version"].split(".")
           data["version"] = f"{major}.{minor}.{int(patch) + 1}"
           data["download"] = f"https://github.com/GFL5R/Foundry/releases/download/v{data['version']}/gfl5r.zip"
@@ -56,8 +79,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add system.json
-          git commit -m "chore: bump patch version [skip ci]"
-          git push
+          if git diff --cached --quiet; then
+            echo "No version change to commit."
+          else
+            git commit -m "chore: bump patch version [skip ci]"
+            git push
+          fi
 
       - name: Install system dependencies for plyvel
         run: |
