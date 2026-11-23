@@ -59,6 +59,25 @@ export const BACKGROUND_GEAR = {
 }
 
 // ---------------------------------------------------------------------------
+// T-Doll valid starter disciplines.
+// T-Dolls must begin with a weapon discipline matching their designated weapon
+// category. Knuckle Dragger is an exception: an unarmed-combat discipline that
+// is also a valid starter discipline for T-Dolls.
+// ---------------------------------------------------------------------------
+export const TDOLL_DISCIPLINES = new Set([
+  "Knives",
+  "Swords",
+  "Pistols",
+  "Submachine Guns",
+  "Shotguns",
+  "Assault Rifles",
+  "Battle Rifles",
+  "Snipers",
+  "Machine Guns",
+  "Knuckle Dragger",
+])
+
+// ---------------------------------------------------------------------------
 // Discipline → { category: string, maxPrice: number }
 // Fallback only: the canonical grant lives on the discipline item itself
 // (system.starting_weapon). Used when the item carries no grant data.

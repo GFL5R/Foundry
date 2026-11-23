@@ -1,6 +1,6 @@
 import { TwelveQuestions } from "./twelve-questions.js";
 import { HUMAN_NATIONALITIES, HUMAN_BACKGROUNDS, HUMAN_NAME_MEANINGS, TDOLL_FRAMES } from "./character-builder-data.js";
-import { DISCIPLINE_WEAPON_GRANTS } from "./starting-equipment.js";
+import { DISCIPLINE_WEAPON_GRANTS, TDOLL_DISCIPLINES } from "./starting-equipment.js";
 
 /**
  * GFL5R Twelve Questions Dialog
@@ -354,6 +354,15 @@ export class TwelveQuestionsDialog extends FormApplication {
         // Discipline drop zone (human step3, doll step3)
         if (stepKey === "step3.discipline") {
             if (item.type !== "discipline") return { allowed: false };
+
+            // T-Dolls must begin with a weapon discipline (or Knuckle Dragger).
+            if (this.actor?.type === "doll" && !TDOLL_DISCIPLINES.has(item.name)) {
+                return {
+                    allowed: false,
+                    message: game.i18n.localize("gfl5r.disciplines.warning.tdoll_discipline"),
+                };
+            }
+
             return { allowed: true };
         }
 
