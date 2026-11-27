@@ -637,6 +637,8 @@
         overflow: hidden;
         border: 1px solid $border-color;
         background: $bg-panel;
+        display: flex;
+        flex-direction: column;
     }
 
     .rnk-zone__header {
@@ -672,6 +674,7 @@
     .rnk-zone__body {
         padding: 8px;
         min-height: 3rem;
+        flex: 1 1 auto;
     }
 
     // Zone layout variants
