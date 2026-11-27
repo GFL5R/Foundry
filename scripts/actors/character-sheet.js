@@ -634,6 +634,7 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
             }
 
             const normalizeName = (value) => String(value || "").trim().toLowerCase();
+            const techniqueName = normalizeName(item.name);
             const allowedTechniqueNames = new Set(
                 (disciplineItem.system?.techniques || [])
                     .map((entry) => (typeof entry === "string" ? entry : entry?.name))
@@ -641,7 +642,7 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
                     .map(normalizeName)
             );
 
-            if (!allowedTechniqueNames.has(normalizeName(item.name))) {
+            if (!allowedTechniqueNames.has(techniqueName)) {
                 ui.notifications.warn(game.i18n.format("gfl5r.disciplines.warning.invalid_technique_for_discipline", {
                     technique: item.name,
                     discipline: disciplineItem.name,
@@ -649,45 +650,77 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
                 return;
             }
 
-            const requiredRank = Math.max(1, parseInt(item.system?.rank_required) || 1);
-            const computedRank = CharacterSheetGfl5r.computeRankProgress(slot.xpSpent || 0).currentRank;
-            const currentDisciplineRank = Math.max(slot.currentRank || 1, computedRank);
-
-            if (currentDisciplineRank < requiredRank) {
-                ui.notifications.warn(game.i18n.format("gfl5r.disciplines.warning.rank_requirement_not_met", {
-                    technique: item.name,
-                    requiredRank,
-                    currentRank: currentDisciplineRank,
-                }));
+            // Already learned in the dropped slot? Name-based check: the
+            // shared item may not exist on the actor yet.
+            const droppedSlotLearned = (slot.techniquesLearned || [])
+                .map((id) => normalizeName(this.actor.items.get(id)?.name));
+            if (droppedSlotLearned.includes(techniqueName)) {
+                ui.notifications.warn(`${item.name} is already in this discipline.`);
                 return;
             }
 
-            // Add technique to this discipline slot
+            const requiredRank = Math.max(1, parseInt(item.system?.rank_required) || 1);
+
+            // A technique valid for one discipline applies to every active
+            // slot whose discipline lists it and meets its rank requirement.
+            // Each slot's own ledger is charged the technique cost.
+            const allSlots = this.actor.system.disciplines || {};
+            const targets = [];
+            const rankBlocked = [];
+            for (const [targetKey, targetSlot] of Object.entries(allSlots)) {
+                if (!targetSlot.disciplineId) continue;
+                const targetDiscipline = this.actor.items.get(targetSlot.disciplineId);
+                if (!targetDiscipline) continue;
+                const listedNames = (targetDiscipline.system?.techniques || [])
+                    .map((entry) => (typeof entry === "string" ? entry : entry?.name))
+                    .filter(Boolean)
+                    .map(normalizeName);
+                if (!listedNames.includes(techniqueName)) continue;
+
+                const computedRank = CharacterSheetGfl5r.computeRankProgress(targetSlot.xpSpent || 0).currentRank;
+                const currentDisciplineRank = Math.max(targetSlot.currentRank || 1, computedRank);
+                if (currentDisciplineRank < requiredRank) {
+                    rankBlocked.push(targetDiscipline.name);
+                    continue;
+                }
+                targets.push({ slotKey: targetKey, slot: targetSlot, disciplineItem: targetDiscipline });
+            }
+
+            // Ensure the technique item exists on the actor (shared by all slots)
             const ownedItem = this.actor.items.getName(item.name)
                 || (await this.actor.createEmbeddedDocuments("Item", [item.toObject(true)]))?.[0];
             const itemId = ownedItem?.id || ownedItem?._id;
             if (!itemId) return;
 
-            const learned = [...(slot.techniquesLearned || [])];
-            if (learned.includes(itemId)) {
-                ui.notifications.warn(`${item.name} is already in this discipline.`);
-                return;
+            const updateData = {};
+            const appliedTo = [];
+            const reachedCapstone = [];
+            for (const { slotKey: targetKey, slot: targetSlot, disciplineItem: targetDiscipline } of targets) {
+                const learned = [...(targetSlot.techniquesLearned || [])];
+                if (learned.includes(itemId)) continue; // already known there — no double charge
+
+                learned.push(itemId);
+
+                const newXp = (targetSlot.xpSpent || 0) + CONFIG.gfl5r.xp.techniqueCost;
+                const { currentRank, ranksCompleted } = CharacterSheetGfl5r.computeRankProgress(newXp);
+                updateData[`system.disciplines.${targetKey}.techniquesLearned`] = learned;
+                updateData[`system.disciplines.${targetKey}.xpSpent`] = newXp;
+                updateData[`system.disciplines.${targetKey}.currentRank`] = currentRank;
+                updateData[`system.disciplines.${targetKey}.ranksCompleted`] = ranksCompleted;
+                appliedTo.push(targetDiscipline.name);
+
+                if (ranksCompleted >= 3 && (targetSlot.ranksCompleted || 0) < 3 && !targetSlot.capstoneId) {
+                    reachedCapstone.push({ slotKey: targetKey, disciplineItem: targetDiscipline });
+                }
             }
-            learned.push(itemId);
 
-            const newXp = (slot.xpSpent || 0) + CONFIG.gfl5r.xp.techniqueCost;
-            const { currentRank, ranksCompleted } = CharacterSheetGfl5r.computeRankProgress(newXp);
-            const updateData = {
-                [`system.disciplines.${slotKey}.techniquesLearned`]: learned,
-                [`system.disciplines.${slotKey}.xpSpent`]: newXp,
-                [`system.disciplines.${slotKey}.currentRank`]: currentRank,
-                [`system.disciplines.${slotKey}.ranksCompleted`]: ranksCompleted,
-            };
+            if (appliedTo.length) {
+                await this.actor.update(updateData);
+            }
 
-            // Auto-create capstone item when rank 3 is completed
-            if (ranksCompleted >= 3 && (slot.ranksCompleted || 0) < 3 && !slot.capstoneId) {
-                const disciplineItem = this.actor.items.get(slot.disciplineId);
-                const capstoneData = disciplineItem?.system?.capstone;
+            // Auto-create capstone items for slots that just completed rank 3
+            for (const { slotKey: targetKey, disciplineItem: targetDiscipline } of reachedCapstone) {
+                const capstoneData = targetDiscipline?.system?.capstone;
                 if (capstoneData?.name) {
                     const capstoneItemData = {
                         name: capstoneData.name,
@@ -706,11 +739,21 @@ export class CharacterSheetGfl5r extends BaseCharacterSheetGfl5r {
                         },
                     };
                     const created = await this.actor.createEmbeddedDocuments("Item", [capstoneItemData]);
-                    updateData[`system.disciplines.${slotKey}.capstoneId`] = created?.[0]?.id || null;
+                    await this.actor.update({
+                        [`system.disciplines.${targetKey}.capstoneId`]: created?.[0]?.id || null,
+                    });
                 }
             }
 
-            await this.actor.update(updateData);
+            // Feedback: where it was applied, and where the rank gate blocked it
+            if (appliedTo.length > 1) {
+                ui.notifications.info(`${item.name} learned by: ${appliedTo.join(", ")}.`);
+            }
+            if (rankBlocked.length) {
+                ui.notifications.warn(
+                    `${item.name} requires rank ${requiredRank} — not added to ${rankBlocked.join(", ")}.`
+                );
+            }
         } else if (item.type === "discipline") {
             // Assign discipline to this slot (only if empty)
             if (slot.disciplineId) {

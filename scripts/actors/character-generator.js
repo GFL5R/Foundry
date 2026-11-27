@@ -620,6 +620,68 @@ export class CharacterGenerator {
                 startingTechniqueUuid: secondTechniqueUuid,
                 currentRank: 1,
             });
+
+            // Retroactive progression: techniques already on the actor (the
+            // slot-1 Q3 picks and the going-solo technique just applied) that
+            // this discipline lists are adopted into slot 2, charging its
+            // ledger the technique cost each — the same rule as unlocking a
+            // discipline on a live sheet.
+            if (result.disciplineItem) {
+                const listedNames = new Set(
+                    (result.disciplineItem.system?.techniques || [])
+                        .map((entry) => (typeof entry === "string" ? entry : entry?.name))
+                        .filter(Boolean)
+                        .map((n) => String(n).trim().toLowerCase())
+                );
+                const slot = this.actor.system.disciplines?.slot2 || {};
+                const learned = new Set(slot.techniquesLearned || []);
+                let retroXp = 0;
+                if (listedNames.size > 0) {
+                    for (const tech of this.actor.items.filter((i) => i.type === "technique")) {
+                        // Perks and capstones are granted freely, never seeded
+                        if (["perk", "capstone"].includes(tech.system?.technique_type)) continue;
+                        const techName = String(tech.name || "").trim().toLowerCase();
+                        if (!listedNames.has(techName)) continue;
+                        learned.add(tech.id);
+                        retroXp += CONFIG.gfl5r.xp.techniqueCost;
+                    }
+                }
+
+                const { currentRank, ranksCompleted } = this._rankFromXp(retroXp);
+                await this.actor.update({
+                    "system.disciplines.slot2.xpSpent": retroXp,
+                    "system.disciplines.slot2.currentRank": currentRank,
+                    "system.disciplines.slot2.ranksCompleted": ranksCompleted,
+                    "system.disciplines.slot2.techniquesLearned": [...learned],
+                });
+
+                // Seeded XP can complete rank 3 outright — grant the capstone
+                if (ranksCompleted >= 3) {
+                    const capstoneData = result.disciplineItem.system?.capstone;
+                    if (capstoneData?.name) {
+                        const capstoneItemData = {
+                            name: capstoneData.name,
+                            type: "technique",
+                            img: `${CONFIG.gfl5r.paths.assets}icons/techs/capstone.svg`,
+                            system: {
+                                source_reference: { source: "GFL5R", page: 0 },
+                                flavor: capstoneData.flavor || "",
+                                description: capstoneData.description || "",
+                                xp_cost: 0,
+                                rank_required: 3,
+                                technique_type: "capstone",
+                                approach: "",
+                                skill: "",
+                                activation: "passive",
+                            },
+                        };
+                        const [capstoneCreated] = await this.actor.createEmbeddedDocuments("Item", [capstoneItemData]);
+                        await this.actor.update({
+                            "system.disciplines.slot2.capstoneId": capstoneCreated?.id || null,
+                        });
+                    }
+                }
+            }
         }
 
         await this._createNarrativeItem(soloAdvantageUuid, "advantage");
